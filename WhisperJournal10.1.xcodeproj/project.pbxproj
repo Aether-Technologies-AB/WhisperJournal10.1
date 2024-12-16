@@ -18,11 +18,11 @@
 		6D7E66342D0E604D00765A78 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E66332D0E604D00765A78 /* Persistence.swift */; };
 		6D7E66372D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E66352D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld */; };
 		6D7E66452D0E628900765A78 /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E66442D0E628900765A78 /* AudioSessionManager.swift */; };
-		6D7E66472D0E62EE00765A78 /* WhisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E66462D0E62EE00765A78 /* WhisperService.swift */; };
 		6D7E664B2D0E65CF00765A78 /* MainView.swif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E664A2D0E65CF00765A78 /* MainView.swif.swift */; };
 		6D7E664D2D0E6B6900765A78 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E664C2D0E6B6900765A78 /* AudioRecorder.swift */; };
 		6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E664E2D0E705E00765A78 /* RecordingView.swif.swift */; };
 		6D7E66512D0E708100765A78 /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E66502D0E708100765A78 /* RecordingViewModel.swift */; };
+		6D9123022D10F09B0094F6EE /* WhisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9123012D10F09B0094F6EE /* WhisperService.swift */; };
 		6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */; };
 		6DEC4B332D0F6AD70081C649 /* TranscriptDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */; };
 /* End PBXBuildFile section */
@@ -38,11 +38,11 @@
 		6D7E66332D0E604D00765A78 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		6D7E66362D0E604D00765A78 /* WhisperJournal10_1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhisperJournal10_1.xcdatamodel; sourceTree = "<group>"; };
 		6D7E66442D0E628900765A78 /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
-		6D7E66462D0E62EE00765A78 /* WhisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperService.swift; sourceTree = "<group>"; };
 		6D7E664A2D0E65CF00765A78 /* MainView.swif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swif.swift; sourceTree = "<group>"; };
 		6D7E664C2D0E6B6900765A78 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		6D7E664E2D0E705E00765A78 /* RecordingView.swif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingView.swif.swift; sourceTree = "<group>"; };
 		6D7E66502D0E708100765A78 /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
+		6D9123012D10F09B0094F6EE /* WhisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperService.swift; sourceTree = "<group>"; };
 		6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionListView.swift; sourceTree = "<group>"; };
 		6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,8 +124,8 @@
 		6D7E66422D0E626900765A78 /* Servicios */ = {
 			isa = PBXGroup;
 			children = (
-				6D7E66462D0E62EE00765A78 /* WhisperService.swift */,
 				6D77A8252D0FD425009C47A9 /* TranslationService.swift */,
+				6D9123012D10F09B0094F6EE /* WhisperService.swift */,
 			);
 			path = Servicios;
 			sourceTree = "<group>";
@@ -219,7 +219,6 @@
 			files = (
 				6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */,
 				6D7E664D2D0E6B6900765A78 /* AudioRecorder.swift in Sources */,
-				6D7E66472D0E62EE00765A78 /* WhisperService.swift in Sources */,
 				6D7E66342D0E604D00765A78 /* Persistence.swift in Sources */,
 				6D7E66372D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld in Sources */,
 				6D7E66452D0E628900765A78 /* AudioSessionManager.swift in Sources */,
@@ -228,6 +227,7 @@
 				6D7E664B2D0E65CF00765A78 /* MainView.swif.swift in Sources */,
 				6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */,
 				6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */,
+				6D9123022D10F09B0094F6EE /* WhisperService.swift in Sources */,
 				6DEC4B332D0F6AD70081C649 /* TranscriptDetailView.swift in Sources */,
 				6D7E66512D0E708100765A78 /* RecordingViewModel.swift in Sources */,
 				6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */,
