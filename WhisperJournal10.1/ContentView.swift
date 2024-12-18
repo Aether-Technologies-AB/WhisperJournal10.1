@@ -16,6 +16,8 @@ struct ContentView: View {
     @State private var recordedText = ""
     @State private var transcriptionDate = Date()
     @State private var tags = ""
+    @State private var selectedLanguage = "es-ES" // Idioma por defecto
+
 
     let audioRecorder = AudioRecorder()
     let engine = AudioEngine()
@@ -34,6 +36,19 @@ struct ContentView: View {
                 Text("Whisper Journal")
                     .font(.largeTitle)
                     .padding()
+                Menu {
+                                    Button("Español") { selectedLanguage = "es-ES" }
+                                    Button("Inglés") { selectedLanguage = "en-US" }
+                                    Button("Sueco") { selectedLanguage = "sv-SE" }
+                                    // Agrega más idiomas según sea necesario
+                                } label: {
+                                    Text("Selecciona el idioma: \(selectedLanguage)")
+                                        .padding()
+                                        .background(Color.gray.opacity(0.2))
+                                        .cornerRadius(8)
+                                }
+                                .padding()
+
 
                 // Visualizador de ondas de audio
                 if isRecording {
@@ -119,13 +134,14 @@ struct ContentView: View {
 
     // Iniciar grabación
     func startRecording() {
-        isRecording = true
-        recordedText = ""
-        transcriptionDate = Date()
-        audioRecorder.startRecording { transcription in
-            self.recordedText = transcription
-        }
-    }
+          audioRecorder.setLanguageCode(selectedLanguage)
+          audioRecorder.startRecording { transcription in
+              self.recordedText = transcription
+              self.transcriptionDate = Date()
+              // Guarda la transcripción en Core Data o realiza otras acciones necesarias
+          }
+          isRecording = true
+      }
 
     // Detener grabación
     func stopRecording() {
