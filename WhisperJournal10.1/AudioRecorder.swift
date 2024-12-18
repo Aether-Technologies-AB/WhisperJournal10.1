@@ -15,6 +15,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     private var audioFileURL: URL!
     
     var transcriptionHandler: ((String) -> Void)?
+    private var selectedLanguageCode: String = "es-ES" // Idioma por defecto
     
     override init() {
         super.init()
@@ -25,6 +26,10 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         audioSession = AVAudioSession.sharedInstance()
         try? audioSession.setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
         try? audioSession.setActive(true)
+    }
+    
+    func setLanguageCode(_ languageCode: String) {
+        self.selectedLanguageCode = languageCode
     }
     
     func startRecording(completion: @escaping (String) -> Void) {
