@@ -88,6 +88,7 @@ struct RecordingView: View {
                 .padding(.top, 10)
 
                 Spacer()
+                
             }
             .padding()
             .navigationTitle("Grabación")
