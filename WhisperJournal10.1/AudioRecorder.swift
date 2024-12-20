@@ -60,14 +60,18 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     }
     
     private func transcribeAudio() {
-        let recognizer = SFSpeechRecognizer()
-        let request = SFSpeechURLRecognitionRequest(url: audioFileURL)
-        
-        recognizer?.recognitionTask(with: request) { result, error in
-            if let error = error {
-                print("Error transcribing audio: \(error)")
+            guard let recognizer = SFSpeechRecognizer(locale: Locale(identifier: selectedLanguageCode)) else {
+                print("Speech recognizer not available for language: \(selectedLanguageCode)")
                 return
             }
+            
+            let request = SFSpeechURLRecognitionRequest(url: audioFileURL)
+            
+            recognizer.recognitionTask(with: request) { result, error in
+                if let error = error {
+                    print("Error transcribing audio: \(error)")
+                    return
+                }
             
             if let result = result {
                 let currentTime = self.getCurrentTime()
