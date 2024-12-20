@@ -16,39 +16,39 @@ struct ContentView: View {
     @State private var recordedText = ""
     @State private var transcriptionDate = Date()
     @State private var tags = ""
-    @State private var selectedLanguage = "es-ES" // Idioma por defecto
-
+    @State private var selectedLanguage: String = "es-ES" // Idioma por defecto
 
     let audioRecorder = AudioRecorder()
     let engine = AudioEngine()
-        let mic: AudioEngine.InputNode
+    let mic: AudioEngine.InputNode
 
-        init() {
-            // Configurar el nodo del micrófono
-            guard let input = engine.input else {
-                fatalError("No se pudo acceder al micrófono.")
-            }
-            mic = input
+    init() {
+        // Configurar el nodo del micrófono
+        guard let input = engine.input else {
+            fatalError("No se pudo acceder al micrófono.")
         }
+        mic = input
+    }
+
     var body: some View {
         NavigationView {
             VStack {
                 Text("Whisper Journal")
                     .font(.largeTitle)
                     .padding()
-                Menu {
-                                    Button("Español") { selectedLanguage = "es-ES" }
-                                    Button("Inglés") { selectedLanguage = "en-US" }
-                                    Button("Sueco") { selectedLanguage = "sv-SE" }
-                                    // Agrega más idiomas según sea necesario
-                                } label: {
-                                    Text("Selecciona el idioma: \(selectedLanguage)")
-                                        .padding()
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(8)
-                                }
-                                .padding()
 
+                Menu {
+                    Button("Español") { selectedLanguage = "es-ES" }
+                    Button("Inglés") { selectedLanguage = "en-US" }
+                    Button("Sueco") { selectedLanguage = "sv-SE" }
+                    // Agrega más idiomas según sea necesario
+                } label: {
+                    Text("Selecciona el idioma: \(selectedLanguage)")
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
+                }
+                .padding()
 
                 // Visualizador de ondas de audio
                 if isRecording {
@@ -67,27 +67,34 @@ struct ContentView: View {
                         startRecording()
                     }
                 }) {
-                    Text(isRecording ? "Stop Recording" : "Start Recording")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(isRecording ? Color.red : Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .font(.headline)
+                    HStack {
+                        Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                            .font(.title)
+                        Text(isRecording ? "Detener" : "Grabar")
+                            .font(.headline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(isRecording ? Color.red : Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
                 }
                 .padding(.top, 20)
 
                 // Mostrar la transcripción
                 if !recordedText.isEmpty {
-                    Text("Transcription:")
-                        .font(.headline)
-                        .padding(.top, 20)
+                    VStack(alignment: .leading) {
+                        Text("Transcripción:")
+                            .font(.headline)
+                            .padding(.top, 20)
 
-                    Text(recordedText)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
+                        Text(recordedText)
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(8)
+                    }
+                    .padding()
                 }
 
                 // Campo de entrada para Tags
@@ -97,7 +104,7 @@ struct ContentView: View {
 
                 // Botón para guardar la transcripción
                 Button(action: saveTranscription) {
-                    Text("Save Transcription")
+                    Text("Guardar Transcripción")
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.blue)
@@ -109,7 +116,7 @@ struct ContentView: View {
 
                 // Botón para ver transcripciones guardadas
                 NavigationLink(destination: TranscriptionListView()) {
-                    Text("View Saved Transcriptions")
+                    Text("Ver Transcripciones Guardadas")
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.purple)
@@ -123,25 +130,26 @@ struct ContentView: View {
             }
             .padding()
             .navigationTitle("Home")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                mic.start() // Iniciar el micrófono para el visualizador
+                startAudioEngine()
             }
             .onDisappear {
-                mic.stop() // Detener el micrófono al salir de la vista
+                stopAudioEngine()
             }
         }
     }
 
     // Iniciar grabación
     func startRecording() {
-          audioRecorder.setLanguageCode(selectedLanguage)
-          audioRecorder.startRecording { transcription in
-              self.recordedText = transcription
-              self.transcriptionDate = Date()
-              // Guarda la transcripción en Core Data o realiza otras acciones necesarias
-          }
-          isRecording = true
-      }
+        audioRecorder.setLanguageCode(selectedLanguage)
+        audioRecorder.startRecording { transcription in
+            self.recordedText = transcription
+            self.transcriptionDate = Date()
+            // Guarda la transcripción en Core Data o realiza otras acciones necesarias
+        }
+        isRecording = true
+    }
 
     // Detener grabación
     func stopRecording() {
@@ -175,22 +183,21 @@ struct ContentView: View {
         recordedText = ""
         tags = ""
     }
-    
-    // Iniciar el motor de audio
-        func startAudioEngine() {
-            do {
-                try engine.start()
-            } catch {
-                print("Error al iniciar el motor de audio: \(error.localizedDescription)")
-            }
-        }
 
-        // Detener el motor de audio
-        func stopAudioEngine() {
-            engine.stop()
+    // Iniciar el motor de audio
+    func startAudioEngine() {
+        do {
+            try engine.start()
+        } catch {
+            print("Error al iniciar el motor de audio: \(error.localizedDescription)")
         }
     }
 
+    // Detener el motor de audio
+    func stopAudioEngine() {
+        engine.stop()
+    }
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
