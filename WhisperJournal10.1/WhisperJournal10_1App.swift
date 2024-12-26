@@ -4,21 +4,32 @@
 //
 //  Created by andree on 14/12/24.
 //
-
 import SwiftUI
 
 @main
 struct WhisperJournal10_1App: App {
     let persistenceController = PersistenceController.shared
-    @State private var isAuthenticated: Bool = UserDefaults.standard.bool(forKey: "isAuthenticated")
+    @AppStorage("isAuthenticated") private var isAuthenticated = false
+
+    init() {
+        // Limpiar cualquier dato persistente en UserDefaults
+        UserDefaults.standard.removeObject(forKey: "isAuthenticated")
+        UserDefaults.standard.removeObject(forKey: "username")
+        UserDefaults.standard.removeObject(forKey: "password")
+
+        // Asegúrate de que isAuthenticated esté configurado en false por defecto
+        if UserDefaults.standard.object(forKey: "isAuthenticated") == nil {
+            UserDefaults.standard.set(false, forKey: "isAuthenticated")
+        }
+    }
 
     var body: some Scene {
         WindowGroup {
             if isAuthenticated {
-                ContentView()
+                ContentView() // Vista de grabación de audio
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             } else {
-                LoginView()
+                LoginView(isAuthenticated: $isAuthenticated)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }

@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var tags = ""
     @State private var selectedLanguage: String = "es-ES" // Idioma por defecto
 
+
     let audioRecorder = AudioRecorder()
     let engine = AudioEngine()
     let mic: AudioEngine.InputNode

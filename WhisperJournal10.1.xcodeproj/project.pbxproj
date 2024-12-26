@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6D77A8212D0FCA2E009C47A9 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6D77A8202D0FCA2E009C47A9 /* AudioKit */; };
 		6D77A8242D0FCC68009C47A9 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6D77A8232D0FCC68009C47A9 /* AudioKitUI */; };
-		6D77A8262D0FD425009C47A9 /* TranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8252D0FD425009C47A9 /* TranslationService.swift */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
 		6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */; };
 		6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662C2D0E604A00765A78 /* ContentView.swift */; };
@@ -22,14 +21,14 @@
 		6D7E664D2D0E6B6900765A78 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E664C2D0E6B6900765A78 /* AudioRecorder.swift */; };
 		6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E664E2D0E705E00765A78 /* RecordingView.swif.swift */; };
 		6D7E66512D0E708100765A78 /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E66502D0E708100765A78 /* RecordingViewModel.swift */; };
+		6D8463202D17505900B4F69E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D84631F2D17505900B4F69E /* LoginView.swift */; };
 		6D9123022D10F09B0094F6EE /* WhisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9123012D10F09B0094F6EE /* WhisperService.swift */; };
-		6DC083D12D15E580006A470E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC083D02D15E580006A470E /* LoginView.swift */; };
+		6DA93E992D1C8B1E00D43977 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA93E982D1C8B1E00D43977 /* RegisterView.swift */; };
 		6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */; };
 		6DEC4B332D0F6AD70081C649 /* TranscriptDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6D77A8252D0FD425009C47A9 /* TranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationService.swift; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
 		6D7E66272D0E604A00765A78 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperJournal10_1App.swift; sourceTree = "<group>"; };
@@ -43,8 +42,9 @@
 		6D7E664C2D0E6B6900765A78 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		6D7E664E2D0E705E00765A78 /* RecordingView.swif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingView.swif.swift; sourceTree = "<group>"; };
 		6D7E66502D0E708100765A78 /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
+		6D84631F2D17505900B4F69E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		6D9123012D10F09B0094F6EE /* WhisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperService.swift; sourceTree = "<group>"; };
-		6DC083D02D15E580006A470E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		6DA93E982D1C8B1E00D43977 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionListView.swift; sourceTree = "<group>"; };
 		6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,7 +111,8 @@
 				6D7E664E2D0E705E00765A78 /* RecordingView.swif.swift */,
 				6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */,
 				6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */,
-				6DC083D02D15E580006A470E /* LoginView.swift */,
+				6D84631F2D17505900B4F69E /* LoginView.swift */,
+				6DA93E982D1C8B1E00D43977 /* RegisterView.swift */,
 			);
 			path = Vistas;
 			sourceTree = "<group>";
@@ -127,7 +128,6 @@
 		6D7E66422D0E626900765A78 /* Servicios */ = {
 			isa = PBXGroup;
 			children = (
-				6D77A8252D0FD425009C47A9 /* TranslationService.swift */,
 				6D9123012D10F09B0094F6EE /* WhisperService.swift */,
 			);
 			path = Servicios;
@@ -193,6 +193,7 @@
 			packageReferences = (
 				6D77A81F2D0FCA2E009C47A9 /* XCRemoteSwiftPackageReference "AudioKit" */,
 				6D77A8222D0FCC68009C47A9 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
+				6DD8DAF72D1CA18C006BBB99 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */,
 			);
 			productRefGroup = 6D7E66282D0E604A00765A78 /* Products */;
 			projectDirPath = "";
@@ -223,16 +224,16 @@
 				6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */,
 				6D7E664D2D0E6B6900765A78 /* AudioRecorder.swift in Sources */,
 				6D7E66342D0E604D00765A78 /* Persistence.swift in Sources */,
-				6DC083D12D15E580006A470E /* LoginView.swift in Sources */,
+				6D8463202D17505900B4F69E /* LoginView.swift in Sources */,
 				6D7E66372D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld in Sources */,
 				6D7E66452D0E628900765A78 /* AudioSessionManager.swift in Sources */,
 				6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */,
-				6D77A8262D0FD425009C47A9 /* TranslationService.swift in Sources */,
 				6D7E664B2D0E65CF00765A78 /* MainView.swif.swift in Sources */,
 				6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */,
 				6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */,
 				6D9123022D10F09B0094F6EE /* WhisperService.swift in Sources */,
 				6DEC4B332D0F6AD70081C649 /* TranscriptDetailView.swift in Sources */,
+				6DA93E992D1C8B1E00D43977 /* RegisterView.swift in Sources */,
 				6D7E66512D0E708100765A78 /* RecordingViewModel.swift in Sources */,
 				6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */,
 			);
@@ -453,6 +454,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.3.7;
+			};
+		};
+		6DD8DAF72D1CA18C006BBB99 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mongodb/mongo-swift-driver";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
