@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import FirebaseCore
+import FirebaseAuth
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -17,6 +18,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct WhisperJournal10_1App: App {
+    static func logout() {
+        do {
+            try Auth.auth().signOut()
+            UserDefaults.standard.set(false, forKey: "isAuthenticated")
+        } catch {
+            print("Error signing out: \(error.localizedDescription)")
+        }
+    }
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     let persistenceController = PersistenceController.shared
     @AppStorage("isAuthenticated") private var isAuthenticated = false

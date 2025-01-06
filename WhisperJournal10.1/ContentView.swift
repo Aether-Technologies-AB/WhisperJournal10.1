@@ -12,6 +12,7 @@ import AudioKitUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @AppStorage("isAuthenticated") private var isAuthenticated = false
     @State private var isRecording = false
     @State private var recordedText = ""
     @State private var transcriptionDate = Date()
@@ -132,6 +133,17 @@ struct ContentView: View {
             .padding()
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        WhisperJournal10_1App.logout()
+                        isAuthenticated = false
+                    }) {
+                        Text("Cerrar Sesión")
+                            .foregroundColor(.red)
+                    }
+                }
+            }
             .onAppear {
                 startAudioEngine()
             }
