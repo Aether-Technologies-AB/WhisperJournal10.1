@@ -12,7 +12,7 @@ class WhisperService {
     static let shared = WhisperService()
     private init() {}
     
-    func transcribeAudio(at url: URL, completion: @escaping (String?) -> Void) {
+    func transcribeAudio(at url: URL, language:String,completion: @escaping (String?) -> Void) {
         guard let apiUrl = URL(string: "https://api.whisper.ai/transcribe") else {
             completion(nil)
             return

@@ -3,7 +3,6 @@
 //  WhisperJournal10.1
 //
 //  Created by andree on 21/12/24.
-
 import SwiftUI
 
 struct LoginView: View {
@@ -38,26 +37,23 @@ struct LoginView: View {
             Button("Registrar") {
                 showingRegistration = true
             }
+            .buttonStyle(.bordered)
             .padding()
+            .sheet(isPresented: $showingRegistration) {
+                RegisterView(showingRegistration: $showingRegistration, isAuthenticated: $isAuthenticated)
+            }
         }
         .padding()
-        .sheet(isPresented: $showingRegistration) {
-            RegisterView(showingRegistration: $showingRegistration)
-        }
     }
 
     private func login() {
-        guard let storedUsername = UserDefaults.standard.string(forKey: "username"),
-              let storedPassword = UserDefaults.standard.string(forKey: "password") else {
-            loginError = "No hay usuarios registrados"
-            return
-        }
-
-        if username == storedUsername && password == storedPassword {
-            isAuthenticated = true
-            UserDefaults.standard.set(true, forKey: "isAuthenticated")
-        } else {
-            loginError = "Credenciales incorrectas"
+        FirestoreService.shared.fetchUser(username: username) { storedPassword, error in
+            if let storedPassword = storedPassword, storedPassword == password {
+                UserDefaults.standard.set(username, forKey: "username")
+                isAuthenticated = true
+            } else {
+                loginError = "Nombre de usuario o contraseña incorrectos."
+            }
         }
     }
 }

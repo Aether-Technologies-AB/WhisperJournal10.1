@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6D77A8212D0FCA2E009C47A9 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6D77A8202D0FCA2E009C47A9 /* AudioKit */; };
-		6D77A8242D0FCC68009C47A9 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6D77A8232D0FCC68009C47A9 /* AudioKitUI */; };
+		6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1806B42D29DC3500A7ADDB /* Transcription.swift */; };
+		6D1806B72D29E5CB00A7ADDB /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6D1806B62D29E5CB00A7ADDB /* FirebaseFirestoreSwift */; };
+		6D45C9AC2D2917C900136F98 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6D45C9AB2D2917C900136F98 /* FirebaseAnalytics */; };
+		6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D45C9AD2D2918A400136F98 /* FirestoreService.swift */; };
+		6D4C9D222D2B8DCD00A57D95 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D4C9D212D2B8DCD00A57D95 /* GoogleService-Info.plist */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
 		6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */; };
 		6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662C2D0E604A00765A78 /* ContentView.swift */; };
@@ -22,15 +25,23 @@
 		6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E664E2D0E705E00765A78 /* RecordingView.swif.swift */; };
 		6D7E66512D0E708100765A78 /* RecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E66502D0E708100765A78 /* RecordingViewModel.swift */; };
 		6D8463202D17505900B4F69E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D84631F2D17505900B4F69E /* LoginView.swift */; };
+		6D95BE5A2D20D0CA00F51761 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6D95BE592D20D0CA00F51761 /* AudioKit */; };
+		6D95BE5C2D20D0CE00F51761 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6D95BE5B2D20D0CE00F51761 /* AudioKitUI */; };
 		6DA93E992D1C8B1E00D43977 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA93E982D1C8B1E00D43977 /* RegisterView.swift */; };
 		6DB57C5B2D1DECD900E8A1AF /* WisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */; };
+		6DD5B9712D286D3D00593725 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6DD5B9702D286D3D00593725 /* FirebaseAuth */; };
+		6DD5B9752D28707C00593725 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6DD5B9742D28707C00593725 /* FirebaseFirestore */; };
+		6DD5B97D2D2872D400593725 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6DD5B97C2D2872D400593725 /* FirebaseStorage */; };
 		6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */; };
 		6DEC4B332D0F6AD70081C649 /* TranscriptDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6D1806B42D29DC3500A7ADDB /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
+		6D45C9AA2D29179600136F98 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D45C9AD2D2918A400136F98 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		6D4C9D212D2B8DCD00A57D95 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
-		6D7E66272D0E604A00765A78 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperJournal10_1App.swift; sourceTree = "<group>"; };
 		6D7E662C2D0E604A00765A78 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6D7E662E2D0E604D00765A78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -45,6 +56,7 @@
 		6D84631F2D17505900B4F69E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		6DA93E982D1C8B1E00D43977 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WisperService.swift; sourceTree = "<group>"; };
+		6DD5B9632D2863A200593725 /* firebase-ios-sdk-10.8.0 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "firebase-ios-sdk-10.8.0"; path = "../../Downloads/firebase-ios-sdk-10.8.0"; sourceTree = "<group>"; };
 		6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionListView.swift; sourceTree = "<group>"; };
 		6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,8 +66,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D77A8242D0FCC68009C47A9 /* AudioKitUI in Frameworks */,
-				6D77A8212D0FCA2E009C47A9 /* AudioKit in Frameworks */,
+				6D95BE5C2D20D0CE00F51761 /* AudioKitUI in Frameworks */,
+				6DD5B9752D28707C00593725 /* FirebaseFirestore in Frameworks */,
+				6D95BE5A2D20D0CA00F51761 /* AudioKit in Frameworks */,
+				6D1806B72D29E5CB00A7ADDB /* FirebaseFirestoreSwift in Frameworks */,
+				6DD5B97D2D2872D400593725 /* FirebaseStorage in Frameworks */,
+				6DD5B9712D286D3D00593725 /* FirebaseAuth in Frameworks */,
+				6D45C9AC2D2917C900136F98 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,22 +82,17 @@
 		6D7E661E2D0E604A00765A78 = {
 			isa = PBXGroup;
 			children = (
+				6DD5B9622D2863A200593725 /* Packages */,
 				6D7E66292D0E604A00765A78 /* WhisperJournal10.1 */,
-				6D7E66282D0E604A00765A78 /* Products */,
+				6DD5B9672D286BE500593725 /* Frameworks */,
+				6D45C9AA2D29179600136F98 /* WhisperJournal10.1.app */,
 			);
-			sourceTree = "<group>";
-		};
-		6D7E66282D0E604A00765A78 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6D7E66272D0E604A00765A78 /* WhisperJournal10.1.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		6D7E66292D0E604A00765A78 /* WhisperJournal10.1 */ = {
 			isa = PBXGroup;
 			children = (
+				6DD5B9642D286AA300593725 /* Basedatos */,
 				6D7E66432D0E627600765A78 /* Utilidades */,
 				6D7E66422D0E626900765A78 /* Servicios */,
 				6D7E66402D0E624900765A78 /* ViewModels */,
@@ -92,6 +104,7 @@
 				6D7E66352D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld */,
 				6D7E66302D0E604D00765A78 /* Preview Content */,
 				6D7E664C2D0E6B6900765A78 /* AudioRecorder.swift */,
+				6D4C9D212D2B8DCD00A57D95 /* GoogleService-Info.plist */,
 			);
 			path = WhisperJournal10.1;
 			sourceTree = "<group>";
@@ -142,6 +155,30 @@
 			path = Utilidades;
 			sourceTree = "<group>";
 		};
+		6DD5B9622D2863A200593725 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				6DD5B9632D2863A200593725 /* firebase-ios-sdk-10.8.0 */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		6DD5B9642D286AA300593725 /* Basedatos */ = {
+			isa = PBXGroup;
+			children = (
+				6D45C9AD2D2918A400136F98 /* FirestoreService.swift */,
+				6D1806B42D29DC3500A7ADDB /* Transcription.swift */,
+			);
+			path = Basedatos;
+			sourceTree = "<group>";
+		};
+		6DD5B9672D286BE500593725 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -159,11 +196,16 @@
 			);
 			name = WhisperJournal10.1;
 			packageProductDependencies = (
-				6D77A8202D0FCA2E009C47A9 /* AudioKit */,
-				6D77A8232D0FCC68009C47A9 /* AudioKitUI */,
+				6D95BE592D20D0CA00F51761 /* AudioKit */,
+				6D95BE5B2D20D0CE00F51761 /* AudioKitUI */,
+				6DD5B9702D286D3D00593725 /* FirebaseAuth */,
+				6DD5B9742D28707C00593725 /* FirebaseFirestore */,
+				6DD5B97C2D2872D400593725 /* FirebaseStorage */,
+				6D45C9AB2D2917C900136F98 /* FirebaseAnalytics */,
+				6D1806B62D29E5CB00A7ADDB /* FirebaseFirestoreSwift */,
 			);
 			productName = WhisperJournal10.1;
-			productReference = 6D7E66272D0E604A00765A78 /* WhisperJournal10.1.app */;
+			productReference = 6D45C9AA2D29179600136F98 /* WhisperJournal10.1.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -191,11 +233,10 @@
 			);
 			mainGroup = 6D7E661E2D0E604A00765A78;
 			packageReferences = (
-				6D77A81F2D0FCA2E009C47A9 /* XCRemoteSwiftPackageReference "AudioKit" */,
-				6D77A8222D0FCC68009C47A9 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
-				6DD8DAF72D1CA18C006BBB99 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */,
+				6D95BE542D20CA1F00F51761 /* XCRemoteSwiftPackageReference "AudioKit" */,
+				6D95BE552D20CA5600F51761 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
 			);
-			productRefGroup = 6D7E66282D0E604A00765A78 /* Products */;
+			productRefGroup = 6D7E661E2D0E604A00765A78;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -210,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D7E66322D0E604D00765A78 /* Preview Assets.xcassets in Resources */,
+				6D4C9D222D2B8DCD00A57D95 /* GoogleService-Info.plist in Resources */,
 				6D7E662F2D0E604D00765A78 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,8 +266,10 @@
 				6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */,
 				6D7E664D2D0E6B6900765A78 /* AudioRecorder.swift in Sources */,
 				6D7E66342D0E604D00765A78 /* Persistence.swift in Sources */,
+				6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */,
 				6D8463202D17505900B4F69E /* LoginView.swift in Sources */,
 				6D7E66372D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld in Sources */,
+				6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */,
 				6D7E66452D0E628900765A78 /* AudioSessionManager.swift in Sources */,
 				6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */,
 				6D7E664B2D0E65CF00765A78 /* MainView.swif.swift in Sources */,
@@ -366,13 +410,17 @@
 				DEVELOPMENT_ASSET_PATHS = "\"WhisperJournal10.1/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(PRODUCT_NAME)";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = WhisperJournal10.1;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = WhisperJournal10.1;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -396,13 +444,17 @@
 				DEVELOPMENT_ASSET_PATHS = "\"WhisperJournal10.1/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(PRODUCT_NAME)";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = WhisperJournal10.1;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = WhisperJournal10.1;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -440,7 +492,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		6D77A81F2D0FCA2E009C47A9 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+		6D95BE542D20CA1F00F51761 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
 			requirement = {
@@ -448,7 +500,7 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		6D77A8222D0FCC68009C47A9 /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
+		6D95BE552D20CA5600F51761 /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKitUI.git";
 			requirement = {
@@ -456,26 +508,38 @@
 				minimumVersion = 0.3.7;
 			};
 		};
-		6DD8DAF72D1CA18C006BBB99 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mongodb/mongo-swift-driver";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6D77A8202D0FCA2E009C47A9 /* AudioKit */ = {
+		6D1806B62D29E5CB00A7ADDB /* FirebaseFirestoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6D77A81F2D0FCA2E009C47A9 /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		6D45C9AB2D2917C900136F98 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAnalytics;
+		};
+		6D95BE592D20D0CA00F51761 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6D95BE542D20CA1F00F51761 /* XCRemoteSwiftPackageReference "AudioKit" */;
 			productName = AudioKit;
 		};
-		6D77A8232D0FCC68009C47A9 /* AudioKitUI */ = {
+		6D95BE5B2D20D0CE00F51761 /* AudioKitUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6D77A8222D0FCC68009C47A9 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
+			package = 6D95BE552D20CA5600F51761 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
 			productName = AudioKitUI;
+		};
+		6DD5B9702D286D3D00593725 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAuth;
+		};
+		6DD5B9742D28707C00593725 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseFirestore;
+		};
+		6DD5B97C2D2872D400593725 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 

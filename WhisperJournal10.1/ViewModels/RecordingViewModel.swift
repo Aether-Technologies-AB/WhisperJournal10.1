@@ -38,6 +38,7 @@ class RecordingViewModel: ObservableObject {
         
         do {
             audioRecorder = try AVAudioRecorder(url: filename, settings: settings)
+            audioRecorder?.prepareToRecord()
             audioRecorder?.record()
         } catch {
             print("Error al iniciar la grabación: \(error)")
@@ -47,45 +48,25 @@ class RecordingViewModel: ObservableObject {
     // Detener grabación
     func stopRecording() {
         audioRecorder?.stop()
-        audioRecorder = nil
-        // Aquí se llamaría a la API de Whisper para transcribir el audio grabado
-        transcribeAudio()
+        if let url = audioRecorder?.url {
+            transcribeAudio(at: url, language: "es-ES") // Asegúrate de pasar el parámetro 'language'
+        }
     }
     
-    
-    // Función para transcribir el audio grabado
-    func transcribeAudio() {
-        WhisperService.shared.transcribeAudio(at: getDocumentsDirectory().appendingPathComponent("recording.m4a")) { transcription in
-            DispatchQueue.main.async {
-                self.transcription = transcription
-                if let transcription = transcription {
-                    // Guardar la transcripción en Core Data
-                    let currentDate = Date()
-                    PersistenceController.shared.saveTranscript(text: transcription, date: currentDate)
+    // Transcribir audio
+    private func transcribeAudio(at url: URL, language: String) {
+        WhisperService.shared.transcribeAudio(at: url, language: language) { transcription in
+            if let transcription = transcription {
+                DispatchQueue.main.async {
+                    self.transcription = transcription
                 }
             }
         }
     }
-
-
     
-    // Obtener el directorio de documentos para guardar el archivo de audio
+    // Obtener el directorio de documentos
     private func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
-    }
-}
-func saveTranscriptToCoreData(transcription: String) {
-    let context = PersistenceController.shared.container.viewContext
-    let newTranscript = Transcript(context: context)
-    newTranscript.text = transcription
-    newTranscript.timestamp = Date()
-    
-    
-    do {
-        try context.save()
-        print("Transcripción guardada con éxito")
-    } catch {
-        print("Error al guardar la transcripción: \(error)")
     }
 }

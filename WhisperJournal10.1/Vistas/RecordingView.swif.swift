@@ -4,19 +4,21 @@
 //
 //  Created by andree on 14/12/24.
 //
-
 import SwiftUI
 import AVFoundation
 import CoreData
 
 struct RecordingView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @AppStorage("username") private var username: String = ""
 
     @State private var isRecording = false
     @State private var recordedText = ""
     @State private var transcriptionDate = Date()
     @State private var tags = ""
     @State private var selectedLanguage = "es-ES" // Idioma por defecto
+    @State private var audioURL: URL?
+    @State private var transcriptions: [Transcription] = []
 
     let audioRecorder = AudioRecorder()
 
@@ -36,92 +38,85 @@ struct RecordingView: View {
                     Text("Selecciona el idioma: \(selectedLanguage)")
                         .padding()
                         .background(Color.gray.opacity(0.2))
-                        .cornerRadius(8)
                 }
-                .padding()
 
-                Button(action: {
-                    if self.isRecording {
-                        self.stopRecording()
+                Button(isRecording ? "Detener Grabación" : "Iniciar Grabación") {
+                    if isRecording {
+                        stopRecording()
                     } else {
-                        self.startRecording()
+                        startRecording()
                     }
-                }) {
-                    HStack {
-                        Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                            .font(.title)
-                        Text(isRecording ? "Detener" : "Grabar")
-                            .font(.headline)
-                    }
-                    .padding()
-                    .background(isRecording ? Color.red : Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
                 }
                 .padding()
-
+                
                 if !recordedText.isEmpty {
-                    VStack(alignment: .leading) {
-                        Text("Transcripción:")
-                            .font(.headline)
-                            .padding(.top)
-
-                        Text(recordedText)
-                            .padding()
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(8)
-                    }
-                    .padding()
-                }
-
-                TextField("Enter tags...", text: $tags)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-
-                Button(action: saveTranscription) {
-                    Text("Guardar Transcripción")
+                    Text("Transcripción:")
+                        .font(.headline)
+                        .padding(.top)
+                    Text(recordedText)
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
                 }
-                .padding(.top, 10)
+
+                List(transcriptions) { transcription in
+                    VStack(alignment: .leading) {
+                        Text(transcription.text)
+                        Text(transcription.date, style: .date)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
 
                 Spacer()
-                
             }
-            .padding()
-            .navigationTitle("Grabación")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitle("Whisper Journal")
+            .onAppear {
+                fetchTranscriptions()
+            }
         }
     }
 
-    func startRecording() {
-        audioRecorder.setLanguageCode(selectedLanguage)
-        audioRecorder.startRecording { transcription in
-            self.recordedText = transcription
-            self.transcriptionDate = Date()
-            // Guarda la transcripción en Core Data o realiza otras acciones necesarias
+    private func startRecording() {
+        audioURL = FileManager.default.temporaryDirectory.appendingPathComponent("audio.m4a")
+        if let url = audioURL {
+            AudioSessionManager.shared.startRecording(to: url)
+            isRecording = true
         }
-        isRecording = true
     }
 
-    func stopRecording() {
+    private func stopRecording() {
+        AudioSessionManager.shared.stopRecording()
         isRecording = false
-        audioRecorder.stopRecording()
+        if let url = audioURL {
+            transcribeAudio(at: url)
+        }
     }
 
-    func saveTranscription() {
-        let newTranscript = Transcript(context: viewContext)
-        newTranscript.text = recordedText
-        newTranscript.date = transcriptionDate
-        newTranscript.tags = tags
+    private func transcribeAudio(at url: URL) {
+        WhisperService.shared.transcribeAudio(at: url, language: selectedLanguage) { transcription in
+            if let transcription = transcription {
+                recordedText = transcription
+                saveTranscription(text: transcription)
+            }
+        }
+    }
 
-        do {
-            try viewContext.save()
-            print("Transcription saved successfully!")
-        } catch {
-            print("Error saving transcription: \(error.localizedDescription)")
+    private func saveTranscription(text: String) {
+        FirestoreService.shared.saveTranscription(username: username, text: text, date: transcriptionDate, tags: tags) { error in
+            if let error = error {
+                print("Error al guardar la transcripción: \(error.localizedDescription)")
+            } else {
+                fetchTranscriptions()
+            }
+        }
+    }
+
+    private func fetchTranscriptions() {
+        FirestoreService.shared.fetchTranscriptions(username: username) { transcriptions, error in
+            if let transcriptions = transcriptions {
+                self.transcriptions = transcriptions
+            } else {
+                print("Error al obtener las transcripciones: \(error?.localizedDescription ?? "Desconocido")")
+            }
         }
     }
 }

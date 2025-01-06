@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:WhisperJournal10.1}/WhisperJournal10.1",
+            "name": "Debug andree (WhisperJournal10.1)",
+            "program": "${workspaceFolder:WhisperJournal10.1}/WhisperJournal10.1/.build/debug/andree",
+            "preLaunchTask": "swift: Build Debug andree (WhisperJournal10.1)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:WhisperJournal10.1}/WhisperJournal10.1",
+            "name": "Release andree (WhisperJournal10.1)",
+            "program": "${workspaceFolder:WhisperJournal10.1}/WhisperJournal10.1/.build/release/andree",
+            "preLaunchTask": "swift: Build Release andree (WhisperJournal10.1)"
+        }
+    ]
+}

@@ -5,6 +5,7 @@
 //  Created by andree on 14/12/24.
 //
 import SwiftUI
+import FirebaseCore
 
 @main
 struct WhisperJournal10_1App: App {
@@ -12,6 +13,8 @@ struct WhisperJournal10_1App: App {
     @AppStorage("isAuthenticated") private var isAuthenticated = false
 
     init() {
+        FirebaseApp.configure()
+        
         // Limpiar cualquier dato persistente en UserDefaults
         UserDefaults.standard.removeObject(forKey: "isAuthenticated")
         UserDefaults.standard.removeObject(forKey: "username")

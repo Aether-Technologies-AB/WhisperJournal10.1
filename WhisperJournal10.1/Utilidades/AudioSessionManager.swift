@@ -42,7 +42,10 @@ class AudioSessionManager {
     }
     
     func stopRecording() {
-        audioRecorder?.stop()
-        audioRecorder = nil
+            if let recorder = audioRecorder, recorder.isRecording {
+                recorder.stop()
+            } else {
+                print("No hay grabación en curso para detener.")
+            }
+        }
     }
-}
