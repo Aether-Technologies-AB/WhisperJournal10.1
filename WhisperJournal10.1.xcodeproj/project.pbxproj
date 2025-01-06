@@ -53,6 +53,7 @@
 		B8BB9F462D2C609B00055000 /* FirebaseInAppMessaging-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = B8BB9F452D2C609B00055000 /* FirebaseInAppMessaging-Beta */; };
 		B8BB9F482D2C609B00055000 /* FirebaseInAppMessagingSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = B8BB9F472D2C609B00055000 /* FirebaseInAppMessagingSwift-Beta */; };
 		B8BB9F4A2D2C609B00055000 /* FirebaseInstallations in Frameworks */ = {isa = PBXBuildFile; productRef = B8BB9F492D2C609B00055000 /* FirebaseInstallations */; };
+		B8BB9F4C2D2C70E100055000 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B8BB9F4B2D2C70E100055000 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		6DD5B9632D2863A200593725 /* firebase-ios-sdk-10.8.0 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "firebase-ios-sdk-10.8.0"; path = "../../Downloads/firebase-ios-sdk-10.8.0"; sourceTree = "<group>"; };
 		6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionListView.swift; sourceTree = "<group>"; };
 		6DEC4B322D0F6AD70081C649 /* TranscriptDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDetailView.swift; sourceTree = "<group>"; };
+		B8BB9F4B2D2C70E100055000 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 				6D7E663D2D0E61F100765A78 /* Vistas */,
 				6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */,
 				6D7E662C2D0E604A00765A78 /* ContentView.swift */,
+				B8BB9F4B2D2C70E100055000 /* GoogleService-Info.plist */,
 				6D7E662E2D0E604D00765A78 /* Assets.xcassets */,
 				6D7E66332D0E604D00765A78 /* Persistence.swift */,
 				6D7E66352D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld */,
@@ -310,6 +313,7 @@
 			files = (
 				6D7E66322D0E604D00765A78 /* Preview Assets.xcassets in Resources */,
 				6D7E662F2D0E604D00765A78 /* Assets.xcassets in Resources */,
+				B8BB9F4C2D2C70E100055000 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,11 +22,6 @@ struct WhisperJournal10_1App: App {
     @AppStorage("isAuthenticated") private var isAuthenticated = false
 
     init() {
-        // Limpiar cualquier dato persistente en UserDefaults
-        UserDefaults.standard.removeObject(forKey: "isAuthenticated")
-        UserDefaults.standard.removeObject(forKey: "username")
-        UserDefaults.standard.removeObject(forKey: "password")
-
         // Asegúrate de que isAuthenticated esté configurado en false por defecto
         if UserDefaults.standard.object(forKey: "isAuthenticated") == nil {
             UserDefaults.standard.set(false, forKey: "isAuthenticated")
