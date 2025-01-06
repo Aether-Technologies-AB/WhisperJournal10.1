@@ -5,6 +5,7 @@
 //  Created by andree on 25/12/24.
 //
 import SwiftUI
+import FirebaseAuth
 
 struct RegisterView: View {
     @Binding var showingRegistration: Bool
@@ -16,7 +17,9 @@ struct RegisterView: View {
 
     var body: some View {
         VStack {
-            TextField("Nombre de usuario", text: $username)
+            TextField("Correo electrónico", text: $username)
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
 
@@ -49,9 +52,20 @@ struct RegisterView: View {
         .padding()
     }
 
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+
     private func register() {
         guard !username.isEmpty else {
-            registrationError = "El nombre de usuario no puede estar vacío."
+            registrationError = "El correo electrónico no puede estar vacío."
+            return
+        }
+
+        guard isValidEmail(username) else {
+            registrationError = "Por favor ingrese un correo electrónico válido."
             return
         }
 
@@ -65,28 +79,13 @@ struct RegisterView: View {
             return
         }
 
-        FirestoreService.shared.saveUser(username: username, password: password) { error in
+        Auth.auth().createUser(withEmail: username, password: password) { result, error in
             if let error = error {
-                registrationError = "Error al registrar el usuario: \(error.localizedDescription)"
+                registrationError = "Error al registrar: \(error.localizedDescription)"
             } else {
-                // Guardar las credenciales en UserDefaults
-                UserDefaults.standard.set(username, forKey: "username")
-                UserDefaults.standard.set(password, forKey: "password")
-                // Redirigir a la pantalla de inicio de sesión
-                showingRegistration = false
-                // Iniciar sesión automáticamente
-                login()
-            }
-        }
-    }
-
-    private func login() {
-        FirestoreService.shared.fetchUser(username: username) { storedPassword, error in
-            if let storedPassword = storedPassword, storedPassword == password {
                 UserDefaults.standard.set(username, forKey: "username")
                 isAuthenticated = true
-            } else {
-                registrationError = "Error al iniciar sesión después del registro."
+                showingRegistration = false
             }
         }
     }

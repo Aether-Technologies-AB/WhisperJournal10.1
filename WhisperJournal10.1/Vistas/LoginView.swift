@@ -4,6 +4,7 @@
 //
 //  Created by andree on 21/12/24.
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
     @Binding var isAuthenticated: Bool
@@ -14,7 +15,9 @@ struct LoginView: View {
 
     var body: some View {
         VStack {
-            TextField("Nombre de usuario", text: $username)
+            TextField("Correo electrónico", text: $username)
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
 
@@ -47,12 +50,12 @@ struct LoginView: View {
     }
 
     private func login() {
-        FirestoreService.shared.fetchUser(username: username) { storedPassword, error in
-            if let storedPassword = storedPassword, storedPassword == password {
+        Auth.auth().signIn(withEmail: username, password: password) { result, error in
+            if let error = error {
+                loginError = "Error: \(error.localizedDescription)"
+            } else {
                 UserDefaults.standard.set(username, forKey: "username")
                 isAuthenticated = true
-            } else {
-                loginError = "Nombre de usuario o contraseña incorrectos."
             }
         }
     }
