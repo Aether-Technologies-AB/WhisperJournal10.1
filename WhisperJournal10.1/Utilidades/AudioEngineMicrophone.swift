@@ -11,17 +11,23 @@ import AudioKit
 class AudioEngineMicrophone: ObservableObject {
     let audioEngine = AudioEngine()
     let audioInput: AudioEngine.InputNode
+    let mixer = Mixer()
 
     init() {
         guard let input = audioEngine.input else {
             fatalError("No se pudo acceder al micrófono.")
         }
         self.audioInput = input
+        
+        // Configure audio routing
+        mixer.addInput(audioInput)
+        audioEngine.output = mixer
     }
 
     func start() {
         do {
             try audioEngine.start()
+            print("Audio engine started successfully")
         } catch {
             print("Error al iniciar el motor de audio: \(error.localizedDescription)")
         }

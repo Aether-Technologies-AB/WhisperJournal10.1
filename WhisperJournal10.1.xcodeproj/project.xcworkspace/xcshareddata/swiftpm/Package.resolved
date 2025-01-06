@@ -37,11 +37,12 @@
       }
     },
     {
-      "identity" : "gcdwebserver",
+      "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SlaunchaMan/GCDWebServer.git",
+      "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
-        "revision" : "935e2736044e71e5341663c3cc9a335ba6867a2b"
+        "revision" : "05d494c85e5635b6462151dd9ebbfda48c9f4266",
+        "version" : "10.8.0"
       }
     },
     {
@@ -105,14 +106,6 @@
       "state" : {
         "revision" : "819d0a2173aff699fb8c364b6fb906f7cdb1a692",
         "version" : "2.30909.0"
-      }
-    },
-    {
-      "identity" : "ocmock",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/erikdoe/ocmock.git",
-      "state" : {
-        "revision" : "c5eeaa6dde7c308a5ce48ae4d4530462dd3a1110"
       }
     },
     {

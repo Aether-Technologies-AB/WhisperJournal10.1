@@ -7,6 +7,7 @@
 
 
 
+WHISPER_API_KEY = your_whisper_api_key_here
 STRIPE_PUBLIC_KEY = pk_test_51QZ0kuD7Q44d00zm21KxWEpW192dgrtcJ4SUmZoDubve4UlGlgQeEsrxr9m2qstU6afU0y8dZVfesCQbp2xLgzaE00ZwYUL2fF
 MONGODB_URI = mongodb+srv://giancarloperezco:axnM1eV5gKNJsLHz@dagbok.d8khekt.mongodb.net/?retryWrites=true&w=majority&appName=Dagbok
 JWT_SECRET = your_jwt_secret_key
