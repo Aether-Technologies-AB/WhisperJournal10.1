@@ -1,17 +1,16 @@
-//
-//  Transcription.swift
-//  WhisperJournal10.1
-//
-//  Created by andree on 4/01/25.
-//
-
-
 import Foundation
 import FirebaseFirestoreSwift
 
-struct Transcription: Identifiable, Codable {
+struct Transcription: Codable, Identifiable {
     @DocumentID var id: String?
-    var text: String
-    var date: Date
-    var tags: String
+    let text: String
+    let date: Date
+    let tags: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case text
+        case date
+        case tags
+    }
 }

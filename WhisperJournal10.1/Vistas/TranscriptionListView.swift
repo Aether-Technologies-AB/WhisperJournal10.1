@@ -7,48 +7,61 @@
 
 import Foundation
 import SwiftUI
-import CoreData
+import FirebaseAuth
 
 struct TranscriptionListView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Transcript.date, ascending: false)],
-        animation: .default)
-    private var transcripts: FetchedResults<Transcript>
+    @State private var transcriptions: [Transcription] = []
+    @State private var isLoading = true
+    @State private var errorMessage: String?
     
     var body: some View {
-        List {
-            ForEach(transcripts) { transcript in
-                NavigationLink(destination: TranscriptDetailView(transcript: transcript)) {
-                    VStack(alignment: .leading) {
-                        Text(transcript.text ?? "No Text")
-                            .font(.headline)
-                        Text(transcript.date ?? Date(), style: .date)
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+        Group {
+            if isLoading {
+                ProgressView("Cargando transcripciones...")
+            } else if let error = errorMessage {
+                Text(error)
+                    .foregroundColor(.red)
+                    .padding()
+            } else {
+                List {
+                    ForEach(transcriptions) { transcription in
+                        VStack(alignment: .leading) {
+                            Text(transcription.text)
+                                .font(.headline)
+                            Text(transcription.date, style: .date)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            if !transcription.tags.isEmpty {
+                                Text("Tags: \(transcription.tags)")
+                                    .font(.caption)
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        .padding(.vertical, 4)
                     }
                 }
-            }
-            .onDelete(perform: deleteTranscription)
-        }
-        .navigationTitle("Saved Transcriptions")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                EditButton()
+                .navigationTitle("Transcripciones Guardadas")
             }
         }
+        .onAppear(perform: loadTranscriptions)
     }
     
-    private func deleteTranscription(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { transcripts[$0] }.forEach(viewContext.delete)
-            do {
-                try viewContext.save()
-            } catch {
-                print("Error deleting transcription: \(error.localizedDescription)")
+    private func loadTranscriptions() {
+        guard let username = Auth.auth().currentUser?.email else {
+            errorMessage = "No se encontró usuario autenticado"
+            isLoading = false
+            return
+        }
+        
+        FirestoreService.shared.fetchTranscriptions(username: username) { transcriptions, error in
+            isLoading = false
+            if let error = error {
+                errorMessage = "Error: \(error.localizedDescription)"
+            } else if let transcriptions = transcriptions {
+                self.transcriptions = transcriptions.sorted(by: { $0.date > $1.date })
+            } else {
+                errorMessage = "No se encontraron transcripciones"
             }
         }
     }
 }
-

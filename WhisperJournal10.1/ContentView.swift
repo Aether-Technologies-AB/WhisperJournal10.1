@@ -6,12 +6,11 @@
 //
 import SwiftUI
 import AVFoundation
-import CoreData
 import AudioKit
 import AudioKitUI
+import FirebaseAuth
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @AppStorage("isAuthenticated") private var isAuthenticated = false
     @State private var isRecording = false
     @State private var recordedText = ""
@@ -170,24 +169,30 @@ struct ContentView: View {
         audioRecorder.stopRecording()
     }
 
-    // Guardar transcripción en Core Data
+    // Guardar transcripción en Firebase
     func saveTranscription() {
         guard !recordedText.isEmpty else {
             print("No transcription to save.")
             return
         }
+        
+        guard let username = Auth.auth().currentUser?.email else {
+            print("No user logged in")
+            return
+        }
 
-        let newTranscript = Transcript(context: viewContext)
-        newTranscript.text = recordedText
-        newTranscript.date = transcriptionDate
-        newTranscript.tags = tags
-
-        do {
-            try viewContext.save()
-            print("Transcription saved successfully!")
-            resetFields()
-        } catch {
-            print("Error saving transcription: \(error.localizedDescription)")
+        FirestoreService.shared.saveTranscription(
+            username: username,
+            text: recordedText,
+            date: transcriptionDate,
+            tags: tags
+        ) { error in
+            if let error = error {
+                print("Error saving transcription: \(error.localizedDescription)")
+            } else {
+                print("Transcription saved successfully!")
+                resetFields()
+            }
         }
     }
 
@@ -214,8 +219,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.shared.container.viewContext
         ContentView()
-            .environment(\.managedObjectContext, context)
     }
 }
