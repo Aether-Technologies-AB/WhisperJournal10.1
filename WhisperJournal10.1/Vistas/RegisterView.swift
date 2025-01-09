@@ -17,6 +17,11 @@ struct RegisterView: View {
 
     var body: some View {
         VStack {
+            Text("Registrarse")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+
             TextField("Correo electrónico", text: $username)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
@@ -37,16 +42,10 @@ struct RegisterView: View {
                     .padding()
             }
 
-            Button("Registrar") {
+            Button("Registrarse") {
                 register()
             }
             .buttonStyle(.borderedProminent)
-            .padding()
-
-            Button("Cancelar") {
-                showingRegistration = false
-            }
-            .buttonStyle(.bordered)
             .padding()
         }
         .padding()
@@ -59,34 +58,18 @@ struct RegisterView: View {
     }
 
     private func register() {
-        guard !username.isEmpty else {
-            registrationError = "El correo electrónico no puede estar vacío."
-            return
-        }
-
-        guard isValidEmail(username) else {
-            registrationError = "Por favor ingrese un correo electrónico válido."
-            return
-        }
-
-        guard !password.isEmpty else {
-            registrationError = "La contraseña no puede estar vacía."
-            return
-        }
-
         guard password == confirmPassword else {
-            registrationError = "Las contraseñas no coinciden."
+            registrationError = "Las contraseñas no coinciden"
             return
         }
 
-        Auth.auth().createUser(withEmail: username, password: password) { result, error in
+        Auth.auth().createUser(withEmail: username, password: password) { authResult, error in
             if let error = error {
-                registrationError = "Error al registrar: \(error.localizedDescription)"
-            } else {
-                UserDefaults.standard.set(username, forKey: "username")
-                isAuthenticated = true
-                showingRegistration = false
+                registrationError = "Error al registrarse: \(error.localizedDescription)"
+                return
             }
+            isAuthenticated = true
+            showingRegistration = false
         }
     }
 }

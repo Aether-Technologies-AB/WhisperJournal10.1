@@ -18,7 +18,6 @@ struct ContentView: View {
     @State private var tags = ""
     @State private var selectedLanguage: String = "es-ES" // Idioma por defecto
 
-
     let audioRecorder = AudioRecorder()
     let engine = AudioEngine()
     let mic: AudioEngine.InputNode
@@ -29,105 +28,131 @@ struct ContentView: View {
             fatalError("No se pudo acceder al micrófono.")
         }
         mic = input
+        engine.output = Mixer(input)
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Text("Whisper Journal")
                     .font(.largeTitle)
+                    .fontWeight(.bold)
                     .padding()
 
-                Menu {
-                    Button("Español") { selectedLanguage = "es-ES" }
-                    Button("Inglés") { selectedLanguage = "en-US" }
-                    Button("Sueco") { selectedLanguage = "sv-SE" }
-                    // Agrega más idiomas según sea necesario
-                } label: {
-                    Text("Selecciona el idioma: \(selectedLanguage)")
+                if isAuthenticated {
+                    VStack {
+                        Menu {
+                            Button("Español") { selectedLanguage = "es-ES" }
+                            Button("Inglés") { selectedLanguage = "en-US" }
+                            Button("Sueco") { selectedLanguage = "sv-SE" }
+                            // Agrega más idiomas según sea necesario
+                        } label: {
+                            Text("Selecciona el idioma: \(selectedLanguage)")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.blue.opacity(0.1))
+                                .cornerRadius(8)
+                        }
                         .padding()
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(8)
-                }
-                .padding()
 
-                // Visualizador de ondas de audio
-                if isRecording {
-                    NodeOutputView(mic)
-                        .frame(height: 150)
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(10)
-                        .padding()
-                }
+                        // Visualizador de ondas de audio
+                        if isRecording {
+                            NodeOutputView(mic)
+                                .frame(height: 150)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(10)
+                                .padding()
+                        }
 
-                // Botón para grabar
-                Button(action: {
-                    if isRecording {
-                        stopRecording()
-                    } else {
-                        startRecording()
-                    }
-                }) {
-                    HStack {
-                        Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                            .font(.title)
-                        Text(isRecording ? "Detener" : "Grabar")
-                            .font(.headline)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(isRecording ? Color.red : Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-                .padding(.top, 20)
-
-                // Mostrar la transcripción
-                if !recordedText.isEmpty {
-                    VStack(alignment: .leading) {
-                        Text("Transcripción:")
-                            .font(.headline)
-                            .padding(.top, 20)
-
-                        Text(recordedText)
+                        // Botón para grabar
+                        Button(action: {
+                            if isRecording {
+                                stopRecording()
+                            } else {
+                                startRecording()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                                    .font(.title)
+                                Text(isRecording ? "Detener" : "Grabar")
+                                    .font(.headline)
+                            }
+                            .frame(maxWidth: .infinity)
                             .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(8)
+                            .background(isRecording ? Color.red : Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        }
+                        .padding(.top, 20)
+
+                        // Mostrar la transcripción
+                        if !recordedText.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Transcripción:")
+                                    .font(.headline)
+                                    .padding(.top, 20)
+
+                                Text(recordedText)
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(8)
+                            }
+                            .padding()
+                        }
+
+                        // Campo de entrada para Tags
+                        TextField("Enter tags...", text: $tags)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+
+                        // Botón para guardar la transcripción
+                        Button(action: saveTranscription) {
+                            Text("Guardar Transcripción")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .font(.headline)
+                        }
+                        .padding(.top, 10)
+
+                        // Botón para ver transcripciones guardadas
+                        NavigationLink(destination: TranscriptionListView()) {
+                            Text("Ver Transcripciones Guardadas")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.purple)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .font(.headline)
+                        }
+                        .padding(.top, 10)
                     }
-                    .padding()
+                } else {
+                    LoginView(isAuthenticated: $isAuthenticated)
                 }
-
-                // Campo de entrada para Tags
-                TextField("Enter tags...", text: $tags)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-
-                // Botón para guardar la transcripción
-                Button(action: saveTranscription) {
-                    Text("Guardar Transcripción")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .font(.headline)
-                }
-                .padding(.top, 10)
-
-                // Botón para ver transcripciones guardadas
-                NavigationLink(destination: TranscriptionListView()) {
-                    Text("Ver Transcripciones Guardadas")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.purple)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .font(.headline)
-                }
-                .padding(.top, 10)
 
                 Spacer()
+
+                // Botón para cerrar sesión
+                if isAuthenticated {
+                    Button(action: {
+                        WhisperJournal10_1App.logout()
+                        isAuthenticated = false
+                    }) {
+                        Text("Cerrar Sesión")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .font(.headline)
+                    }
+                    .padding(.top, 10)
+                }
             }
             .padding()
             .navigationTitle("Home")

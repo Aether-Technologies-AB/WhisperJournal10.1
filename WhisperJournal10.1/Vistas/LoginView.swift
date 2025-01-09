@@ -12,9 +12,15 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var loginError: String = ""
     @State private var showingRegistration = false
+    @State private var showingForgotPassword = false
 
     var body: some View {
         VStack {
+            Text("Iniciar Sesión")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+
             TextField("Correo electrónico", text: $username)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
@@ -37,26 +43,32 @@ struct LoginView: View {
             .buttonStyle(.borderedProminent)
             .padding()
 
-            Button("Registrar") {
-                showingRegistration = true
+            Button("Registrarse") {
+                showingRegistration.toggle()
             }
-            .buttonStyle(.bordered)
             .padding()
             .sheet(isPresented: $showingRegistration) {
                 RegisterView(showingRegistration: $showingRegistration, isAuthenticated: $isAuthenticated)
+            }
+
+            Button("Olvidé mi contraseña") {
+                showingForgotPassword.toggle()
+            }
+            .padding()
+            .sheet(isPresented: $showingForgotPassword) {
+                ForgotPasswordView()
             }
         }
         .padding()
     }
 
     private func login() {
-        Auth.auth().signIn(withEmail: username, password: password) { result, error in
+        Auth.auth().signIn(withEmail: username, password: password) { authResult, error in
             if let error = error {
-                loginError = "Error: \(error.localizedDescription)"
-            } else {
-                UserDefaults.standard.set(username, forKey: "username")
-                isAuthenticated = true
+                loginError = "Error al iniciar sesión: \(error.localizedDescription)"
+                return
             }
+            isAuthenticated = true
         }
     }
 }
