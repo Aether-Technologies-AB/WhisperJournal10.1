@@ -51,7 +51,8 @@ struct RegisterView: View {
         .padding()
     }
 
-  
+    
+
     private func register() {
         guard password == confirmPassword else {
             registrationError = "Las contraseñas no coinciden"
