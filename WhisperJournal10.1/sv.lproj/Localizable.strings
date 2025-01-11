@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  WhisperJournal10.1
+
+  Created by andree on 15/01/25.
+  
+*/
+"app_title" = "Whisper Journal";
+"select_language" = "Välj språk";
+"spanish" = "Spanska";
+"english" = "Engelska";
+"swedish" = "Svenska";
+"record_button" = "Spela in";
+"stop_button" = "Sluta";
+"transcription_label" = "Transkription:";
+"tags_label" = "Taggar:";
+"enter_tags" = "Ange taggar...";
+"save_transcription" = "Spara transkription";
+"view_saved_transcriptions" = "Visa sparade transkriptioner";
+"logout_button" = "Logga ut";
+"home_title" = "Hem";
+"mic_access_error" = "Kunde inte få tillgång till mikrofonen.";
+"no_transcription_to_save" = "Ingen transkription att spara.";
+"no_user_logged_in" = "Ingen användare inloggad";
+"error_saving_transcription" = "Fel vid sparande av transkription";
+"transcription_saved_successfully" = "Transkription sparad framgångsrikt!";
+"error_starting_audio_engine" = "Fel vid start av ljudmotor";
+"register_title" = "Registrera";
+"email_placeholder" = "E-post";
+"password_placeholder" = "Lösenord";
+"confirm_password_placeholder" = "Bekräfta Lösenord";
+"register_button" = "Registrera";
+"cancel_button" = "Avbryt";
+"passwords_do_not_match" = "Lösenorden matchar inte";
+"registration_error" = "Fel vid registrering";
+"save_user_error" = "Fel vid sparande av användare";
+"forgot_password_title" = "Glömt Lösenord";
+"send_reset_email_button" = "Skicka återställningsmail";
+"message_title" = "Meddelande";
+"forgot_password_nav_title" = "Glömt Lösenord";
+"reset_email_error" = "Fel vid skickande av återställningsmail";
+"reset_email_sent" = "Återställningsmail skickat. Vänligen kolla din e-post.";
+"login_title" = "Logga in";
+"login_button" = "Logga in";
+"forgot_password_button" = "Glömt Lösenord";
+"login_error" = "Fel vid inloggning";
+"edit_transcription_title" = "Redigera Transkription";
+"edit_transcription_text" = "Text";
+"edit_transcription_tags" = "Taggar";
+"edit_transcription_info" = "Information";
+"edit_transcription_date" = "Datum:";
+"edit_transcription_cancel" = "Avbryt";
+"edit_transcription_save" = "Spara";

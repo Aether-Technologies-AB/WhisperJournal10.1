@@ -15,7 +15,7 @@ struct TranscriptionListView: View {
     @State private var selectedTranscription: Transcription?
     @State private var showingEditSheet = false
     @State private var showingDeleteConfirmation = false
-  
+    
     var body: some View {
         NavigationView {
             Group {
@@ -46,7 +46,10 @@ struct TranscriptionListView: View {
                                 Menu {
                                     Button("Editar") {
                                         selectedTranscription = transcription
-                                        showingEditSheet = true
+                                        print("Transcription selected for editing: \(selectedTranscription?.text ?? "None")")
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                            showingEditSheet = true
+                                        }
                                     }
                                     Button("Eliminar", role: .destructive) {
                                         selectedTranscription = transcription
@@ -69,6 +72,8 @@ struct TranscriptionListView: View {
                             updateTranscription(updatedTranscription)
                         }
                     )
+                } else {
+                    Text("No transcription selected")
                 }
             }
             .alert(isPresented: $showingDeleteConfirmation) {
@@ -84,7 +89,7 @@ struct TranscriptionListView: View {
         }
         .onAppear(perform: loadTranscriptions)
     }
-    
+
     private func loadTranscriptions() {
         guard let username = Auth.auth().currentUser?.email else {
             errorMessage = "No se encontró usuario autenticado"
@@ -103,9 +108,8 @@ struct TranscriptionListView: View {
                 errorMessage = "No se encontraron transcripciones"
             }
         }
-        .onAppear(perform: loadTranscriptions)
     }
-    
+
     private func updateTranscription(_ transcription: Transcription) {
         guard let username = Auth.auth().currentUser?.email,
               let transcriptionId = transcription.id else { return }
@@ -123,7 +127,7 @@ struct TranscriptionListView: View {
             }
         }
     }
-    
+
     private func deleteSelectedTranscription() {
         guard let username = Auth.auth().currentUser?.email,
               let transcription = selectedTranscription,
@@ -140,4 +144,4 @@ struct TranscriptionListView: View {
             }
         }
     }
-}
+    }

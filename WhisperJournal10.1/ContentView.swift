@@ -25,7 +25,7 @@ struct ContentView: View {
     init() {
         // Configurar el nodo del micrófono
         guard let input = engine.input else {
-            fatalError("No se pudo acceder al micrófono.")
+            fatalError(NSLocalizedString("mic_access_error", comment: "Error message when microphone access fails"))
         }
         mic = input
         engine.output = Mixer(input)
@@ -34,7 +34,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Whisper Journal")
+                Text(NSLocalizedString("app_title", comment: "App title"))
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding()
@@ -42,12 +42,11 @@ struct ContentView: View {
                 if isAuthenticated {
                     VStack {
                         Menu {
-                            Button("Español") { selectedLanguage = "es-ES" }
-                            Button("Inglés") { selectedLanguage = "en-US" }
-                            Button("Sueco") { selectedLanguage = "sv-SE" }
-                            // Agrega más idiomas según sea necesario
+                            Button(NSLocalizedString("spanish", comment: "Spanish")) { selectedLanguage = "es-ES" }
+                            Button(NSLocalizedString("english", comment: "English")) { selectedLanguage = "en-US" }
+                            Button(NSLocalizedString("swedish", comment: "Swedish")) { selectedLanguage = "sv-SE" }
                         } label: {
-                            Text("Selecciona el idioma: \(selectedLanguage)")
+                            Text("\(NSLocalizedString("select_language", comment: "Select Language")): \(selectedLanguage)")
                                 .font(.headline)
                                 .padding()
                                 .background(Color.blue.opacity(0.1))
@@ -75,7 +74,7 @@ struct ContentView: View {
                             HStack {
                                 Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
                                     .font(.title)
-                                Text(isRecording ? "Detener" : "Grabar")
+                                Text(isRecording ? NSLocalizedString("stop_button", comment: "Stop button") : NSLocalizedString("record_button", comment: "Record button"))
                                     .font(.headline)
                             }
                             .frame(maxWidth: .infinity)
@@ -89,7 +88,7 @@ struct ContentView: View {
                         // Mostrar la transcripción
                         if !recordedText.isEmpty {
                             VStack(alignment: .leading) {
-                                Text("Transcripción:")
+                                Text(NSLocalizedString("transcription_label", comment: "Transcription label"))
                                     .font(.headline)
                                     .padding(.top, 20)
 
@@ -103,13 +102,13 @@ struct ContentView: View {
                         }
 
                         // Campo de entrada para Tags
-                        TextField("Enter tags...", text: $tags)
+                        TextField(NSLocalizedString("enter_tags", comment: "Enter tags placeholder"), text: $tags)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
 
                         // Botón para guardar la transcripción
                         Button(action: saveTranscription) {
-                            Text("Guardar Transcripción")
+                            Text(NSLocalizedString("save_transcription", comment: "Save Transcription button"))
                                 .frame(maxWidth: .infinity)
                                 .padding()
                                 .background(Color.blue)
@@ -121,7 +120,7 @@ struct ContentView: View {
 
                         // Botón para ver transcripciones guardadas
                         NavigationLink(destination: TranscriptionListView()) {
-                            Text("Ver Transcripciones Guardadas")
+                            Text(NSLocalizedString("view_saved_transcriptions", comment: "View Saved Transcriptions button"))
                                 .frame(maxWidth: .infinity)
                                 .padding()
                                 .background(Color.purple)
@@ -143,7 +142,7 @@ struct ContentView: View {
                         WhisperJournal10_1App.logout()
                         isAuthenticated = false
                     }) {
-                        Text("Cerrar Sesión")
+                        Text(NSLocalizedString("logout_button", comment: "Logout button"))
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(Color.red)
@@ -155,18 +154,10 @@ struct ContentView: View {
                 }
             }
             .padding()
-            .navigationTitle("Home")
+            .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        WhisperJournal10_1App.logout()
-                        isAuthenticated = false
-                    }) {
-                        Text("Cerrar Sesión")
-                            .foregroundColor(.red)
-                    }
-                }
+                
             }
             .onAppear {
                 startAudioEngine()
@@ -197,12 +188,12 @@ struct ContentView: View {
     // Guardar transcripción en Firebase
     func saveTranscription() {
         guard !recordedText.isEmpty else {
-            print("No transcription to save.")
+            print(NSLocalizedString("no_transcription_to_save", comment: "No transcription to save message"))
             return
         }
         
         guard let username = Auth.auth().currentUser?.email else {
-            print("No user logged in")
+            print(NSLocalizedString("no_user_logged_in", comment: "No user logged in message"))
             return
         }
 
@@ -213,9 +204,9 @@ struct ContentView: View {
             tags: tags
         ) { error in
             if let error = error {
-                print("Error saving transcription: \(error.localizedDescription)")
+                print("\(NSLocalizedString("error_saving_transcription", comment: "Error saving transcription message")): \(error.localizedDescription)")
             } else {
-                print("Transcription saved successfully!")
+                print(NSLocalizedString("transcription_saved_successfully", comment: "Transcription saved successfully message"))
                 resetFields()
             }
         }
@@ -232,7 +223,7 @@ struct ContentView: View {
         do {
             try engine.start()
         } catch {
-            print("Error al iniciar el motor de audio: \(error.localizedDescription)")
+            print("\(NSLocalizedString("error_starting_audio_engine", comment: "Error starting audio engine message")): \(error.localizedDescription)")
         }
     }
 

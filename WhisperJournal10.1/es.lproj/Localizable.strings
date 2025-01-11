@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  WhisperJournal10.1
+
+  Created by andree on 15/01/25.
+  
+*/
+"hello" = "Hola";
+"welcome_message" = "¡Bienvenido a nuestra aplicación!";
+
+"app_title" = "Diario Whisper";
+"select_language" = "Seleccionar Idioma";
+"spanish" = "Español";
+"english" = "Inglés";
+"swedish" = "Sueco";
+"record_button" = "Grabar";
+"stop_button" = "Detener";
+"transcription_label" = "Transcripción:";
+"tags_label" = "Etiquetas:";
+"enter_tags" = "Ingrese etiquetas...";
+"save_transcription" = "Guardar Transcripción";
+"view_saved_transcriptions" = "Ver Transcripciones Guardadas";
+"logout_button" = "Cerrar Sesión";
+"home_title" = "Inicio";
+"mic_access_error" = "No se pudo acceder al micrófono.";
+"no_transcription_to_save" = "No hay transcripción para guardar.";
+"no_user_logged_in" = "No hay usuario conectado";
+"error_saving_transcription" = "Error al guardar la transcripción";
+"transcription_saved_successfully" = "¡Transcripción guardada con éxito!";
+"error_starting_audio_engine" = "Error al iniciar el motor de audio";
+"register_title" = "Registrarse";
+"email_placeholder" = "Correo electrónico";
+"password_placeholder" = "Contraseña";
+"confirm_password_placeholder" = "Confirmar Contraseña";
+"register_button" = "Registrarse";
+"cancel_button" = "Cancelar";
+"passwords_do_not_match" = "Las contraseñas no coinciden";
+"registration_error" = "Error al registrarse";
+"save_user_error" = "Error al guardar el usuario";
+"forgot_password_title" = "Recuperar Contraseña";
+"send_reset_email_button" = "Enviar correo de recuperación";
+"message_title" = "Mensaje";
+"forgot_password_nav_title" = "Olvidé mi contraseña";
+"reset_email_error" = "Error al enviar el correo de recuperación";
+"reset_email_sent" = "Correo de recuperación enviado. Por favor, revisa tu correo electrónico.";
+"login_title" = "Iniciar Sesión";
+"login_button" = "Iniciar sesión";
+"forgot_password_button" = "Olvidé mi contraseña";
+"login_error" = "Error al iniciar sesión";
+"edit_transcription_title" = "Editar Transcripción";
+"edit_transcription_text" = "Texto";
+"edit_transcription_tags" = "Etiquetas";
+"edit_transcription_info" = "Información";
+"edit_transcription_date" = "Fecha:";
+"edit_transcription_cancel" = "Cancelar";
+"edit_transcription_save" = "Guardar";

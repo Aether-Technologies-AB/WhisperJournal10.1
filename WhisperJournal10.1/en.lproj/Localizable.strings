@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  WhisperJournal10.1
+
+  Created by andree on 15/01/25.
+  
+*/
+"hello" = "Hello";
+"welcome_message" = "Welcome to our app!";
+
+"app_title" = "Whisper Journal";
+"select_language" = "Select Language";
+"spanish" = "Spanish";
+"english" = "English";
+"swedish" = "Swedish";
+"record_button" = "Record";
+"stop_button" = "Stop";
+"transcription_label" = "Transcription:";
+"tags_label" = "Tags:";
+"enter_tags" = "Enter tags...";
+"save_transcription" = "Save Transcription";
+"view_saved_transcriptions" = "View Saved Transcriptions";
+"logout_button" = "Logout";
+"home_title" = "Home";
+"mic_access_error" = "No se pudo acceder al micrófono.";
+"no_transcription_to_save" = "No transcription to save.";
+"no_user_logged_in" = "No user logged in";
+"error_saving_transcription" = "Error saving transcription";
+"transcription_saved_successfully" = "Transcription saved successfully!";
+"error_starting_audio_engine" = "Error starting audio engine";
+"register_title" = "Register";
+"email_placeholder" = "Email";
+"password_placeholder" = "Password";
+"confirm_password_placeholder" = "Confirm Password";
+"register_button" = "Register";
+"cancel_button" = "Cancel";
+"passwords_do_not_match" = "Passwords do not match";
+"registration_error" = "Error registering";
+"save_user_error" = "Error saving user";
+"forgot_password_title" = "Forgot Password";
+"send_reset_email_button" = "Send Reset Email";
+"message_title" = "Message";
+"forgot_password_nav_title" = "Forgot Password";
+"reset_email_error" = "Error sending reset email";
+"reset_email_sent" = "Reset email sent. Please check your email.";
+"login_title" = "Login";
+"login_button" = "Login";
+"forgot_password_button" = "Forgot Password";
+"login_error" = "Error logging in";
+"edit_transcription_title" = "Edit Transcription";
+"edit_transcription_text" = "Text";
+"edit_transcription_tags" = "Tags";
+"edit_transcription_info" = "Information";
+"edit_transcription_date" = "Date:";
+"edit_transcription_cancel" = "Cancel";
+"edit_transcription_save" = "Save";
