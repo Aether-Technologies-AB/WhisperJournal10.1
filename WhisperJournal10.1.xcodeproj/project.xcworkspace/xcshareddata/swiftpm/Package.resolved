@@ -46,6 +46,14 @@
       }
     },
     {
+      "identity" : "gcdwebserver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SlaunchaMan/GCDWebServer.git",
+      "state" : {
+        "revision" : "935e2736044e71e5341663c3cc9a335ba6867a2b"
+      }
+    },
+    {
       "identity" : "googleappmeasurement",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
@@ -106,6 +114,14 @@
       "state" : {
         "revision" : "819d0a2173aff699fb8c364b6fb906f7cdb1a692",
         "version" : "2.30909.0"
+      }
+    },
+    {
+      "identity" : "ocmock",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/erikdoe/ocmock.git",
+      "state" : {
+        "revision" : "c5eeaa6dde7c308a5ce48ae4d4530462dd3a1110"
       }
     },
     {
