@@ -11,11 +11,15 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>1:245116053413:ios:c7a1efd467bd15cb4a2a4c</string>
+				<string>com.googleusercontent.apps.245116053413-nc37hh0dvo798odtceeqf0mlrce7tglr</string>
 			</array>
 		</dict>
 	</array>

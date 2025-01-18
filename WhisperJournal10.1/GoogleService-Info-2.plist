@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>245116053413-nc37hh0dvo798odtceeqf0mlrce7tglr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.245116053413-nc37hh0dvo798odtceeqf0mlrce7tglr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBs5uEJ3OUU8mfgJBHGrlp5risojR5MPj0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>245116053413</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>SwiftUI.WhisperJournal10-1</string>
+	<key>PROJECT_ID</key>
+	<string>whisperjournal-bbe7d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>whisperjournal-bbe7d.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:245116053413:ios:c7a1efd467bd15cb4a2a4c</string>
+</dict>
+</plist>
