@@ -17,75 +17,92 @@ struct RegisterView: View {
     @State private var registrationError: String = ""
 
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             Text(NSLocalizedString("register_title", comment: "Register title"))
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .foregroundColor(.customText)
                 .padding()
 
             TextField(NSLocalizedString("email_placeholder", comment: "Email placeholder"), text: $username)
-                .autocapitalization(.none)
-                .keyboardType(.emailAddress)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+                .background(Color.customFieldBackground)
+                .cornerRadius(10)
+                .shadow(color: .customFieldShadow, radius: 5, x: 0, y: 5)
 
             SecureField(NSLocalizedString("password_placeholder", comment: "Password placeholder"), text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+                .background(Color.customFieldBackground)
+                .cornerRadius(10)
+                .shadow(color: .customFieldShadow, radius: 5, x: 0, y: 5)
 
             SecureField(NSLocalizedString("confirm_password_placeholder", comment: "Confirm Password placeholder"), text: $confirmPassword)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+                .background(Color.customFieldBackground)
+                .cornerRadius(10)
+                .shadow(color: .customFieldShadow, radius: 5, x: 0, y: 5)
 
             if !registrationError.isEmpty {
                 Text(registrationError)
-                    .foregroundColor(.red)
-                    .padding()
+                    .foregroundColor(.customErrorText)
+                    .font(.footnote)
+                    .padding(.top, 5)
             }
 
-            Button(NSLocalizedString("register_button", comment: "Register button")) {
+            Button(action: {
                 register()
+            }) {
+                Text(NSLocalizedString("register_button", comment: "Register button"))
+                    .font(.headline)
+                    .foregroundColor(.customButtonText)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(LinearGradient(colors: [.customButtonGradientStart, .customButtonGradientEnd], startPoint: .leading, endPoint: .trailing))
+                    .cornerRadius(20)
+                    .shadow(color: .customButtonShadow, radius: 10, x: 0, y: 5)
             }
-            .buttonStyle(.borderedProminent)
-            .padding()
 
-            Button(NSLocalizedString("cancel_button", comment: "Cancel button")) {
+            Button(action: {
                 showingRegistration = false
+            }) {
+                Text(NSLocalizedString("cancel_button", comment: "Cancel button"))
+                    .font(.headline)
+                    .foregroundColor(.customLinkText)
             }
             .padding()
         }
+        .padding()
+        .background(Color.customBackground.edgesIgnoringSafeArea(.all))
     }
 
     private func register() {
+        guard !username.isEmpty, !password.isEmpty, !confirmPassword.isEmpty else {
+            registrationError = NSLocalizedString("registration_error_empty_fields", comment: "Error message for empty fields")
+            return
+        }
+
         guard password == confirmPassword else {
-            registrationError = NSLocalizedString("passwords_do_not_match", comment: "Passwords do not match error")
+            registrationError = NSLocalizedString("registration_error_password_mismatch", comment: "Error message for password mismatch")
             return
         }
 
         Auth.auth().createUser(withEmail: username, password: password) { authResult, error in
             if let error = error {
-                registrationError = "\(NSLocalizedString("registration_error", comment: "Registration error")): \(error.localizedDescription)"
+                registrationError = error.localizedDescription
             } else {
-                guard let user = authResult?.user else { return }
-                saveUserToFirestore(user: user)
+                saveUserToFirestore()
+                isAuthenticated = true
+                showingRegistration = false
             }
         }
     }
 
-    private func saveUserToFirestore(user: User) {
+    private func saveUserToFirestore() {
         let db = Firestore.firestore()
-        let email = user.email ?? ""
-        let emailDocumentID = email.replacingOccurrences(of: ".", with: "_").replacingOccurrences(of: "@", with: "_")
-        
-        db.collection("users").document(emailDocumentID).setData([
-            "email": email,
-            "createdAt": Timestamp(date: Date())
-        ]) { error in
+        let user = ["username": username]
+        db.collection("users").document(username).setData(user) { error in
             if let error = error {
-                registrationError = "\(NSLocalizedString("save_user_error", comment: "Save user error")): \(error.localizedDescription)"
-            } else {
-                isAuthenticated = true
-                showingRegistration = false
+                print("Error al guardar el usuario en Firestore: \(error.localizedDescription)")
             }
         }
     }

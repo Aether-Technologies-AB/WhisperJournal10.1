@@ -18,7 +18,6 @@ class AudioSessionManager {
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
-            try session.setActive(true)
         } catch {
             print("Error al configurar la sesión de audio: \(error)")
         }
@@ -33,6 +32,10 @@ class AudioSessionManager {
         ]
         
         do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.record, mode: .default, options: [])
+            try session.setActive(true)
+            
             audioRecorder = try AVAudioRecorder(url: url, settings: settings)
             audioRecorder?.prepareToRecord()
             audioRecorder?.record()
@@ -42,10 +45,16 @@ class AudioSessionManager {
     }
     
     func stopRecording() {
-            if let recorder = audioRecorder, recorder.isRecording {
-                recorder.stop()
-            } else {
-                print("No hay grabación en curso para detener.")
+        if let recorder = audioRecorder, recorder.isRecording {
+            recorder.stop()
+            let session = AVAudioSession.sharedInstance()
+            do {
+                try session.setActive(false)
+            } catch {
+                print("Error al detener la sesión de audio: \(error.localizedDescription)")
             }
+        } else {
+            print("No hay grabación en curso para detener.")
         }
     }
+}

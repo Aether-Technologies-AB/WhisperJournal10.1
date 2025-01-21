@@ -34,6 +34,7 @@
 		6DBC1F2F2D333DC3006DA6A5 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F2E2D333DC3006DA6A5 /* FirebaseFirestoreSwift */; };
 		6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */; };
 		6DD0C11B2D332D1E00488D97 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */; };
+		6DD5B5802D401D3B00AB89AA /* Color+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD5B57F2D401D3B00AB89AA /* Color+Custom.swift */; };
 		6DDF85CC2D38BD8700A92E37 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DDF85CE2D38BD8700A92E37 /* Localizable.strings */; };
 		6DDF9E4F2D33062C00093138 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6DDF9E4E2D33062C00093138 /* AudioKit */; };
 		6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC4B302D0F68A90081C649 /* TranscriptionListView.swift */; };
@@ -62,6 +63,7 @@
 		6DBC1F232D3334C4006DA6A5 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTranscriptionView.swift; sourceTree = "<group>"; };
 		6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
+		6DD5B57F2D401D3B00AB89AA /* Color+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Custom.swift"; sourceTree = "<group>"; };
 		6DDF85CD2D38BD8700A92E37 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6DDF85CF2D38BD8B00A92E37 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6DDF85D02D38BD8B00A92E37 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				6D7E664C2D0E6B6900765A78 /* AudioRecorder.swift */,
 				6D9E65272D3B703F0097281E /* GoogleService-Info.plist */,
 				6DDF85CE2D38BD8700A92E37 /* Localizable.strings */,
+				6DD5B57F2D401D3B00AB89AA /* Color+Custom.swift */,
 			);
 			path = WhisperJournal10.1;
 			sourceTree = "<group>";
@@ -153,7 +156,6 @@
 		6D7E66422D0E626900765A78 /* Servicios */ = {
 			isa = PBXGroup;
 			children = (
-				6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */,
 			);
 			path = Servicios;
 			sourceTree = "<group>";
@@ -163,6 +165,7 @@
 			children = (
 				6D7E66442D0E628900765A78 /* AudioSessionManager.swift */,
 				6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */,
+				6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */,
 			);
 			path = Utilidades;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				6D7E66452D0E628900765A78 /* AudioSessionManager.swift in Sources */,
 				6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */,
 				6D7E664B2D0E65CF00765A78 /* MainView.swif.swift in Sources */,
+				6DD5B5802D401D3B00AB89AA /* Color+Custom.swift in Sources */,
 				6DD0C11B2D332D1E00488D97 /* ForgotPasswordView.swift in Sources */,
 				6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */,
 				6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */,
@@ -441,8 +445,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = WhisperJournal10.1;
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = WhisperJournal10.1;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -476,8 +479,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = WhisperJournal10.1;
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = WhisperJournal10.1;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

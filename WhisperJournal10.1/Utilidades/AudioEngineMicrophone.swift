@@ -37,5 +37,6 @@ class AudioEngineMicrophone: ObservableObject {
 
     func stop() {
         audioEngine.stop()
+        print("Audio engine stopped successfully")
     }
 }

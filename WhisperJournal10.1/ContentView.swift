@@ -28,7 +28,8 @@ struct ContentView: View {
             fatalError(NSLocalizedString("mic_access_error", comment: "Error message when microphone access fails"))
         }
         mic = input
-        engine.output = Mixer(input)
+        // No configurar la salida del motor de audio para evitar la retroalimentación
+        // engine.output = Mixer(input)
     }
 
     var body: some View {
@@ -37,6 +38,7 @@ struct ContentView: View {
                 Text(NSLocalizedString("app_title", comment: "App title"))
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .foregroundColor(.black) // Color del Texto del Título: Negro
                     .padding()
 
                 if isAuthenticated {
@@ -79,9 +81,10 @@ struct ContentView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(isRecording ? Color.red : Color.green)
+                            .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
                             .foregroundColor(.white)
                             .cornerRadius(10)
+                            .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
                         }
                         .padding(.top, 20)
 
@@ -105,15 +108,19 @@ struct ContentView: View {
                         TextField(NSLocalizedString("enter_tags", comment: "Enter tags placeholder"), text: $tags)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
+                            .background(Color(.systemGray6)) // Gris claro (systemGray6)
+                            .cornerRadius(10)
+                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5) // Gris con opacidad del 20%
 
                         // Botón para guardar la transcripción
                         Button(action: saveTranscription) {
                             Text(NSLocalizedString("save_transcription", comment: "Save Transcription button"))
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(Color.blue)
+                                .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
+                                .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
                                 .font(.headline)
                         }
                         .padding(.top, 10)
@@ -123,9 +130,10 @@ struct ContentView: View {
                             Text(NSLocalizedString("view_saved_transcriptions", comment: "View Saved Transcriptions button"))
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(Color.purple)
+                                .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
+                                .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
                                 .font(.headline)
                         }
                         .padding(.top, 10)
@@ -145,15 +153,17 @@ struct ContentView: View {
                         Text(NSLocalizedString("logout_button", comment: "Logout button"))
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.red)
+                            .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
                             .foregroundColor(.white)
                             .cornerRadius(10)
+                            .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
                             .font(.headline)
                     }
                     .padding(.top, 10)
                 }
             }
             .padding()
+            .background(Color.white.edgesIgnoringSafeArea(.all)) // Color de Fondo de la Vista Principal: Blanco
             .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -177,12 +187,20 @@ struct ContentView: View {
             // Guarda la transcripción en Core Data o realiza otras acciones necesarias
         }
         isRecording = true
+        // Detener la salida del motor de audio para evitar la retroalimentación
+        engine.stop()
     }
 
     // Detener grabación
     func stopRecording() {
         isRecording = false
         audioRecorder.stopRecording()
+        // Reiniciar el motor de audio si es necesario
+        do {
+            try engine.start()
+        } catch {
+            print("Error al iniciar el motor de audio: \(error.localizedDescription)")
+        }
     }
 
     // Guardar transcripción en Firebase

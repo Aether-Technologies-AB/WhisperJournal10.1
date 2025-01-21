@@ -54,3 +54,5 @@
 "edit_transcription_date" = "Date:";
 "edit_transcription_cancel" = "Cancel";
 "edit_transcription_save" = "Save";
+"saved_transcriptions_title" = "Saved Transcriptions";
+"transcription_title" = "Transcription";
