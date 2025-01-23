@@ -28,8 +28,6 @@ struct ContentView: View {
             fatalError(NSLocalizedString("mic_access_error", comment: "Error message when microphone access fails"))
         }
         mic = input
-        // No configurar la salida del motor de audio para evitar la retroalimentación
-        // engine.output = Mixer(input)
     }
 
     var body: some View {
@@ -38,7 +36,7 @@ struct ContentView: View {
                 Text(NSLocalizedString("app_title", comment: "App title"))
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.black) // Color del Texto del Título: Negro
+                    .foregroundColor(.black)
                     .padding()
 
                 if isAuthenticated {
@@ -51,21 +49,19 @@ struct ContentView: View {
                             Text("\(NSLocalizedString("select_language", comment: "Select Language")): \(selectedLanguage)")
                                 .font(.headline)
                                 .padding()
-                                .background(Color.blue.opacity(0.1))
-                                .cornerRadius(8)
+                                .background(Color.blue.opacity(0.2))
+                                .cornerRadius(10)
                         }
                         .padding()
 
-                        // Visualizador de ondas de audio
                         if isRecording {
                             NodeOutputView(mic)
                                 .frame(height: 150)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(10)
+                                .background(Color.gray.opacity(0.3))
+                                .cornerRadius(12)
                                 .padding()
                         }
 
-                        // Botón para grabar
                         Button(action: {
                             if isRecording {
                                 stopRecording()
@@ -81,14 +77,13 @@ struct ContentView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
+                            .background(LinearGradient(colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal], startPoint: .leading, endPoint: .trailing))
                             .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
+                            .cornerRadius(12)
+                            .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
                         }
                         .padding(.top, 20)
 
-                        // Mostrar la transcripción
                         if !recordedText.isEmpty {
                             VStack(alignment: .leading) {
                                 Text(NSLocalizedString("transcription_label", comment: "Transcription label"))
@@ -98,42 +93,39 @@ struct ContentView: View {
                                 Text(recordedText)
                                     .padding()
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(Color.gray.opacity(0.1))
-                                    .cornerRadius(8)
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(10)
                             }
                             .padding()
                         }
 
-                        // Campo de entrada para Tags
                         TextField(NSLocalizedString("enter_tags", comment: "Enter tags placeholder"), text: $tags)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
-                            .background(Color(.systemGray6)) // Gris claro (systemGray6)
-                            .cornerRadius(10)
-                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5) // Gris con opacidad del 20%
+                            .background(Color(.systemGray5))
+                            .cornerRadius(12)
+                            .shadow(color: .gray.opacity(0.3), radius: 6, x: 0, y: 4)
 
-                        // Botón para guardar la transcripción
                         Button(action: saveTranscription) {
                             Text(NSLocalizedString("save_transcription", comment: "Save Transcription button"))
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
+                                .background(LinearGradient(colors: [Color.orange, Color.yellow], startPoint: .leading, endPoint: .trailing))
                                 .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
+                                .cornerRadius(12)
+                                .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
                                 .font(.headline)
                         }
                         .padding(.top, 10)
 
-                        // Botón para ver transcripciones guardadas
                         NavigationLink(destination: TranscriptionListView()) {
                             Text(NSLocalizedString("view_saved_transcriptions", comment: "View Saved Transcriptions button"))
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
+                                .background(LinearGradient(colors: [Color.cyan, Color.indigo], startPoint: .leading, endPoint: .trailing))
                                 .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
+                                .cornerRadius(12)
+                                .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
                                 .font(.headline)
                         }
                         .padding(.top, 10)
@@ -144,7 +136,6 @@ struct ContentView: View {
 
                 Spacer()
 
-                // Botón para cerrar sesión
                 if isAuthenticated {
                     Button(action: {
                         WhisperJournal10_1App.logout()
@@ -153,22 +144,19 @@ struct ContentView: View {
                         Text(NSLocalizedString("logout_button", comment: "Logout button"))
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)) // Gradiente de azul a púrpura
+                            .background(LinearGradient(colors: [Color.gray, Color.black], startPoint: .leading, endPoint: .trailing))
                             .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 5) // Púrpura con opacidad del 40%
+                            .cornerRadius(12)
+                            .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
                             .font(.headline)
                     }
                     .padding(.top, 10)
                 }
             }
             .padding()
-            .background(Color.white.edgesIgnoringSafeArea(.all)) // Color de Fondo de la Vista Principal: Blanco
+            .background(Color.white.edgesIgnoringSafeArea(.all))
             .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                
-            }
             .onAppear {
                 startAudioEngine()
             }
@@ -178,24 +166,19 @@ struct ContentView: View {
         }
     }
 
-    // Iniciar grabación
     func startRecording() {
         audioRecorder.setLanguageCode(selectedLanguage)
         audioRecorder.startRecording { transcription in
             self.recordedText = transcription
             self.transcriptionDate = Date()
-            // Guarda la transcripción en Core Data o realiza otras acciones necesarias
         }
         isRecording = true
-        // Detener la salida del motor de audio para evitar la retroalimentación
         engine.stop()
     }
 
-    // Detener grabación
     func stopRecording() {
         isRecording = false
         audioRecorder.stopRecording()
-        // Reiniciar el motor de audio si es necesario
         do {
             try engine.start()
         } catch {
@@ -203,7 +186,6 @@ struct ContentView: View {
         }
     }
 
-    // Guardar transcripción en Firebase
     func saveTranscription() {
         guard !recordedText.isEmpty else {
             print(NSLocalizedString("no_transcription_to_save", comment: "No transcription to save message"))
@@ -230,13 +212,11 @@ struct ContentView: View {
         }
     }
 
-    // Reiniciar campos después de guardar
     func resetFields() {
         recordedText = ""
         tags = ""
     }
 
-    // Iniciar el motor de audio
     func startAudioEngine() {
         do {
             try engine.start()
@@ -245,7 +225,6 @@ struct ContentView: View {
         }
     }
 
-    // Detener el motor de audio
     func stopAudioEngine() {
         engine.stop()
     }

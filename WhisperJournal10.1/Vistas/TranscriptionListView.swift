@@ -20,7 +20,7 @@ struct TranscriptionListView: View {
         NavigationView {
             Group {
                 if isLoading {
-                    ProgressView("Cargando transcripciones...")
+                    ProgressView(NSLocalizedString("loading_transcriptions", comment: "Loading transcriptions"))
                 } else if let error = errorMessage {
                     Text(error)
                         .foregroundColor(.red)
@@ -37,31 +37,36 @@ struct TranscriptionListView: View {
                                         .font(.subheadline)
                                         .foregroundColor(.gray)
                                     if !transcription.tags.isEmpty {
-                                        Text("Tags: \(transcription.tags)")
+                                        Text("\(NSLocalizedString("tags_label", comment: "Tags label")): \(transcription.tags)")
                                             .font(.caption)
                                             .foregroundColor(.blue)
                                     }
                                 }
                                 Spacer()
                                 Menu {
-                                    Button("Editar") {
+                                    Button(NSLocalizedString("edit_button", comment: "Edit button")) {
                                         selectedTranscription = transcription
                                         print("Transcription selected for editing: \(selectedTranscription?.text ?? "None")")
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                             showingEditSheet = true
                                         }
                                     }
-                                    Button("Eliminar", role: .destructive) {
+                                    Button(NSLocalizedString("delete_button", comment: "Delete button"), role: .destructive) {
                                         selectedTranscription = transcription
                                         showingDeleteConfirmation = true
                                     }
                                 } label: {
                                     Image(systemName: "ellipsis")
+                                        .foregroundColor(.blue)
                                 }
                             }
+                            .padding()
+                            .background(Color(.systemGray6)) // Gris claro (systemGray6)
+                            .cornerRadius(10)
+                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5) // Gris con opacidad del 20%
                         }
                     }
-                    .navigationTitle("Transcripciones Guardadas")
+                    .navigationTitle(NSLocalizedString("saved_transcriptions_title", comment: "Saved Transcriptions title"))
                 }
             }
             .sheet(isPresented: $showingEditSheet) {
@@ -73,14 +78,14 @@ struct TranscriptionListView: View {
                         }
                     )
                 } else {
-                    Text("No transcription selected")
+                    Text(NSLocalizedString("no_transcription_selected", comment: "No transcription selected"))
                 }
             }
             .alert(isPresented: $showingDeleteConfirmation) {
                 Alert(
-                    title: Text("Eliminar Transcripción"),
-                    message: Text("¿Estás seguro de eliminar esta transcripción?"),
-                    primaryButton: .destructive(Text("Eliminar")) {
+                    title: Text(NSLocalizedString("delete_transcription_title", comment: "Delete Transcription title")),
+                    message: Text(NSLocalizedString("delete_transcription_message", comment: "Delete Transcription message")),
+                    primaryButton: .destructive(Text(NSLocalizedString("delete_button", comment: "Delete button"))) {
                         deleteSelectedTranscription()
                     },
                     secondaryButton: .cancel()
@@ -92,7 +97,7 @@ struct TranscriptionListView: View {
 
     private func loadTranscriptions() {
         guard let username = Auth.auth().currentUser?.email else {
-            errorMessage = "No se encontró usuario autenticado"
+            errorMessage = NSLocalizedString("no_authenticated_user", comment: "No authenticated user")
             isLoading = false
             return
         }
@@ -101,11 +106,11 @@ struct TranscriptionListView: View {
         FirestoreService.shared.fetchTranscriptions(username: username) { transcriptions, error in
             isLoading = false
             if let error = error {
-                errorMessage = "Error: \(error.localizedDescription)"
+                errorMessage = NSLocalizedString("error_loading_transcriptions", comment: "Error loading transcriptions") + ": \(error.localizedDescription)"
             } else if let transcriptions = transcriptions {
                 self.transcriptions = transcriptions.sorted(by: { $0.date > $1.date })
             } else {
-                errorMessage = "No se encontraron transcripciones"
+                errorMessage = NSLocalizedString("no_transcriptions_found", comment: "No transcriptions found")
             }
         }
     }
@@ -121,7 +126,7 @@ struct TranscriptionListView: View {
             tags: transcription.tags
         ) { error in
             if let error = error {
-                errorMessage = "Error al actualizar: \(error.localizedDescription)"
+                errorMessage = NSLocalizedString("error_updating_transcription", comment: "Error updating transcription") + ": \(error.localizedDescription)"
             } else {
                 loadTranscriptions()
             }
@@ -138,10 +143,10 @@ struct TranscriptionListView: View {
             transcriptionId: transcriptionId
         ) { error in
             if let error = error {
-                errorMessage = "Error al eliminar: \(error.localizedDescription)"
+                errorMessage = NSLocalizedString("error_deleting_transcription", comment: "Error deleting transcription") + ": \(error.localizedDescription)"
             } else {
                 loadTranscriptions()
             }
         }
     }
-    }
+}
