@@ -150,3 +150,9 @@ struct TranscriptionListView: View {
         }
     }
 }
+
+struct TranscriptionListView_Previews: PreviewProvider {
+    static var previews: some View {
+        TranscriptionListView()
+    }
+}

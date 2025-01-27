@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1806B42D29DC3500A7ADDB /* Transcription.swift */; };
 		6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D45C9AD2D2918A400136F98 /* FirestoreService.swift */; };
+		6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */; };
+		6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6C19B82D42C6CF009AC331 /* FirebaseStorage */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
 		6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */; };
 		6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662C2D0E604A00765A78 /* ContentView.swift */; };
@@ -44,6 +46,7 @@
 /* Begin PBXFileReference section */
 		6D1806B42D29DC3500A7ADDB /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
 		6D45C9AD2D2918A400136F98 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
 		6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperJournal10_1App.swift; sourceTree = "<group>"; };
 		6D7E662C2D0E604A00765A78 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +81,7 @@
 			files = (
 				6DDF9E4F2D33062C00093138 /* AudioKit in Frameworks */,
 				6D95BE5C2D20D0CE00F51761 /* AudioKitUI in Frameworks */,
+				6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */,
 				6DBC1F292D333DC3006DA6A5 /* FirebaseAnalytics in Frameworks */,
 				6D9899BC2D3AD01F005F79FB /* GoogleSignInSwift in Frameworks */,
 				6DBC1F2D2D333DC3006DA6A5 /* FirebaseFirestore in Frameworks */,
@@ -141,6 +145,7 @@
 				6DA93E982D1C8B1E00D43977 /* RegisterView.swift */,
 				6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */,
 				6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */,
+				6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */,
 			);
 			path = Vistas;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 				6DBC1F2E2D333DC3006DA6A5 /* FirebaseFirestoreSwift */,
 				6D9899B92D3AD01F005F79FB /* GoogleSignIn */,
 				6D9899BB2D3AD01F005F79FB /* GoogleSignInSwift */,
+				6D6C19B82D42C6CF009AC331 /* FirebaseStorage */,
 			);
 			productName = WhisperJournal10.1;
 			productReference = 6DBC1F232D3334C4006DA6A5 /* WhisperJournal10.1.app */;
@@ -280,6 +286,7 @@
 				6D7E664D2D0E6B6900765A78 /* AudioRecorder.swift in Sources */,
 				6D7E66342D0E604D00765A78 /* Persistence.swift in Sources */,
 				6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */,
+				6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */,
 				6D8463202D17505900B4F69E /* LoginView.swift in Sources */,
 				6D7E66372D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld in Sources */,
 				6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */,
@@ -439,13 +446,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WhisperJournal10.1/Preview Content\"";
+				DEVELOPMENT_TEAM = G29T9ZK2W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME)";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = WhisperJournal10.1;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -473,13 +485,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WhisperJournal10.1/Preview Content\"";
+				DEVELOPMENT_TEAM = G29T9ZK2W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME)";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = WhisperJournal10.1;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -558,6 +575,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D6C19B82D42C6CF009AC331 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DBC1F272D333DC3006DA6A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		6D95BE5B2D20D0CE00F51761 /* AudioKitUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6D95BE552D20CA5600F51761 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
