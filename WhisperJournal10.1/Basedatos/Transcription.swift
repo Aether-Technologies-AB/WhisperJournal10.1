@@ -1,8 +1,9 @@
+
 import Foundation
 import FirebaseFirestoreSwift
 import UIKit
 
-struct Transcription: Codable, Identifiable, Hashable {
+struct Transcription: Codable, Identifiable, Hashable  {
     @DocumentID var id: String?
     var text: String
     var date: Date

@@ -10,6 +10,7 @@
 		6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1806B42D29DC3500A7ADDB /* Transcription.swift */; };
 		6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D45C9AD2D2918A400136F98 /* FirestoreService.swift */; };
 		6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */; };
+		6D69AB202D49636D0031165B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6D69AB1F2D49636D0031165B /* FirebaseFirestore */; };
 		6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6C19B82D42C6CF009AC331 /* FirebaseStorage */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
 		6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */; };
@@ -32,7 +33,6 @@
 		6DB57C5B2D1DECD900E8A1AF /* WisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */; };
 		6DBC1F292D333DC3006DA6A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F282D333DC3006DA6A5 /* FirebaseAnalytics */; };
 		6DBC1F2B2D333DC3006DA6A5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F2A2D333DC3006DA6A5 /* FirebaseAuth */; };
-		6DBC1F2D2D333DC3006DA6A5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F2C2D333DC3006DA6A5 /* FirebaseFirestore */; };
 		6DBC1F2F2D333DC3006DA6A5 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F2E2D333DC3006DA6A5 /* FirebaseFirestoreSwift */; };
 		6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */; };
 		6DD0C11B2D332D1E00488D97 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */; };
@@ -45,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		6D1806B42D29DC3500A7ADDB /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
+		6D27FC062D49CB0E00A11A7B /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D45C9AD2D2918A400136F98 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
@@ -63,7 +64,6 @@
 		6D9E65272D3B703F0097281E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6DA93E982D1C8B1E00D43977 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WisperService.swift; sourceTree = "<group>"; };
-		6DBC1F232D3334C4006DA6A5 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTranscriptionView.swift; sourceTree = "<group>"; };
 		6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		6DD5B57F2D401D3B00AB89AA /* Color+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Custom.swift"; sourceTree = "<group>"; };
@@ -84,7 +84,7 @@
 				6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */,
 				6DBC1F292D333DC3006DA6A5 /* FirebaseAnalytics in Frameworks */,
 				6D9899BC2D3AD01F005F79FB /* GoogleSignInSwift in Frameworks */,
-				6DBC1F2D2D333DC3006DA6A5 /* FirebaseFirestore in Frameworks */,
+				6D69AB202D49636D0031165B /* FirebaseFirestore in Frameworks */,
 				6DBC1F2B2D333DC3006DA6A5 /* FirebaseAuth in Frameworks */,
 				6DBC1F2F2D333DC3006DA6A5 /* FirebaseFirestoreSwift in Frameworks */,
 				6D9899BA2D3AD01F005F79FB /* GoogleSignIn in Frameworks */,
@@ -98,8 +98,8 @@
 			isa = PBXGroup;
 			children = (
 				6D7E66292D0E604A00765A78 /* WhisperJournal10.1 */,
-				6DBC1F232D3334C4006DA6A5 /* WhisperJournal10.1.app */,
 				6DBC1F242D333AE9006DA6A5 /* Frameworks */,
+				6D27FC062D49CB0E00A11A7B /* WhisperJournal10.1.app */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -212,14 +212,14 @@
 				6DDF9E4E2D33062C00093138 /* AudioKit */,
 				6DBC1F282D333DC3006DA6A5 /* FirebaseAnalytics */,
 				6DBC1F2A2D333DC3006DA6A5 /* FirebaseAuth */,
-				6DBC1F2C2D333DC3006DA6A5 /* FirebaseFirestore */,
 				6DBC1F2E2D333DC3006DA6A5 /* FirebaseFirestoreSwift */,
 				6D9899B92D3AD01F005F79FB /* GoogleSignIn */,
 				6D9899BB2D3AD01F005F79FB /* GoogleSignInSwift */,
 				6D6C19B82D42C6CF009AC331 /* FirebaseStorage */,
+				6D69AB1F2D49636D0031165B /* FirebaseFirestore */,
 			);
 			productName = WhisperJournal10.1;
-			productReference = 6DBC1F232D3334C4006DA6A5 /* WhisperJournal10.1.app */;
+			productReference = 6D27FC062D49CB0E00A11A7B /* WhisperJournal10.1.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -575,6 +575,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D69AB1F2D49636D0031165B /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DBC1F272D333DC3006DA6A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		6D6C19B82D42C6CF009AC331 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6DBC1F272D333DC3006DA6A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -604,11 +609,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6DBC1F272D333DC3006DA6A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
-		};
-		6DBC1F2C2D333DC3006DA6A5 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6DBC1F272D333DC3006DA6A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
 		};
 		6DBC1F2E2D333DC3006DA6A5 /* FirebaseFirestoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;

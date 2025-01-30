@@ -1,9 +1,3 @@
-//
-//  ContentView.swift
-//  WhisperJournal10.1
-//
-//  Created by andree on 14/12/24.
-//
 import SwiftUI
 import AVFoundation
 import AudioKit
@@ -38,7 +32,6 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Fondo degradado
                 LinearGradient(
                     gradient: Gradient(colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)]),
                     startPoint: .top,
@@ -60,8 +53,12 @@ struct ContentView: View {
             }
             .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear(perform: startAudioEngine)
-            .onDisappear(perform: stopAudioEngine)
+            .onAppear {
+                startAudioEngine()
+            }
+            .onDisappear {
+                stopAudioEngine()
+            }
         }
         .sheet(isPresented: $showImagePicker) {
             ImagePickerView(selectedImage: $selectedImage, sourceType: imagePickerSourceType)

@@ -15,11 +15,21 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         return true
     }
-}
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        // Habilitar el temporizador de inactividad cuando la aplicación entra en segundo plano
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        // Deshabilitar el temporizador de inactividad cuando la aplicación vuelve a primer plano
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
     }
-
+}
 
 @main
 struct WhisperJournal10_1App: App {
@@ -35,14 +45,14 @@ struct WhisperJournal10_1App: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     let persistenceController = PersistenceController.shared
     @AppStorage("isAuthenticated") private var isAuthenticated = false
-
+    
     init() {
         // Asegúrate de que isAuthenticated esté configurado en false por defecto
         if UserDefaults.standard.object(forKey: "isAuthenticated") == nil {
             UserDefaults.standard.set(false, forKey: "isAuthenticated")
         }
     }
-
+    
     var body: some Scene {
         WindowGroup {
             if isAuthenticated {
@@ -53,5 +63,6 @@ struct WhisperJournal10_1App: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }
+        
     }
 }

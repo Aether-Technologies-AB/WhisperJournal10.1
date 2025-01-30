@@ -54,6 +54,12 @@ class FirestoreService {
             }
             
             imageRef.downloadURL { url, error in
+                if let error = error {
+                    print("Error getting download URL: \(error.localizedDescription)")
+                    completion(nil)
+                    return
+                }
+                
                 completion(url?.absoluteString)
             }
         }
