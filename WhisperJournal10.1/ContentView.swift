@@ -1,3 +1,8 @@
+
+
+
+
+
 import SwiftUI
 import AVFoundation
 import AudioKit
@@ -17,7 +22,9 @@ struct ContentView: View {
     @State private var selectedImage: UIImage?
     @State private var showImagePicker = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
-
+    @State private var showAlert = false
+    @State private var showProfile = false
+    
     let audioRecorder = AudioRecorder()
     let engine = AudioEngine()
     let mic: AudioEngine.InputNode
@@ -27,6 +34,11 @@ struct ContentView: View {
             fatalError(NSLocalizedString("mic_access_error", comment: "Error message when microphone access fails"))
         }
         mic = input
+    }
+    
+    // Método para verificar la disponibilidad de la cámara
+    private func checkCameraAvailability() -> Bool {
+        return UIImagePickerController.isSourceTypeAvailable(.camera)
     }
 
     var body: some View {
@@ -53,15 +65,27 @@ struct ContentView: View {
             }
             .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(trailing: userIcon)
             .onAppear {
                 startAudioEngine()
             }
             .onDisappear {
                 stopAudioEngine()
             }
+            
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text(NSLocalizedString("camera_unavailable_title", comment: "Camera unavailable title")),
+                    message: Text(NSLocalizedString("camera_unavailable_message", comment: "Camera unavailable message")),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
         .sheet(isPresented: $showImagePicker) {
             ImagePickerView(selectedImage: $selectedImage, sourceType: imagePickerSourceType)
+        }
+        .sheet(isPresented: $showProfile) {
+            ProfileView()
         }
     }
 
@@ -76,6 +100,17 @@ struct ContentView: View {
                     .fill(Color.white.opacity(0.8))
                     .shadow(color: .gray.opacity(0.2), radius: 10, x: 0, y: 5)
             )
+    }
+
+    // Ícono de usuario en la barra de navegación
+    private var userIcon: some View {
+        Button(action: {
+            showProfile = true
+        }) {
+            Image(systemName: "person.circle")
+                .font(.title)
+                .foregroundColor(.primary)
+        }
     }
 
     // Contenido para usuario autenticado
@@ -120,7 +155,7 @@ struct ContentView: View {
         VStack {
             if isRecording {
                 AudioVisualizerView()
-                    .frame(height: 150)
+                    .frame(height: 100) // Tamaño reducido
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(12)
             }
@@ -129,6 +164,7 @@ struct ContentView: View {
                 recordingButtonContent
             }
             .buttonStyle(RecordingButtonStyle(isRecording: isRecording))
+            .frame(maxWidth: .infinity) // Tamaño ajustado
         }
     }
 
@@ -140,7 +176,19 @@ struct ContentView: View {
             Text(isRecording ?
                 NSLocalizedString("stop_button", comment: "Stop button") :
                 NSLocalizedString("record_button", comment: "Record button"))
+                .font(.caption) // Tamaño reducido
         }
+        .padding()
+        .background(
+            LinearGradient(
+                colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .foregroundColor(.white)
+        .cornerRadius(12)
+        .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
     }
 
     // Visualización de transcripción
@@ -170,7 +218,7 @@ struct ContentView: View {
                         Image(systemName: "photo.on.rectangle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 40, height: 40)
+                            .frame(width: 30, height: 30) // Tamaño reducido
                             .foregroundColor(.blue)
                         
                         Text(NSLocalizedString("choose_from_library", comment: "Choose from library"))
@@ -191,7 +239,7 @@ struct ContentView: View {
                         Image(systemName: "camera")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 40, height: 40)
+                            .frame(width: 30, height: 30) // Tamaño reducido
                             .foregroundColor(.green)
                         
                         Text(NSLocalizedString("take_photo", comment: "Take photo"))
@@ -214,11 +262,13 @@ struct ContentView: View {
             Button(action: saveTranscription) {
                 Text(NSLocalizedString("save_transcription", comment: "Save Transcription button"))
                     .actionButtonStyle(color: .orange)
+                    .font(.caption) // Tamaño reducido
             }
 
             NavigationLink(destination: TranscriptionListView()) {
                 Text(NSLocalizedString("view_saved_transcriptions", comment: "View Saved Transcriptions button"))
                     .actionButtonStyle(color: .purple)
+                    .font(.caption) // Tamaño reducido
             }
         }
     }
@@ -228,6 +278,7 @@ struct ContentView: View {
         Button(action: logout) {
             Text(NSLocalizedString("logout_button", comment: "Logout button"))
                 .actionButtonStyle(color: .red)
+                .font(.caption) // Tamaño reducido
         }
     }
 
@@ -289,6 +340,17 @@ struct ContentView: View {
     }
 
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
+        // Verificar disponibilidad de la cámara
+        if sourceType == .camera {
+            guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+                // Mostrar alerta
+                showAlert = true
+                imagePickerSourceType = .photoLibrary
+                showImagePicker = true
+                return
+            }
+        }
+        
         imagePickerSourceType = sourceType
         showImagePicker = true
     }
@@ -344,7 +406,7 @@ struct AudioVisualizerView: View {
                 ForEach(0..<20, id: \.self) { index in
                     Rectangle()
                         .fill(Color.blue.opacity(0.5))
-                        .frame(width: 5, height: bars[index])
+                        .frame(width: 3, height: bars[index]) // Tamaño reducido
                 }
             }
         }

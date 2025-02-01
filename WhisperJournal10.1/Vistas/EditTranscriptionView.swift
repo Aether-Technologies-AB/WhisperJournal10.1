@@ -5,6 +5,10 @@
 //  Created by andree on 11/01/25.
 //
 import SwiftUI
+import UIKit
+import AVFoundation
+import Photos
+
 
 struct EditTranscriptionView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -14,7 +18,7 @@ struct EditTranscriptionView: View {
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var showAlert = false
     var onSave: (Transcription) -> Void
-
+    
     var body: some View {
         NavigationView {
             Form {
@@ -38,22 +42,21 @@ struct EditTranscriptionView: View {
                 }
                 
                 // Nueva sección para imagen
+                // SECCIÓN DE IMAGEN: Modificar esta sección
                 Section(header: Text(NSLocalizedString("transcription_image", comment: "Image section header"))) {
-                    // Mostrar imagen existente o seleccionada
-                    if let imageURL = transcription.imageURL, let url = URL(string: imageURL) {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 200)
-                                .cornerRadius(10)
-                        } placeholder: {
-                            ProgressView()
-                        }
+                    // Mostrar imagen local si existe
+                    if let imageLocalPath = transcription.imageLocalPath,
+                       let image = PersistenceController.shared.loadImage(filename: imageLocalPath) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity, maxHeight: 300) // Cambio clave
+                            .cornerRadius(10)
                     } else if let selectedImage = selectedImage {
                         Image(uiImage: selectedImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(height: 200)
+                            .frame(maxWidth: .infinity, maxHeight: 300) // Cambio clave
                             .cornerRadius(10)
                     }
                     
@@ -116,19 +119,26 @@ struct EditTranscriptionView: View {
                 leading: Button(NSLocalizedString("edit_transcription_cancel", comment: "Cancel button")) {
                     presentationMode.wrappedValue.dismiss()
                 }
-                .foregroundColor(.blue),
+                    .foregroundColor(.blue),
                 trailing: Button(NSLocalizedString("edit_transcription_save", comment: "Save button")) {
                     // Lógica de guardado con imagen
+                    // MODIFICAR BOTÓN DE GUARDADO
                     if let selectedImage = selectedImage {
-                        FirestoreService.shared.uploadImage(selectedImage) { imageURL in
-                            transcription.imageURL = imageURL
-                            onSave(transcription)
-                            presentationMode.wrappedValue.dismiss()
+                        // Guardar imagen localmente
+                        if let imageName = PersistenceController.shared.saveImage(selectedImage) {
+                            // Si ya había una imagen local previa, eliminarla
+                            if let previousImagePath = transcription.imageLocalPath {
+                                PersistenceController.shared.deleteImage(filename: previousImagePath)
+                            }
+                            
+                            // Actualizar transcripción con nueva ruta de imagen
+                            transcription.imageLocalPath = imageName
+                            transcription.imageURL = nil // Limpiar URL de Firebase
                         }
-                    } else {
-                        onSave(transcription)
-                        presentationMode.wrappedValue.dismiss()
                     }
+                    
+                    onSave(transcription)
+                    presentationMode.wrappedValue.dismiss()
                 }
             )
             .alert(isPresented: $showAlert) {
@@ -145,19 +155,37 @@ struct EditTranscriptionView: View {
     }
     
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-        // Verificar si la cámara está disponible
-        if sourceType == .camera && !UIImagePickerController.isSourceTypeAvailable(.camera) {
-            showAlert = true
+        // Verificaciones de permisos y disponibilidad
+        guard sourceType == .camera else {
+            imagePickerSourceType = sourceType
+            showImagePicker = true
             return
         }
         
-        imagePickerSourceType = sourceType
-        showImagePicker = true
+        // Verificación específica para cámara
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            DispatchQueue.main.async {
+                if granted && UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    // Configuración forzada para cámara
+                    let picker = UIImagePickerController()
+                    picker.sourceType = .camera
+                    picker.cameraCaptureMode = .photo
+                    picker.cameraDevice = .rear
+                    picker.allowsEditing = false
+                    
+                    imagePickerSourceType = .camera
+                    showImagePicker = true
+                } else {
+                    showAlert = true
+                }
+            }
+        }
     }
-}
-
-struct EditTranscriptionView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditTranscriptionView(transcription: Transcription(text: "Sample text", date: Date(), tags: "Sample tags"), onSave: { _ in })
+  
+    
+    struct EditTranscriptionView_Previews: PreviewProvider {
+        static var previews: some View {
+            EditTranscriptionView(transcription: Transcription(text: "Sample text", date: Date(), tags: "Sample tags"), onSave: { _ in })
+        }
     }
 }

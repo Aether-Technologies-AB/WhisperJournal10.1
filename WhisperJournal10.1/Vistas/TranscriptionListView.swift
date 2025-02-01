@@ -29,7 +29,18 @@ struct TranscriptionListView: View {
                     List {
                         ForEach(transcriptions) { transcription in
                             HStack {
-                                VStack(alignment: .leading) {
+                                // Modificar visualización de miniatura
+                                if let imageLocalPath = transcription.imageLocalPath,
+                                   let image = PersistenceController.shared.loadImage(filename: imageLocalPath) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 60, height: 60)
+                                        .cornerRadius(10)
+                                        .clipped() // Añadir esto para evitar desbordamientos
+                                }
+
+                                VStack(alignment: .leading, spacing: 5) {
                                     Text(transcription.text)
                                         .font(.headline)
                                         .lineLimit(2)
@@ -61,9 +72,9 @@ struct TranscriptionListView: View {
                                 }
                             }
                             .padding()
-                            .background(Color(.systemGray6)) // Gris claro (systemGray6)
+                            .background(Color(.systemGray6))
                             .cornerRadius(10)
-                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5) // Gris con opacidad del 20%
+                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
                         }
                     }
                     .navigationTitle(NSLocalizedString("saved_transcriptions_title", comment: "Saved Transcriptions title"))
@@ -137,6 +148,11 @@ struct TranscriptionListView: View {
         guard let username = Auth.auth().currentUser?.email,
               let transcription = selectedTranscription,
               let transcriptionId = transcription.id else { return }
+        
+        // Eliminar imagen local si existe
+                if let imageLocalPath = transcription.imageLocalPath {
+                    PersistenceController.shared.deleteImage(filename: imageLocalPath)
+        }
         
         FirestoreService.shared.deleteTranscription(
             username: username,

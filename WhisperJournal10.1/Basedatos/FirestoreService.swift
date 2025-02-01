@@ -36,7 +36,8 @@ class FirestoreService {
         }
     }
 
-    // Método para subir imagen a Firebase Storage
+    // Método para subir imagen a Firebase Storage (comentado)
+    /*
     func uploadImage(_ image: UIImage, completion: @escaping (String?) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.5) else {
             completion(nil)
@@ -64,35 +65,20 @@ class FirestoreService {
             }
         }
     }
+    */
 
-    // Método actualizado para guardar transcripción con imagen opcional
-    func saveTranscription(username: String, text: String, date: Date, tags: String, image: UIImage? = nil, completion: @escaping (Error?) -> Void) {
-        // Si hay imagen, primero la subimos
-        if let image = image {
-            uploadImage(image) { [weak self] imageURL in
-                let transcription: [String: Any] = [
-                    "text": text,
-                    "date": date,
-                    "tags": tags,
-                    "imageURL": imageURL ?? ""
-                ]
-                
-                self?.db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription) { error in
-                    completion(error)
-                }
-            }
-        } else {
-            // Si no hay imagen, guardamos sin ella
-            let transcription: [String: Any] = [
-                "text": text,
-                "date": date,
-                "tags": tags,
-                "imageURL": ""
-            ]
-            
-            db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription) { error in
-                completion(error)
-            }
+    // Método actualizado para guardar transcripción con soporte para imagen local
+    func saveTranscription(username: String, text: String, date: Date, tags: String, imageLocalPath: String? = nil, completion: @escaping (Error?) -> Void) {
+        let transcription: [String: Any] = [
+            "text": text,
+            "date": date,
+            "tags": tags,
+            "imageLocalPath": imageLocalPath ?? "",
+            "imageURL": "" // Mantener por compatibilidad
+        ]
+        
+        db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription) { error in
+            completion(error)
         }
     }
 
@@ -109,31 +95,21 @@ class FirestoreService {
         }
     }
 
-    // Método para actualizar una transcripción con soporte para imagen
-    func updateTranscription(username: String, transcriptionId: String, text: String, tags: String, image: UIImage? = nil, completion: @escaping (Error?) -> Void) {
-        // Si hay imagen nueva, primero la subimos
-        if let image = image {
-            uploadImage(image) { [weak self] imageURL in
-                let updateData: [String: Any] = [
-                    "text": text,
-                    "tags": tags,
-                    "imageURL": imageURL ?? ""
-                ]
-                
-                self?.db.collection("users").document(username).collection("transcriptions").document(transcriptionId).updateData(updateData) { error in
-                    completion(error)
-                }
-            }
-        } else {
-            // Si no hay imagen nueva, actualizamos solo texto y tags
-            let updateData: [String: Any] = [
-                "text": text,
-                "tags": tags
-            ]
-            
-            db.collection("users").document(username).collection("transcriptions").document(transcriptionId).updateData(updateData) { error in
-                completion(error)
-            }
+    // Método para actualizar una transcripción con soporte para imagen local
+    func updateTranscription(username: String, transcriptionId: String, text: String, tags: String, imageLocalPath: String? = nil, completion: @escaping (Error?) -> Void) {
+        var updateData: [String: Any] = [
+            "text": text,
+            "tags": tags
+        ]
+        
+        // Agregar imageLocalPath si está presente
+        if let imagePath = imageLocalPath {
+            updateData["imageLocalPath"] = imagePath
+            updateData["imageURL"] = "" // Limpiar URL de Firebase
+        }
+        
+        db.collection("users").document(username).collection("transcriptions").document(transcriptionId).updateData(updateData) { error in
+            completion(error)
         }
     }
     

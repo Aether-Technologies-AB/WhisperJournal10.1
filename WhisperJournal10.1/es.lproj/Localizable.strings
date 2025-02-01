@@ -70,3 +70,9 @@
 "error_deleting_transcription" = "Error al eliminar la transcripción";
 "choose_from_library" = "Elegir de la biblioteca";
 "take_photo" = "Tomar foto";
+"profile_title" = "Perfil de Usuario";
+"email_label" = "Correo Electrónico";
+"email_not_available" = "No disponible";
+"no_authenticated_user" = "No hay usuario autenticado";
+"profile_navigation_title" = "Perfil";
+"close_button" = "Cerrar";

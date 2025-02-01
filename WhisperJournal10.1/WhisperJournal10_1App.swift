@@ -16,14 +16,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
     
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Habilitar el temporizador de inactividad cuando la aplicación entra en segundo plano
+ 
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("Idle Timer Status: \(UIApplication.shared.isIdleTimerDisabled)")
         UIApplication.shared.isIdleTimerDisabled = false
     }
-    
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Deshabilitar el temporizador de inactividad cuando la aplicación vuelve a primer plano
-        UIApplication.shared.isIdleTimerDisabled = true
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        print("Idle Timer Status: \(UIApplication.shared.isIdleTimerDisabled)")
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {

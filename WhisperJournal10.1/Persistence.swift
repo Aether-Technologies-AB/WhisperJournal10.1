@@ -73,4 +73,85 @@ struct PersistenceController {
             return []
         }
     }
-}
+    
+    // NUEVO MÉTODO: Guardar imagen localmente
+    func saveImage(_ image: UIImage) -> String? {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            print("❌ Error: No se pudo convertir la imagen a datos")
+            return nil
+        }
+        
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let uniqueFilename = "\(UUID().uuidString).jpg"
+        let fileURL = documentsDirectory.appendingPathComponent(uniqueFilename)
+        
+        do {
+            // Crear directorio si no existe
+            try FileManager.default.createDirectory(
+                at: documentsDirectory,
+                withIntermediateDirectories: true,
+                attributes: [.posixPermissions: 0o777]
+            )
+            
+            // Guardar con permisos completos
+            try imageData.write(to: fileURL, options: [.atomic, .completeFileProtection])
+            
+            print("✅ Imagen guardada en: \(fileURL.path)")
+            
+            // Verificar que el archivo existe y tiene datos
+            let attributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+            let fileSize = attributes[.size] as? Int64 ?? 0
+            
+            print("📦 Tamaño del archivo: \(fileSize) bytes")
+            
+            return uniqueFilename
+        } catch {
+            print("❌ Error al guardar imagen: \(error.localizedDescription)")
+            print("📍 Ruta intentada: \(fileURL.path)")
+            
+            // Imprimir detalles del error
+            if let nsError = error as NSError? {
+                print("Código de error: \(nsError.code)")
+                print("Dominio de error: \(nsError.domain)")
+            }
+            
+            return nil
+        }
+    }
+        
+        // NUEVO MÉTODO: Cargar imagen desde archivo local
+        func loadImage(filename: String) -> UIImage? {
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsDirectory.appendingPathComponent(filename)
+            
+            return UIImage(contentsOfFile: fileURL.path)
+        }
+        
+        // NUEVO MÉTODO: Eliminar imagen local
+    func deleteImage(filename: String) {
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsDirectory.appendingPathComponent(filename)
+            
+            do {
+                // Verificar si el archivo existe antes de intentar eliminarlo
+                if FileManager.default.fileExists(atPath: fileURL.path) {
+                    try FileManager.default.removeItem(at: fileURL)
+                    print("Imagen eliminada con éxito: \(filename)")
+                } else {
+                    print("El archivo no existe: \(filename)")
+                }
+            } catch {
+                // Manejar específicamente diferentes tipos de errores
+                if let nsError = error as NSError? {
+                    switch nsError.code {
+                    case NSFileNoSuchFileError:
+                        print("El archivo no existe: \(filename)")
+                    case NSFileWriteNoPermissionError:
+                        print("No se tienen permisos para eliminar el archivo: \(filename)")
+                    default:
+                        print("Error eliminando imagen: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }

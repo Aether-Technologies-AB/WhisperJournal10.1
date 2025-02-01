@@ -67,3 +67,9 @@
 "error_deleting_transcription" = "Fel vid radering av transkription";
 "choose_from_library" = "Välj från biblioteket";
 "take_photo" = "Ta foto";
+"profile_title" = "Användarprofil";
+"email_label" = "E-post";
+"email_not_available" = "Inte tillgänglig";
+"no_authenticated_user" = "Ingen autentiserad användare";
+"profile_navigation_title" = "Profil";
+"close_button" = "Stäng";

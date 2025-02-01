@@ -72,3 +72,9 @@
 "error_deleting_transcription" = "Error deleting transcription";
 "choose_from_library" = "Choose from library";
 "take_photo" = "Take photo";
+"profile_title" = "User Profile";
+"email_label" = "Email";
+"email_not_available" = "Not available";
+"no_authenticated_user" = "No authenticated user";
+"profile_navigation_title" = "Profile";
+"close_button" = "Close";

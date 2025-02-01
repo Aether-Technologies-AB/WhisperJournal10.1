@@ -36,6 +36,7 @@
 		6DBC1F2F2D333DC3006DA6A5 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F2E2D333DC3006DA6A5 /* FirebaseFirestoreSwift */; };
 		6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */; };
 		6DD0C11B2D332D1E00488D97 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */; };
+		6DD4CF2C2D4E9230006E34B1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD4CF2B2D4E9230006E34B1 /* ProfileView.swift */; };
 		6DD5B5802D401D3B00AB89AA /* Color+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD5B57F2D401D3B00AB89AA /* Color+Custom.swift */; };
 		6DDF85CC2D38BD8700A92E37 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DDF85CE2D38BD8700A92E37 /* Localizable.strings */; };
 		6DDF9E4F2D33062C00093138 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6DDF9E4E2D33062C00093138 /* AudioKit */; };
@@ -66,6 +67,7 @@
 		6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WisperService.swift; sourceTree = "<group>"; };
 		6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTranscriptionView.swift; sourceTree = "<group>"; };
 		6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
+		6DD4CF2B2D4E9230006E34B1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		6DD5B57F2D401D3B00AB89AA /* Color+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Custom.swift"; sourceTree = "<group>"; };
 		6DDF85CD2D38BD8700A92E37 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6DDF85CF2D38BD8B00A92E37 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */,
 				6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */,
 				6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */,
+				6DD4CF2B2D4E9230006E34B1 /* ProfileView.swift */,
 			);
 			path = Vistas;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				6DA93E992D1C8B1E00D43977 /* RegisterView.swift in Sources */,
 				6D7E66512D0E708100765A78 /* RecordingViewModel.swift in Sources */,
 				6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */,
+				6DD4CF2C2D4E9230006E34B1 /* ProfileView.swift in Sources */,
 				6DB57C5B2D1DECD900E8A1AF /* WisperService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
