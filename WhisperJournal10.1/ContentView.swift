@@ -155,7 +155,7 @@ struct ContentView: View {
         VStack {
             if isRecording {
                 AudioVisualizerView()
-                    .frame(height: 100) // Tamaño reducido
+                    .frame(height: 100)
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(12)
             }
@@ -164,32 +164,32 @@ struct ContentView: View {
                 recordingButtonContent
             }
             .buttonStyle(RecordingButtonStyle(isRecording: isRecording))
-            .frame(maxWidth: .infinity) // Tamaño ajustado
+            .frame(maxWidth: .infinity)
         }
     }
 
     // Contenido del botón de grabación
-    private var recordingButtonContent: some View {
-        HStack {
-            Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                .font(.title)
-            Text(isRecording ?
-                NSLocalizedString("stop_button", comment: "Stop button") :
-                NSLocalizedString("record_button", comment: "Record button"))
-                .font(.caption) // Tamaño reducido
-        }
-        .padding()
-        .background(
-            LinearGradient(
-                colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal],
-                startPoint: .leading,
-                endPoint: .trailing
+        private var recordingButtonContent: some View {
+            HStack {
+                Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                    .font(.title)
+                Text(isRecording ?
+                    NSLocalizedString("stop_button", comment: "Stop button") :
+                    NSLocalizedString("record_button", comment: "Record button"))
+                    .font(.caption)
+            }
+            .padding()
+            .background(
+                LinearGradient(
+                    colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
             )
-        )
-        .foregroundColor(.white)
-        .cornerRadius(12)
-        .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
-    }
+            .foregroundColor(.white)
+            .cornerRadius(12)
+            .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
+        }
 
     // Visualización de transcripción
     private var transcriptionDisplay: some View {
@@ -218,7 +218,7 @@ struct ContentView: View {
                         Image(systemName: "photo.on.rectangle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30) // Tamaño reducido
+                            .frame(width: 30, height: 30)
                             .foregroundColor(.blue)
                         
                         Text(NSLocalizedString("choose_from_library", comment: "Choose from library"))
@@ -239,7 +239,7 @@ struct ContentView: View {
                         Image(systemName: "camera")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30) // Tamaño reducido
+                            .frame(width: 30, height: 30)
                             .foregroundColor(.green)
                         
                         Text(NSLocalizedString("take_photo", comment: "Take photo"))
@@ -261,14 +261,36 @@ struct ContentView: View {
         VStack(spacing: 15) {
             Button(action: saveTranscription) {
                 Text(NSLocalizedString("save_transcription", comment: "Save Transcription button"))
-                    .actionButtonStyle(color: .orange)
-                    .font(.caption) // Tamaño reducido
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        LinearGradient(
+                            colors: [Color.orange.opacity(0.7), Color.orange],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                    .shadow(color: Color.orange.opacity(0.4), radius: 8, x: 0, y: 4)
+                    .font(.caption)
             }
 
             NavigationLink(destination: TranscriptionListView()) {
                 Text(NSLocalizedString("view_saved_transcriptions", comment: "View Saved Transcriptions button"))
-                    .actionButtonStyle(color: .purple)
-                    .font(.caption) // Tamaño reducido
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        LinearGradient(
+                            colors: [Color.purple.opacity(0.7), Color.purple],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                    .shadow(color: Color.purple.opacity(0.4), radius: 8, x: 0, y: 4)
+                    .font(.caption)
             }
         }
     }
@@ -277,8 +299,19 @@ struct ContentView: View {
     private var logoutButton: some View {
         Button(action: logout) {
             Text(NSLocalizedString("logout_button", comment: "Logout button"))
-                .actionButtonStyle(color: .red)
-                .font(.caption) // Tamaño reducido
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(
+                    LinearGradient(
+                        colors: [Color.red.opacity(0.7), Color.red],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .foregroundColor(.white)
+                .cornerRadius(12)
+                .shadow(color: Color.red.opacity(0.4), radius: 8, x: 0, y: 4)
+                .font(.caption)
         }
     }
 
@@ -378,25 +411,7 @@ struct RecordingButtonStyle: ButtonStyle {
     }
 }
 
-extension View {
-    func actionButtonStyle(color: Color) -> some View {
-        self
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                LinearGradient(
-                    colors: [color.opacity(0.7), color],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .foregroundColor(.white)
-            .cornerRadius(12)
-            .shadow(color: color.opacity(0.4), radius: 8, x: 0, y: 4)
-    }
-}
-
-// Vista de visualización de audio (placeholder)
+// Vista de visualización de audio
 struct AudioVisualizerView: View {
     @State private var bars: [CGFloat] = Array(repeating: 20, count: 20)
     
@@ -406,7 +421,7 @@ struct AudioVisualizerView: View {
                 ForEach(0..<20, id: \.self) { index in
                     Rectangle()
                         .fill(Color.blue.opacity(0.5))
-                        .frame(width: 3, height: bars[index]) // Tamaño reducido
+                        .frame(width: 3, height: bars[index])
                 }
             }
         }

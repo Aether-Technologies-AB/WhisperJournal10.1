@@ -16,19 +16,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
     
- 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        print("Idle Timer Status: \(UIApplication.shared.isIdleTimerDisabled)")
-        UIApplication.shared.isIdleTimerDisabled = false
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        print("Idle Timer Status: \(UIApplication.shared.isIdleTimerDisabled)")
-        UIApplication.shared.isIdleTimerDisabled = false
-    }
-    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
+    }
+    
+    // Método para soportar todas las orientaciones
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return .all
     }
 }
 
@@ -64,6 +58,5 @@ struct WhisperJournal10_1App: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }
-        
     }
 }

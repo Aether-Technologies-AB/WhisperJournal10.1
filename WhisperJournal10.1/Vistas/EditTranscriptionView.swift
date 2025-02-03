@@ -166,13 +166,7 @@ struct EditTranscriptionView: View {
         AVCaptureDevice.requestAccess(for: .video) { granted in
             DispatchQueue.main.async {
                 if granted && UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    // Configuración forzada para cámara
-                    let picker = UIImagePickerController()
-                    picker.sourceType = .camera
-                    picker.cameraCaptureMode = .photo
-                    picker.cameraDevice = .rear
-                    picker.allowsEditing = false
-                    
+                    // Configuración mínima para cámara
                     imagePickerSourceType = .camera
                     showImagePicker = true
                 } else {

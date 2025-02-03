@@ -20,14 +20,16 @@ struct ImagePickerView: UIViewControllerRepresentable {
         picker.delegate = context.coordinator
         picker.sourceType = sourceType
         
-        // Configuraciones para prevenir modo Portrait
         if sourceType == .camera {
-            // Configuración forzada para evitar modos especiales
+            // Configuración defensiva para prevenir modo Portrait
             picker.cameraCaptureMode = .photo
             picker.cameraDevice = .rear
             picker.allowsEditing = false
             
-            // Configuración adicional para prevenir modos especiales
+            // Configuración para evitar modos especiales
+            picker.modalPresentationStyle = .fullScreen
+            
+            // Intentar configurar la sesión de captura directamente
             if let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
                 do {
                     let input = try AVCaptureDeviceInput(device: captureDevice)
@@ -35,7 +37,6 @@ struct ImagePickerView: UIViewControllerRepresentable {
                     
                     // Configuraciones de sesión para prevenir modos especiales
                     session.sessionPreset = .photo
-                    session.addInput(input)
                     
                     // Imprimir información de depuración
                     print("🎥 Dispositivo de captura: \(captureDevice.localizedName)")
@@ -44,9 +45,6 @@ struct ImagePickerView: UIViewControllerRepresentable {
                     print("❌ Error configurando dispositivo de captura: \(error)")
                 }
             }
-            
-            // Forzar presentación a pantalla completa
-            picker.modalPresentationStyle = .fullScreen
         }
         
         return picker
