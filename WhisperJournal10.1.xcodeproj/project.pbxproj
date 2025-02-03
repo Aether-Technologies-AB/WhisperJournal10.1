@@ -112,7 +112,6 @@
 				6DD5B9642D286AA300593725 /* Basedatos */,
 				6D7E66432D0E627600765A78 /* Utilidades */,
 				6D7E66422D0E626900765A78 /* Servicios */,
-				6D7E66402D0E624900765A78 /* ViewModels */,
 				6D7E663D2D0E61F100765A78 /* Vistas */,
 				6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */,
 				6D7E662C2D0E604A00765A78 /* ContentView.swift */,
@@ -164,6 +163,7 @@
 		6D7E66422D0E626900765A78 /* Servicios */ = {
 			isa = PBXGroup;
 			children = (
+				6D7E66402D0E624900765A78 /* ViewModels */,
 			);
 			path = Servicios;
 			sourceTree = "<group>";

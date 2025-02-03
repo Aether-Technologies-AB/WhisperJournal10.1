@@ -340,16 +340,24 @@ struct ContentView: View {
         guard !recordedText.isEmpty,
               let username = Auth.auth().currentUser?.email else { return }
 
+        // Guardar imagen si existe
+        var imageLocalPath: String?
+        if let selectedImage = selectedImage {
+            imageLocalPath = PersistenceController.shared.saveImage(selectedImage)
+        }
+
         FirestoreService.shared.saveTranscription(
             username: username,
             text: recordedText,
             date: transcriptionDate,
-            tags: tags
+            tags: tags,
+            imageLocalPath: imageLocalPath
         ) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             } else {
                 resetFields()
+                selectedImage = nil // Limpiar imagen después de guardar
             }
         }
     }
@@ -357,7 +365,10 @@ struct ContentView: View {
     private func resetFields() {
         recordedText = ""
         tags = ""
+        selectedImage = nil
     }
+
+  
 
     private func logout() {
         WhisperJournal10_1App.logout()

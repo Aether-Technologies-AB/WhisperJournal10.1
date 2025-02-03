@@ -30,17 +30,13 @@ struct ImagePickerView: UIViewControllerRepresentable {
             picker.modalPresentationStyle = .fullScreen
             
             // Intentar configurar la sesión de captura directamente
-            if let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
+            if let captureDevice = AVCaptureDevice.default(.builtInTripleCamera, for: .video, position: .back) ??
+                AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) ??
+                AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
                 do {
                     let input = try AVCaptureDeviceInput(device: captureDevice)
                     let session = AVCaptureSession()
-                    
-                    // Configuraciones de sesión para prevenir modos especiales
                     session.sessionPreset = .photo
-                    
-                    // Imprimir información de depuración
-                    print("🎥 Dispositivo de captura: \(captureDevice.localizedName)")
-                    print("📷 Tipo de dispositivo: \(captureDevice.deviceType)")
                 } catch {
                     print("❌ Error configurando dispositivo de captura: \(error)")
                 }

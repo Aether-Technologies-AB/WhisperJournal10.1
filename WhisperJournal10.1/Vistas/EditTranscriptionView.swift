@@ -8,7 +8,7 @@ import SwiftUI
 import UIKit
 import AVFoundation
 import Photos
-
+import FirebaseAuth
 
 struct EditTranscriptionView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -41,26 +41,57 @@ struct EditTranscriptionView: View {
                         .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
                 }
                 
-                // Nueva sección para imagen
-                // SECCIÓN DE IMAGEN: Modificar esta sección
+                // Sección de imagen
                 Section(header: Text(NSLocalizedString("transcription_image", comment: "Image section header"))) {
                     // Mostrar imagen local si existe
                     if let imageLocalPath = transcription.imageLocalPath,
                        let image = PersistenceController.shared.loadImage(filename: imageLocalPath) {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity, maxHeight: 300) // Cambio clave
-                            .cornerRadius(10)
+                        VStack {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: .infinity, maxHeight: 300)
+                                .cornerRadius(10)
+                            
+                            // Botón para eliminar imagen
+                            Button(action: {
+                                // Eliminar imagen local
+                                if let previousImagePath = transcription.imageLocalPath {
+                                    PersistenceController.shared.deleteImage(filename: previousImagePath)
+                                }
+                                
+                                // Limpiar referencias de imagen
+                                transcription.imageLocalPath = nil
+                                transcription.imageURL = nil
+                                
+                                // Actualizar en Firestore
+                                guard let username = Auth.auth().currentUser?.email,
+                                      let transcriptionId = transcription.id else { return }
+                                
+                                FirestoreService.shared.updateTranscription(
+                                    username: username,
+                                    transcriptionId: transcriptionId,
+                                    text: transcription.text,
+                                    tags: transcription.tags,
+                                    imageLocalPath: nil
+                                ) { error in
+                                    if let error = error {
+                                        print("Error eliminando imagen: \(error.localizedDescription)")
+                                    }
+                                }
+                            }) {
+                                Text("Eliminar Imagen")
+                                    .foregroundColor(.red)
+                            }
+                        }
                     } else if let selectedImage = selectedImage {
                         Image(uiImage: selectedImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity, maxHeight: 300) // Cambio clave
+                            .frame(maxWidth: .infinity, maxHeight: 300)
                             .cornerRadius(10)
                     }
-                    
-                    // Botones para seleccionar imagen con un diseño más atractivo
+                    // Botones para seleccionar imagen
                     HStack(spacing: 15) {
                         // Botón de Biblioteca de Fotos
                         Button(action: {
@@ -121,24 +152,7 @@ struct EditTranscriptionView: View {
                 }
                     .foregroundColor(.blue),
                 trailing: Button(NSLocalizedString("edit_transcription_save", comment: "Save button")) {
-                    // Lógica de guardado con imagen
-                    // MODIFICAR BOTÓN DE GUARDADO
-                    if let selectedImage = selectedImage {
-                        // Guardar imagen localmente
-                        if let imageName = PersistenceController.shared.saveImage(selectedImage) {
-                            // Si ya había una imagen local previa, eliminarla
-                            if let previousImagePath = transcription.imageLocalPath {
-                                PersistenceController.shared.deleteImage(filename: previousImagePath)
-                            }
-                            
-                            // Actualizar transcripción con nueva ruta de imagen
-                            transcription.imageLocalPath = imageName
-                            transcription.imageURL = nil // Limpiar URL de Firebase
-                        }
-                    }
-                    
-                    onSave(transcription)
-                    presentationMode.wrappedValue.dismiss()
+                    saveTranscription()
                 }
             )
             .alert(isPresented: $showAlert) {
@@ -151,6 +165,45 @@ struct EditTranscriptionView: View {
         }
         .sheet(isPresented: $showImagePicker) {
             ImagePickerView(selectedImage: $selectedImage, sourceType: imagePickerSourceType)
+        }
+    }
+    
+    private func saveTranscription() {
+        guard let username = Auth.auth().currentUser?.email,
+              let transcriptionId = transcription.id else { return }
+        
+        if let selectedImage = selectedImage {
+            // Guardar imagen localmente
+            if let imageName = PersistenceController.shared.saveImage(selectedImage) {
+                // Si ya había una imagen local previa, eliminarla
+                if let previousImagePath = transcription.imageLocalPath {
+                    PersistenceController.shared.deleteImage(filename: previousImagePath)
+                }
+                
+                // Actualizar transcripción con nueva ruta de imagen
+                transcription.imageLocalPath = imageName
+                transcription.imageURL = nil // Limpiar URL de Firebase
+                
+                // Actualizar en Firestore
+                FirestoreService.shared.updateTranscription(
+                    username: username,
+                    transcriptionId: transcriptionId,
+                    text: transcription.text,
+                    tags: transcription.tags,
+                    imageLocalPath: imageName
+                ) { error in
+                    if let error = error {
+                        print("Error actualizando transcripción: \(error.localizedDescription)")
+                    } else {
+                        onSave(transcription)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            }
+        } else {
+            // Si no hay imagen nueva, guardar sin modificar imagen
+            onSave(transcription)
+            presentationMode.wrappedValue.dismiss()
         }
     }
     
@@ -175,11 +228,17 @@ struct EditTranscriptionView: View {
             }
         }
     }
-  
-    
-    struct EditTranscriptionView_Previews: PreviewProvider {
-        static var previews: some View {
-            EditTranscriptionView(transcription: Transcription(text: "Sample text", date: Date(), tags: "Sample tags"), onSave: { _ in })
-        }
+}
+
+struct EditTranscriptionView_Previews: PreviewProvider {
+    static var previews: some View {
+        EditTranscriptionView(
+            transcription: Transcription(
+                text: "Sample text",
+                date: Date(),
+                tags: "Sample tags"
+            ),
+            onSave: { _ in }
+        )
     }
 }

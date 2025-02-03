@@ -13,6 +13,10 @@ import GoogleSignIn
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        
+        // Configuración predeterminada del Idle Timer
+        UIApplication.shared.isIdleTimerDisabled = false
+        
         return true
     }
     
@@ -23,6 +27,17 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     // Método para soportar todas las orientaciones
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return .all
+    }
+    
+    // Manejar cambios de estado de la aplicación
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // Restaurar comportamiento predeterminado del Idle Timer
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        // Asegurar que el Idle Timer esté habilitado al salir de la app
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 }
 
@@ -53,9 +68,17 @@ struct WhisperJournal10_1App: App {
             if isAuthenticated {
                 ContentView() // Vista de grabación de audio
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .onAppear {
+                        // Restaurar comportamiento predeterminado del Idle Timer
+                        UIApplication.shared.isIdleTimerDisabled = false
+                    }
             } else {
                 LoginView(isAuthenticated: $isAuthenticated)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .onAppear {
+                        // Restaurar comportamiento predeterminado del Idle Timer
+                        UIApplication.shared.isIdleTimerDisabled = false
+                    }
             }
         }
     }

@@ -96,7 +96,14 @@ class FirestoreService {
     }
 
     // Método para actualizar una transcripción con soporte para imagen local
-    func updateTranscription(username: String, transcriptionId: String, text: String, tags: String, imageLocalPath: String? = nil, completion: @escaping (Error?) -> Void) {
+    func updateTranscription(
+        username: String,
+        transcriptionId: String,
+        text: String,
+        tags: String,
+        imageLocalPath: String? = nil,  // Añadir este parámetro
+        completion: @escaping (Error?) -> Void
+    ) {
         var updateData: [String: Any] = [
             "text": text,
             "tags": tags
@@ -105,7 +112,7 @@ class FirestoreService {
         // Agregar imageLocalPath si está presente
         if let imagePath = imageLocalPath {
             updateData["imageLocalPath"] = imagePath
-            updateData["imageURL"] = "" // Limpiar URL de Firebase
+            updateData["imageURL"] = "" // Limpiar URL de Firebase si es necesario
         }
         
         db.collection("users").document(username).collection("transcriptions").document(transcriptionId).updateData(updateData) { error in
