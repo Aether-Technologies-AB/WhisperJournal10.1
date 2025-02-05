@@ -4,7 +4,6 @@
 //
 //  Created by andree on 4/01/25.
 //
-
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
@@ -68,13 +67,21 @@ class FirestoreService {
     */
 
     // Método actualizado para guardar transcripción con soporte para imagen local
-    func saveTranscription(username: String, text: String, date: Date, tags: String, imageLocalPath: String? = nil, completion: @escaping (Error?) -> Void) {
+    func saveTranscription(
+        username: String,
+        text: String,
+        date: Date,
+        tags: String,
+        imageLocalPaths: [String]? = nil,
+        completion: @escaping (Error?) -> Void
+    ) {
         let transcription: [String: Any] = [
             "text": text,
             "date": date,
             "tags": tags,
-            "imageLocalPath": imageLocalPath ?? "",
-            "imageURL": "" // Mantener por compatibilidad
+            "imageLocalPaths": imageLocalPaths ?? [],
+            "imageURLs": [] as [String],
+            "audioURL": ""
         ]
         
         db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription) { error in
@@ -101,7 +108,7 @@ class FirestoreService {
         transcriptionId: String,
         text: String,
         tags: String,
-        imageLocalPath: String? = nil,  // Añadir este parámetro
+        imageLocalPaths: [String]? = nil,
         completion: @escaping (Error?) -> Void
     ) {
         var updateData: [String: Any] = [
@@ -109,11 +116,8 @@ class FirestoreService {
             "tags": tags
         ]
         
-        // Agregar imageLocalPath si está presente
-        if let imagePath = imageLocalPath {
-            updateData["imageLocalPath"] = imagePath
-            updateData["imageURL"] = "" // Limpiar URL de Firebase si es necesario
-        }
+        updateData["imageLocalPaths"] = imageLocalPaths ?? []
+        updateData["imageURLs"] = [] as [String]
         
         db.collection("users").document(username).collection("transcriptions").document(transcriptionId).updateData(updateData) { error in
             completion(error)

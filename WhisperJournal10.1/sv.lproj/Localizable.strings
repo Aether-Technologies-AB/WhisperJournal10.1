@@ -73,3 +73,10 @@
 "no_authenticated_user" = "Ingen autentiserad användare";
 "profile_navigation_title" = "Profil";
 "close_button" = "Stäng";
+"transcription_list_title" = "Mina Transkriptioner";
+"delete_transcription_error" = "Fel vid borttagning av transkription";
+"camera_unavailable_title" = "Kamera ej tillgänglig";
+"camera_unavailable_message" = "Kan inte komma åt kameran på denna enhet eller simulator";
+"ok_button" = "OK";
+"remove_image" = "Ta bort";
+"saved_transcriptions_title" = "Sparade Transkriptioner";

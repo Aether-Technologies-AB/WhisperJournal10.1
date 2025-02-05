@@ -74,7 +74,7 @@ struct PersistenceController {
         }
     }
     
-    // NUEVO MÉTODO: Guardar imagen localmente
+    // MÉTODO ACTUALIZADO: Guardar imagen localmente
     func saveImage(_ image: UIImage) -> String? {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
             print("❌ Error: No se pudo convertir la imagen a datos")
@@ -119,39 +119,46 @@ struct PersistenceController {
         }
     }
         
-        // NUEVO MÉTODO: Cargar imagen desde archivo local
-        func loadImage(filename: String) -> UIImage? {
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let fileURL = documentsDirectory.appendingPathComponent(filename)
-            
-            return UIImage(contentsOfFile: fileURL.path)
-        }
+    // MÉTODO ACTUALIZADO: Cargar imagen desde archivo local
+    func loadImage(filename: String) -> UIImage? {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(filename)
         
-        // NUEVO MÉTODO: Eliminar imagen local
+        return UIImage(contentsOfFile: fileURL.path)
+    }
+        
+    // MÉTODO ACTUALIZADO: Eliminar imagen local
     func deleteImage(filename: String) {
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let fileURL = documentsDirectory.appendingPathComponent(filename)
-            
-            do {
-                // Verificar si el archivo existe antes de intentar eliminarlo
-                if FileManager.default.fileExists(atPath: fileURL.path) {
-                    try FileManager.default.removeItem(at: fileURL)
-                    print("Imagen eliminada con éxito: \(filename)")
-                } else {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(filename)
+        
+        do {
+            // Verificar si el archivo existe antes de intentar eliminarlo
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                try FileManager.default.removeItem(at: fileURL)
+                print("Imagen eliminada con éxito: \(filename)")
+            } else {
+                print("El archivo no existe: \(filename)")
+            }
+        } catch {
+            // Manejar específicamente diferentes tipos de errores
+            if let nsError = error as NSError? {
+                switch nsError.code {
+                case NSFileNoSuchFileError:
                     print("El archivo no existe: \(filename)")
-                }
-            } catch {
-                // Manejar específicamente diferentes tipos de errores
-                if let nsError = error as NSError? {
-                    switch nsError.code {
-                    case NSFileNoSuchFileError:
-                        print("El archivo no existe: \(filename)")
-                    case NSFileWriteNoPermissionError:
-                        print("No se tienen permisos para eliminar el archivo: \(filename)")
-                    default:
-                        print("Error eliminando imagen: \(error.localizedDescription)")
-                    }
+                case NSFileWriteNoPermissionError:
+                    print("No se tienen permisos para eliminar el archivo: \(filename)")
+                default:
+                    print("Error eliminando imagen: \(error.localizedDescription)")
                 }
             }
         }
     }
+
+    // NUEVO MÉTODO: Eliminar múltiples imágenes
+    func deleteImages(filenames: [String]) {
+        filenames.forEach { filename in
+            deleteImage(filename: filename)
+        }
+    }
+}

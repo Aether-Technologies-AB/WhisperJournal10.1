@@ -12,9 +12,6 @@ struct TranscriptionListView: View {
     @State private var transcriptions: [Transcription] = []
     @State private var isLoading = true
     @State private var errorMessage: String?
-    @State private var selectedTranscription: Transcription?
-    @State private var showingEditSheet = false
-    @State private var showingDeleteConfirmation = false
     
     var body: some View {
         NavigationView {
@@ -29,15 +26,22 @@ struct TranscriptionListView: View {
                     List {
                         ForEach(transcriptions) { transcription in
                             HStack {
-                                // Modificar visualización de miniatura
-                                if let imageLocalPath = transcription.imageLocalPath,
-                                   let image = PersistenceController.shared.loadImage(filename: imageLocalPath) {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 60)
-                                        .cornerRadius(10)
-                                        .clipped() // Añadir esto para evitar desbordamientos
+                                // Modificar visualización de miniaturas
+                                if let imagePaths = transcription.imageLocalPaths, !imagePaths.isEmpty {
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack {
+                                            ForEach(imagePaths, id: \.self) { imagePath in
+                                                if let image = PersistenceController.shared.loadImage(filename: imagePath) {
+                                                    Image(uiImage: image)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 60, height: 60)
+                                                        .cornerRadius(10)
+                                                        .clipped()
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
 
                                 VStack(alignment: .leading, spacing: 5) {
@@ -56,15 +60,10 @@ struct TranscriptionListView: View {
                                 Spacer()
                                 Menu {
                                     Button(NSLocalizedString("edit_button", comment: "Edit button")) {
-                                        selectedTranscription = transcription
-                                        print("Transcription selected for editing: \(selectedTranscription?.text ?? "None")")
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                            showingEditSheet = true
-                                        }
+                                        presentEditView(for: transcription)
                                     }
                                     Button(NSLocalizedString("delete_button", comment: "Delete button"), role: .destructive) {
-                                        selectedTranscription = transcription
-                                        showingDeleteConfirmation = true
+                                        deleteTranscription(transcription)
                                     }
                                 } label: {
                                     Image(systemName: "ellipsis")
@@ -78,32 +77,31 @@ struct TranscriptionListView: View {
                         }
                     }
                     .navigationTitle(NSLocalizedString("saved_transcriptions_title", comment: "Saved Transcriptions title"))
+                    .navigationBarTitleDisplayMode(.inline) // Esto mantendrá el texto original pero lo centrará
                 }
-            }
-            .sheet(isPresented: $showingEditSheet) {
-                if let transcription = selectedTranscription {
-                    EditTranscriptionView(
-                        transcription: transcription,
-                        onSave: { updatedTranscription in
-                            updateTranscription(updatedTranscription)
-                        }
-                    )
-                } else {
-                    Text(NSLocalizedString("no_transcription_selected", comment: "No transcription selected"))
-                }
-            }
-            .alert(isPresented: $showingDeleteConfirmation) {
-                Alert(
-                    title: Text(NSLocalizedString("delete_transcription_title", comment: "Delete Transcription title")),
-                    message: Text(NSLocalizedString("delete_transcription_message", comment: "Delete Transcription message")),
-                    primaryButton: .destructive(Text(NSLocalizedString("delete_button", comment: "Delete button"))) {
-                        deleteSelectedTranscription()
-                    },
-                    secondaryButton: .cancel()
-                )
             }
         }
         .onAppear(perform: loadTranscriptions)
+    }
+
+    private func presentEditView(for transcription: Transcription) {
+        let editView = EditTranscriptionView(
+            transcription: transcription,
+            onSave: { updatedTranscription in
+                updateTranscription(updatedTranscription)
+            }
+        )
+        
+        // Método actualizado para iOS 15+
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            let hostingController = UIHostingController(rootView: editView)
+            rootViewController.present(
+                hostingController,
+                animated: true,
+                completion: nil
+            )
+        }
     }
 
     private func loadTranscriptions() {
@@ -134,7 +132,8 @@ struct TranscriptionListView: View {
             username: username,
             transcriptionId: transcriptionId,
             text: transcription.text,
-            tags: transcription.tags
+            tags: transcription.tags,
+            imageLocalPaths: transcription.imageLocalPaths
         ) { error in
             if let error = error {
                 errorMessage = NSLocalizedString("error_updating_transcription", comment: "Error updating transcription") + ": \(error.localizedDescription)"
@@ -144,14 +143,13 @@ struct TranscriptionListView: View {
         }
     }
 
-    private func deleteSelectedTranscription() {
+    private func deleteTranscription(_ transcription: Transcription) {
         guard let username = Auth.auth().currentUser?.email,
-              let transcription = selectedTranscription,
               let transcriptionId = transcription.id else { return }
         
-        // Eliminar imagen local si existe
-                if let imageLocalPath = transcription.imageLocalPath {
-                    PersistenceController.shared.deleteImage(filename: imageLocalPath)
+        // Eliminar imágenes locales si existen
+        if let imagePaths = transcription.imageLocalPaths {
+            PersistenceController.shared.deleteImages(filenames: imagePaths)
         }
         
         FirestoreService.shared.deleteTranscription(

@@ -13,7 +13,7 @@ import FirebaseAuth
 struct EditTranscriptionView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var transcription: Transcription
-    @State private var selectedImage: UIImage?
+    @State private var selectedImages: [UIImage] = []
     @State private var showImagePicker = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var showAlert = false
@@ -41,57 +41,52 @@ struct EditTranscriptionView: View {
                         .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
                 }
                 
-                // Sección de imagen
-                Section(header: Text(NSLocalizedString("transcription_image", comment: "Image section header"))) {
-                    // Mostrar imagen local si existe
-                    if let imageLocalPath = transcription.imageLocalPath,
-                       let image = PersistenceController.shared.loadImage(filename: imageLocalPath) {
-                        VStack {
-                            Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: .infinity, maxHeight: 300)
-                                .cornerRadius(10)
-                            
-                            // Botón para eliminar imagen
-                            Button(action: {
-                                // Eliminar imagen local
-                                if let previousImagePath = transcription.imageLocalPath {
-                                    PersistenceController.shared.deleteImage(filename: previousImagePath)
-                                }
-                                
-                                // Limpiar referencias de imagen
-                                transcription.imageLocalPath = nil
-                                transcription.imageURL = nil
-                                
-                                // Actualizar en Firestore
-                                guard let username = Auth.auth().currentUser?.email,
-                                      let transcriptionId = transcription.id else { return }
-                                
-                                FirestoreService.shared.updateTranscription(
-                                    username: username,
-                                    transcriptionId: transcriptionId,
-                                    text: transcription.text,
-                                    tags: transcription.tags,
-                                    imageLocalPath: nil
-                                ) { error in
-                                    if let error = error {
-                                        print("Error eliminando imagen: \(error.localizedDescription)")
+                // Sección de imágenes
+                Section(header: Text(NSLocalizedString("transcription_images", comment: "Images section header"))) {
+                    // Mostrar imágenes locales existentes
+                    if let imagePaths = transcription.imageLocalPaths, !imagePaths.isEmpty {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(imagePaths, id: \.self) { imagePath in
+                                    if let image = PersistenceController.shared.loadImage(filename: imagePath) {
+                                        VStack {
+                                            Image(uiImage: image)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 100, height: 100)
+                                                .cornerRadius(10)
+                                            
+                                            Button(action: {
+                                                removeImage(imagePath)
+                                            }) {
+                                                Text(NSLocalizedString("remove_image", comment: "Remove image"))
+                                                    .foregroundColor(.red)
+                                            }
+                                        }
+                                        .padding(4)
                                     }
                                 }
-                            }) {
-                                Text("Eliminar Imagen")
-                                    .foregroundColor(.red)
                             }
                         }
-                    } else if let selectedImage = selectedImage {
-                        Image(uiImage: selectedImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity, maxHeight: 300)
-                            .cornerRadius(10)
                     }
-                    // Botones para seleccionar imagen
+                    
+                    // Mostrar imágenes seleccionadas nuevas
+                    if !selectedImages.isEmpty {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(selectedImages, id: \.self) { image in
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 100, height: 100)
+                                        .cornerRadius(10)
+                                        .padding(4)
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Botones para seleccionar imágenes
                     HStack(spacing: 15) {
                         // Botón de Biblioteca de Fotos
                         Button(action: {
@@ -157,14 +152,21 @@ struct EditTranscriptionView: View {
             )
             .alert(isPresented: $showAlert) {
                 Alert(
-                    title: Text("Cámara no disponible"),
-                    message: Text("No se puede acceder a la cámara en este dispositivo o simulador"),
-                    dismissButton: .default(Text("OK"))
+                    title: Text(NSLocalizedString("camera_unavailable_title", comment: "Camera unavailable title")),
+                    message: Text(NSLocalizedString("camera_unavailable_message", comment: "Camera unavailable message")),
+                    dismissButton: .default(Text(NSLocalizedString("ok_button", comment: "OK button")))
                 )
             }
         }
         .sheet(isPresented: $showImagePicker) {
-            ImagePickerView(selectedImage: $selectedImage, sourceType: imagePickerSourceType)
+            ImagePickerView(selectedImage: Binding(
+                get: { selectedImages.first },
+                set: { newImage in
+                    if let newImage = newImage {
+                        selectedImages.append(newImage)
+                    }
+                }
+            ), sourceType: imagePickerSourceType)
         }
     }
     
@@ -172,38 +174,56 @@ struct EditTranscriptionView: View {
         guard let username = Auth.auth().currentUser?.email,
               let transcriptionId = transcription.id else { return }
         
-        if let selectedImage = selectedImage {
-            // Guardar imagen localmente
+        // Guardar imágenes seleccionadas
+        var newImageLocalPaths: [String] = transcription.imageLocalPaths ?? []
+        
+        for selectedImage in selectedImages {
             if let imageName = PersistenceController.shared.saveImage(selectedImage) {
-                // Si ya había una imagen local previa, eliminarla
-                if let previousImagePath = transcription.imageLocalPath {
-                    PersistenceController.shared.deleteImage(filename: previousImagePath)
-                }
-                
-                // Actualizar transcripción con nueva ruta de imagen
-                transcription.imageLocalPath = imageName
-                transcription.imageURL = nil // Limpiar URL de Firebase
-                
-                // Actualizar en Firestore
-                FirestoreService.shared.updateTranscription(
-                    username: username,
-                    transcriptionId: transcriptionId,
-                    text: transcription.text,
-                    tags: transcription.tags,
-                    imageLocalPath: imageName
-                ) { error in
-                    if let error = error {
-                        print("Error actualizando transcripción: \(error.localizedDescription)")
-                    } else {
-                        onSave(transcription)
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
+                newImageLocalPaths.append(imageName)
             }
-        } else {
-            // Si no hay imagen nueva, guardar sin modificar imagen
-            onSave(transcription)
-            presentationMode.wrappedValue.dismiss()
+        }
+        
+        // Actualizar transcripción en Firestore
+        FirestoreService.shared.updateTranscription(
+            username: username,
+            transcriptionId: transcriptionId,
+            text: transcription.text,
+            tags: transcription.tags,
+            imageLocalPaths: newImageLocalPaths.isEmpty ? nil : newImageLocalPaths
+        ) { error in
+            if let error = error {
+                print("Error actualizando transcripción: \(error.localizedDescription)")
+            } else {
+                transcription.imageLocalPaths = newImageLocalPaths
+                onSave(transcription)
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
+    }
+    
+    private func removeImage(_ imagePath: String) {
+        guard let username = Auth.auth().currentUser?.email,
+              let transcriptionId = transcription.id else { return }
+        
+        // Eliminar imagen local
+        PersistenceController.shared.deleteImage(filename: imagePath)
+        
+        // Actualizar transcripción en Firestore
+        var updatedImagePaths = transcription.imageLocalPaths ?? []
+        updatedImagePaths.removeAll { $0 == imagePath }
+        
+        FirestoreService.shared.updateTranscription(
+            username: username,
+            transcriptionId: transcriptionId,
+            text: transcription.text,
+            tags: transcription.tags,
+            imageLocalPaths: updatedImagePaths.isEmpty ? nil : updatedImagePaths
+        ) { error in
+            if let error = error {
+                print("Error eliminando imagen: \(error.localizedDescription)")
+            } else {
+                transcription.imageLocalPaths = updatedImagePaths
+            }
         }
     }
     

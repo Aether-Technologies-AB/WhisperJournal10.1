@@ -24,7 +24,8 @@ struct ContentView: View {
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var showAlert = false
     @State private var showProfile = false
-    
+    @State private var isProfileMenuOpen = false
+
     let audioRecorder = AudioRecorder()
     let engine = AudioEngine()
     let mic: AudioEngine.InputNode
@@ -43,49 +44,67 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .edgesIgnoringSafeArea(.all)
+            GeometryReader { geometry in
+                ZStack {
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .edgesIgnoringSafeArea(.all)
 
-                VStack(spacing: 20) {
-                    headerSection
+                    VStack(spacing: 20) {
+                        headerSection
+                        
+                        if isAuthenticated {
+                            authenticatedContent
+                        } else {
+                            LoginView(isAuthenticated: $isAuthenticated)
+                        }
+                    }
+                    .padding()
+                    .animation(.easeInOut, value: isRecording)
+                    .blur(radius: isProfileMenuOpen ? 5 : 0)
+                    .disabled(isProfileMenuOpen)
                     
-                    if isAuthenticated {
-                        authenticatedContent
-                    } else {
-                        LoginView(isAuthenticated: $isAuthenticated)
+                    // Menú lateral
+                    if isProfileMenuOpen {
+                        Color.black.opacity(0.3)
+                            .edgesIgnoringSafeArea(.all)
+                            .onTapGesture {
+                                withAnimation {
+                                    isProfileMenuOpen = false
+                                }
+                            }
+                        
+                        profileSideMenu(geometry: geometry)
+                            .transition(.move(edge: .trailing))
                     }
                 }
-                .padding()
-                .animation(.easeInOut, value: isRecording)
+                .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(trailing: userIcon)
+                .onAppear {
+                    startAudioEngine()
+                }
+                .onDisappear {
+                    stopAudioEngine()
+                }
+                
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text(NSLocalizedString("camera_unavailable_title", comment: "Camera unavailable title")),
+                        message: Text(NSLocalizedString("camera_unavailable_message", comment: "Camera unavailable message")),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
             }
-            .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing: userIcon)
-            .onAppear {
-                startAudioEngine()
+            .sheet(isPresented: $showImagePicker) {
+                ImagePickerView(selectedImage: $selectedImage, sourceType: imagePickerSourceType)
             }
-            .onDisappear {
-                stopAudioEngine()
+            .sheet(isPresented: $showProfile) {
+                ProfileView()
             }
-            
-            .alert(isPresented: $showAlert) {
-                Alert(
-                    title: Text(NSLocalizedString("camera_unavailable_title", comment: "Camera unavailable title")),
-                    message: Text(NSLocalizedString("camera_unavailable_message", comment: "Camera unavailable message")),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
-        }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePickerView(selectedImage: $selectedImage, sourceType: imagePickerSourceType)
-        }
-        .sheet(isPresented: $showProfile) {
-            ProfileView()
         }
     }
 
@@ -104,12 +123,111 @@ struct ContentView: View {
 
     // Ícono de usuario en la barra de navegación
     private var userIcon: some View {
-        Button(action: {
-            showProfile = true
-        }) {
-            Image(systemName: "person.circle")
-                .font(.title)
-                .foregroundColor(.primary)
+        Group {
+            if let user = Auth.auth().currentUser, let email = user.email {
+                let initial = String(email.first ?? "U").uppercased()
+                Button(action: {
+                    withAnimation {
+                        isProfileMenuOpen.toggle()
+                    }
+                }) {
+                    Text(initial)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(width: 35, height: 35)
+                        .background(Color.blue)
+                        .clipShape(Circle())
+                        .shadow(radius: 2)
+                }
+            } else {
+                Image(systemName: "person.circle")
+                    .font(.title)
+                    .foregroundColor(.primary)
+            }
+        }
+    }
+
+    // Menú lateral personalizado
+    private func profileSideMenu(geometry: GeometryProxy) -> some View {
+        HStack {
+            Spacer()
+            
+            VStack(alignment: .leading, spacing: 20) {
+                // Encabezado del usuario
+                HStack {
+                    userInitialCircle
+                    
+                    VStack(alignment: .leading) {
+                        Text(Auth.auth().currentUser?.email ?? "Usuario")
+                            .font(.headline)
+                        Text("WhisperJournal")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+                .padding()
+                
+                Divider()
+                
+                // Opciones del menú
+                menuOption(title: "Perfil", systemImage: "person") {
+                    print("Ir a Perfil")
+                    isProfileMenuOpen = false
+                }
+                
+                menuOption(title: "Planes", systemImage: "creditcard") {
+                    print("Ver Planes")
+                    isProfileMenuOpen = false
+                }
+                
+                menuOption(title: "Configuración", systemImage: "gear") {
+                    print("Abrir Configuración")
+                    isProfileMenuOpen = false
+                }
+                
+                Spacer()
+                
+                // Botón de cerrar sesión
+                Button(action: logout) {
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .foregroundColor(.red)
+                        Text("Cerrar Sesión")
+                            .foregroundColor(.red)
+                    }
+                    .padding()
+                }
+            }
+            .frame(width: geometry.size.width * 0.7)
+            .background(Color(UIColor.systemBackground))
+            .edgesIgnoringSafeArea(.bottom)
+        }
+    }
+
+    // Vista de inicial de usuario
+    private var userInitialCircle: some View {
+        Group {
+            if let user = Auth.auth().currentUser, let email = user.email {
+                let initial = String(email.first ?? "U").uppercased()
+                Text(initial)
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .frame(width: 50, height: 50)
+                    .background(Color.blue)
+                    .clipShape(Circle())
+            }
+        }
+    }
+
+    // Función para crear opciones del menú
+    private func menuOption(title: String, systemImage: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: systemImage)
+                    .foregroundColor(.blue)
+                Text(title)
+            }
+            .padding(.horizontal)
         }
     }
 
@@ -341,9 +459,11 @@ struct ContentView: View {
               let username = Auth.auth().currentUser?.email else { return }
 
         // Guardar imagen si existe
-        var imageLocalPath: String?
+        var imageLocalPaths: [String] = []
         if let selectedImage = selectedImage {
-            imageLocalPath = PersistenceController.shared.saveImage(selectedImage)
+            if let imagePath = PersistenceController.shared.saveImage(selectedImage) {
+                imageLocalPaths.append(imagePath)
+            }
         }
 
         FirestoreService.shared.saveTranscription(
@@ -351,13 +471,13 @@ struct ContentView: View {
             text: recordedText,
             date: transcriptionDate,
             tags: tags,
-            imageLocalPath: imageLocalPath
+            imageLocalPaths: imageLocalPaths.isEmpty ? nil : imageLocalPaths
         ) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             } else {
                 resetFields()
-                selectedImage = nil // Limpiar imagen después de guardar
+                selectedImage = nil
             }
         }
     }
@@ -373,6 +493,7 @@ struct ContentView: View {
     private func logout() {
         WhisperJournal10_1App.logout()
         isAuthenticated = false
+        isProfileMenuOpen = false
     }
 
     private func startAudioEngine() {

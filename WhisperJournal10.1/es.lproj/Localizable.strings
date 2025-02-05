@@ -76,3 +76,10 @@
 "no_authenticated_user" = "No hay usuario autenticado";
 "profile_navigation_title" = "Perfil";
 "close_button" = "Cerrar";
+"transcription_list_title" = "Mis Transcripciones";
+"delete_transcription_error" = "Error eliminando transcripción";
+"camera_unavailable_title" = "Cámara no disponible";
+"camera_unavailable_message" = "No se puede acceder a la cámara en este dispositivo o simulador";
+"ok_button" = "OK";
+"remove_image" = "Eliminar";
+"saved_transcriptions_title" = "Transcripciones Guardadas";

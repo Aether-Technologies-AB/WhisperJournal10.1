@@ -34,7 +34,8 @@ struct ImagePickerView: UIViewControllerRepresentable {
                 AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) ??
                 AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
                 do {
-                    let input = try AVCaptureDeviceInput(device: captureDevice)
+                    // Usar _ para indicar que la variable no se utilizará
+                    _ = try AVCaptureDeviceInput(device: captureDevice)
                     let session = AVCaptureSession()
                     session.sessionPreset = .photo
                 } catch {

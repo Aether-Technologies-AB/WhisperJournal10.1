@@ -4,44 +4,93 @@
 //
 //  Created by andree on 1/02/25.
 //
-
 import SwiftUI
 import FirebaseAuth
 
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
-    @State private var userEmail: String = ""
-
+    
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Text(NSLocalizedString("profile_title", comment: "Profile title"))
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                
-                if let user = Auth.auth().currentUser {
-                    Text("\(NSLocalizedString("email_label", comment: "Email label")): \(user.email ?? NSLocalizedString("email_not_available", comment: "Email not available"))")
-                        .font(.title2)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
-                } else {
-                    Text(NSLocalizedString("no_authenticated_user", comment: "No authenticated user"))
-                        .font(.title2)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
-                }
-                
+        VStack {
+            // Contenido del menú desplegable
+            HStack {
+                userInitialCircle
+                userDetails
                 Spacer()
             }
             .padding()
-            .navigationTitle(NSLocalizedString("profile_navigation_title", comment: "Profile navigation title"))
-            .navigationBarItems(trailing: Button(NSLocalizedString("close_button", comment: "Close button")) {
-                presentationMode.wrappedValue.dismiss()
-            })
+            
+            Divider()
+            
+            VStack(alignment: .leading, spacing: 15) {
+                menuOption(title: "Perfil", systemImage: "person")
+                menuOption(title: "Planes", systemImage: "creditcard")
+                menuOption(title: "Configuración", systemImage: "gear")
+                
+                Divider()
+                
+                logoutOption
+            }
+            .padding()
+            
+            Spacer()
+        }
+        .background(Color(UIColor.systemBackground))
+    }
+    
+    private var userInitialCircle: some View {
+        Group {
+            if let user = Auth.auth().currentUser, let email = user.email {
+                let initial = String(email.first ?? "U").uppercased()
+                Text(initial)
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .frame(width: 50, height: 50)
+                    .background(Color.blue)
+                    .clipShape(Circle())
+            }
+        }
+    }
+    
+    private var userDetails: some View {
+        VStack(alignment: .leading) {
+            Text(Auth.auth().currentUser?.email ?? "Usuario")
+                .font(.headline)
+            Text("WhisperJournal")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+        }
+        .padding(.leading)
+    }
+    
+    private func menuOption(title: String, systemImage: String) -> some View {
+        Button(action: {
+            // Acciones para cada opción
+            print("Seleccionado: \(title)")
+        }) {
+            HStack {
+                Image(systemName: systemImage)
+                    .foregroundColor(.blue)
+                Text(title)
+            }
+        }
+    }
+    
+    private var logoutOption: some View {
+        Button(action: {
+            do {
+                try Auth.auth().signOut()
+                // Aquí podrías manejar la navegación de vuelta al login
+            } catch {
+                print("Error al cerrar sesión: \(error.localizedDescription)")
+            }
+        }) {
+            HStack {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
+                    .foregroundColor(.red)
+                Text("Cerrar Sesión")
+                    .foregroundColor(.red)
+            }
         }
     }
 }
