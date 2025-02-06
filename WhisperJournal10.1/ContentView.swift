@@ -25,16 +25,45 @@ struct ContentView: View {
     @State private var showAlert = false
     @State private var showProfile = false
     @State private var isProfileMenuOpen = false
-
-    let audioRecorder = AudioRecorder()
-    let engine = AudioEngine()
+    
+    @StateObject private var audioEngineMicrophone = AudioEngineMicrophone()
+    let audioRecorder: AudioRecorder
+    let engine: AudioEngine
     let mic: AudioEngine.InputNode
 
     init() {
-        guard let input = engine.input else {
-            fatalError(NSLocalizedString("mic_access_error", comment: "Error message when microphone access fails"))
+        // Inicializa audioRecorder
+        audioRecorder = AudioRecorder()
+        
+        // Usa el motor de audio de AudioEngineMicrophone
+        engine = AudioEngineMicrophone().audioEngine
+        mic = engine.input ?? AudioEngine().input!
+    }
+    
+    // Resto del código permanece igual...
+
+    private func startAudioEngine() {
+        audioEngineMicrophone.start()
+    }
+
+    private func stopAudioEngine() {
+        audioEngineMicrophone.stop()
+    }
+
+    private func startRecording() {
+        audioRecorder.setLanguageCode(selectedLanguage)
+        audioRecorder.startRecording { transcription in
+            self.recordedText = transcription
+            self.transcriptionDate = Date()
         }
-        mic = input
+        isRecording = true
+        audioEngineMicrophone.stop()
+    }
+
+    private func stopRecording() {
+        isRecording = false
+        audioRecorder.stopRecording()
+        audioEngineMicrophone.start()
     }
     
     // Método para verificar la disponibilidad de la cámara
@@ -438,7 +467,7 @@ struct ContentView: View {
         isRecording ? stopRecording() : startRecording()
     }
 
-    private func startRecording() {
+  /*  private func startRecording() {
         audioRecorder.setLanguageCode(selectedLanguage)
         audioRecorder.startRecording { transcription in
             self.recordedText = transcription
@@ -453,7 +482,7 @@ struct ContentView: View {
         audioRecorder.stopRecording()
         try? engine.start()
     }
-
+*/
     private func saveTranscription() {
         guard !recordedText.isEmpty,
               let username = Auth.auth().currentUser?.email else { return }
@@ -496,14 +525,14 @@ struct ContentView: View {
         isProfileMenuOpen = false
     }
 
-    private func startAudioEngine() {
+   /* private func startAudioEngine() {
         try? engine.start()
     }
 
     private func stopAudioEngine() {
         engine.stop()
     }
-
+*/
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
         // Verificar disponibilidad de la cámara
         if sourceType == .camera {

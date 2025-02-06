@@ -20,28 +20,14 @@ struct ImagePickerView: UIViewControllerRepresentable {
         picker.delegate = context.coordinator
         picker.sourceType = sourceType
         
+        // Configuraciones universales
+        picker.allowsEditing = false
+        picker.modalPresentationStyle = .fullScreen
+        
+        // Configuración específica para cámara
         if sourceType == .camera {
-            // Configuración defensiva para prevenir modo Portrait
             picker.cameraCaptureMode = .photo
             picker.cameraDevice = .rear
-            picker.allowsEditing = false
-            
-            // Configuración para evitar modos especiales
-            picker.modalPresentationStyle = .fullScreen
-            
-            // Intentar configurar la sesión de captura directamente
-            if let captureDevice = AVCaptureDevice.default(.builtInTripleCamera, for: .video, position: .back) ??
-                AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) ??
-                AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
-                do {
-                    // Usar _ para indicar que la variable no se utilizará
-                    _ = try AVCaptureDeviceInput(device: captureDevice)
-                    let session = AVCaptureSession()
-                    session.sessionPreset = .photo
-                } catch {
-                    print("❌ Error configurando dispositivo de captura: \(error)")
-                }
-            }
         }
         
         return picker
@@ -69,15 +55,16 @@ struct ImagePickerView: UIViewControllerRepresentable {
             }
             
             if let uiImage = info[.originalImage] as? UIImage {
-                // Intentar normalizar la imagen
-                if let normalizedImage = normalizeImage(uiImage) {
+                // Normalizar y comprimir la imagen
+                if let normalizedImage = normalizeAndCompressImage(uiImage) {
                     parent.selectedImage = normalizedImage
                 } else {
                     parent.selectedImage = uiImage
                 }
                 
                 print("✅ Imagen capturada:")
-                print("📏 Tamaño: \(uiImage.size)")
+                print("📏 Tamaño original: \(uiImage.size)")
+                print("📏 Tamaño normalizada: \(parent.selectedImage?.size ?? .zero)")
             }
             
             parent.presentationMode.wrappedValue.dismiss()
@@ -87,13 +74,25 @@ struct ImagePickerView: UIViewControllerRepresentable {
             parent.presentationMode.wrappedValue.dismiss()
         }
         
-        // Función para normalizar la imagen
-        private func normalizeImage(_ image: UIImage) -> UIImage? {
-            UIGraphicsBeginImageContextWithOptions(image.size, false, 1.0)
-            image.draw(in: CGRect(origin: .zero, size: image.size))
-            let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        // Función para normalizar y comprimir la imagen
+        private func normalizeAndCompressImage(_ image: UIImage) -> UIImage? {
+            // Tamaño máximo para la imagen (ajusta según necesites)
+            let maxSize: CGFloat = 1024
+            
+            // Calcular nuevo tamaño manteniendo proporción
+            var newSize = image.size
+            if newSize.width > maxSize || newSize.height > maxSize {
+                let scaleFactor = min(maxSize / newSize.width, maxSize / newSize.height)
+                newSize = CGSize(width: newSize.width * scaleFactor, height: newSize.height * scaleFactor)
+            }
+            
+            // Renderizar imagen con nuevo tamaño
+            UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+            image.draw(in: CGRect(origin: .zero, size: newSize))
+            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            return normalizedImage
+            
+            return resizedImage
         }
     }
 }
