@@ -80,3 +80,8 @@
 "ok_button" = "OK";
 "remove_image" = "Ta bort";
 "saved_transcriptions_title" = "Sparade Transkriptioner";
+"profile_menu_profile" = "Profil";
+"profile_menu_plans" = "Planer";
+"profile_menu_settings" = "Inställningar";
+"profile_default_user" = "Användare";
+"profile_logout" = "Logga ut";

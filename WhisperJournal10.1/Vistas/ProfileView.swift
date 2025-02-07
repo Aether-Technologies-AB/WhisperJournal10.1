@@ -23,9 +23,9 @@ struct ProfileView: View {
             Divider()
             
             VStack(alignment: .leading, spacing: 15) {
-                menuOption(title: "Perfil", systemImage: "person")
-                menuOption(title: "Planes", systemImage: "creditcard")
-                menuOption(title: "Configuración", systemImage: "gear")
+                menuOption(title: NSLocalizedString("profile_menu_profile", comment: "Profile menu option"), systemImage: "person")
+                menuOption(title: NSLocalizedString("profile_menu_plans", comment: "Plans menu option"), systemImage: "creditcard")
+                menuOption(title: NSLocalizedString("profile_menu_settings", comment: "Settings menu option"), systemImage: "gear")
                 
                 Divider()
                 
@@ -54,18 +54,17 @@ struct ProfileView: View {
     
     private var userDetails: some View {
         VStack(alignment: .leading) {
-            Text(Auth.auth().currentUser?.email ?? "Usuario")
+            Text(Auth.auth().currentUser?.email ?? NSLocalizedString("profile_default_user", comment: "Default user"))
                 .font(.headline)
             Text("WhisperJournal")
                 .font(.subheadline)
                 .foregroundColor(.gray)
         }
-        .padding(.leading)
     }
     
     private func menuOption(title: String, systemImage: String) -> some View {
         Button(action: {
-            // Acciones para cada opción
+            // Acciones para cada opción de menú
             print("Seleccionado: \(title)")
         }) {
             HStack {
@@ -73,24 +72,28 @@ struct ProfileView: View {
                     .foregroundColor(.blue)
                 Text(title)
             }
+            .padding(.horizontal)
         }
     }
     
     private var logoutOption: some View {
-        Button(action: {
-            do {
-                try Auth.auth().signOut()
-                // Aquí podrías manejar la navegación de vuelta al login
-            } catch {
-                print("Error al cerrar sesión: \(error.localizedDescription)")
-            }
-        }) {
+        Button(action: logout) {
             HStack {
                 Image(systemName: "rectangle.portrait.and.arrow.right")
                     .foregroundColor(.red)
-                Text("Cerrar Sesión")
+                Text(NSLocalizedString("profile_logout", comment: "Logout button"))
                     .foregroundColor(.red)
             }
+            .padding()
+        }
+    }
+    
+    private func logout() {
+        do {
+            try Auth.auth().signOut()
+            presentationMode.wrappedValue.dismiss()
+        } catch {
+            print("Error al cerrar sesión: \(error.localizedDescription)")
         }
     }
 }

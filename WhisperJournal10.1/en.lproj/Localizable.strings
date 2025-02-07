@@ -85,3 +85,8 @@
 "ok_button" = "OK";
 "remove_image" = "Remove";
 "saved_transcriptions_title" = "Saved Transcriptions";
+"profile_menu_profile" = "Profile";
+"profile_menu_plans" = "Plans";
+"profile_menu_settings" = "Settings";
+"profile_default_user" = "User";
+"profile_logout" = "Logout";
