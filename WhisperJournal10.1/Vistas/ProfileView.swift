@@ -4,8 +4,11 @@
 //
 //  Created by andree on 1/02/25.
 //
+
+
 import SwiftUI
 import FirebaseAuth
+import UIKit
 
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -24,7 +27,7 @@ struct ProfileView: View {
             
             VStack(alignment: .leading, spacing: 15) {
                 menuOption(title: NSLocalizedString("profile_menu_profile", comment: "Profile menu option"), systemImage: "person")
-                menuOption(title: NSLocalizedString("profile_menu_plans", comment: "Plans menu option"), systemImage: "creditcard")
+                menuOption(title: NSLocalizedString("profile_menu_plans", comment: "Plans menu option"), systemImage: "creditcard", url: "https://nestofmemories.com/pricing")
                 menuOption(title: NSLocalizedString("profile_menu_settings", comment: "Settings menu option"), systemImage: "gear")
                 
                 Divider()
@@ -62,10 +65,14 @@ struct ProfileView: View {
         }
     }
     
-    private func menuOption(title: String, systemImage: String) -> some View {
+    private func menuOption(title: String, systemImage: String, url: String? = nil) -> some View {
         Button(action: {
-            // Acciones para cada opción de menú
-            print("Seleccionado: \(title)")
+            if let urlString = url, let webURL = URL(string: urlString) {
+                UIApplication.shared.open(webURL)
+            } else {
+                // Acciones para otras opciones de menú
+                print("Seleccionado: \(title)")
+            }
         }) {
             HStack {
                 Image(systemName: systemImage)

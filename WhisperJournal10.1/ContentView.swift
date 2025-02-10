@@ -9,6 +9,7 @@ import AudioKit
 import AudioKitUI
 import FirebaseAuth
 import Speech
+import UIKit
 
 struct ContentView: View {
     @AppStorage("isAuthenticated") private var isAuthenticated = false
@@ -20,8 +21,12 @@ struct ContentView: View {
     @State private var showTranscriptionOptions = false
     @State private var audioVisualizer: AudioVisualizerView?
     @State private var selectedImage: UIImage?
+    enum ImagePickerType {
+        case photoLibrary
+        case camera
+    }
     @State private var showImagePicker = false
-    @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
+    @State private var activePickerType: ImagePickerType = .photoLibrary
     @State private var showAlert = false
     @State private var showProfile = false
     @State private var isProfileMenuOpen = false
@@ -63,7 +68,6 @@ struct ContentView: View {
     private func stopRecording() {
         isRecording = false
         audioRecorder.stopRecording()
-        audioEngineMicrophone.start()
     }
     
     // Método para verificar la disponibilidad de la cámara
@@ -113,12 +117,6 @@ struct ContentView: View {
                 .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(trailing: userIcon)
-                .onAppear {
-                    startAudioEngine()
-                }
-                .onDisappear {
-                    stopAudioEngine()
-                }
                 
                 .alert(isPresented: $showAlert) {
                     Alert(
@@ -129,7 +127,8 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showImagePicker) {
-                ImagePickerView(selectedImage: $selectedImage, sourceType: imagePickerSourceType)
+                ImagePickerView(selectedImage: $selectedImage,
+                              sourceType: activePickerType == .camera ? .camera : .photoLibrary)
             }
             .sheet(isPresented: $showProfile) {
                 ProfileView()
@@ -205,10 +204,11 @@ struct ContentView: View {
                 }
                 
                 menuOption(title: "Planes", systemImage: "creditcard") {
-                    print("Ver Planes")
+                    if let url = URL(string: "https://nestofmemories.com/pricing") {
+                        UIApplication.shared.open(url)
+                    }
                     isProfileMenuOpen = false
                 }
-                
                 menuOption(title: "Configuración", systemImage: "gear") {
                     print("Abrir Configuración")
                     isProfileMenuOpen = false
@@ -534,18 +534,15 @@ struct ContentView: View {
     }
 */
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-        // Verificar disponibilidad de la cámara
         if sourceType == .camera {
             guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-                // Mostrar alerta
                 showAlert = true
-                imagePickerSourceType = .photoLibrary
-                showImagePicker = true
                 return
             }
+            activePickerType = .camera
+        } else {
+            activePickerType = .photoLibrary
         }
-        
-        imagePickerSourceType = sourceType
         showImagePicker = true
     }
 }

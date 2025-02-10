@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6D0D58352D59A13B00E98192 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6D0D58342D59A13B00E98192 /* FirebaseFirestore */; };
 		6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1806B42D29DC3500A7ADDB /* Transcription.swift */; };
 		6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D45C9AD2D2918A400136F98 /* FirestoreService.swift */; };
 		6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */; };
-		6D69AB202D49636D0031165B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6D69AB1F2D49636D0031165B /* FirebaseFirestore */; };
 		6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6C19B82D42C6CF009AC331 /* FirebaseStorage */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
 		6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */; };
@@ -46,7 +46,6 @@
 
 /* Begin PBXFileReference section */
 		6D1806B42D29DC3500A7ADDB /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
-		6D27FC062D49CB0E00A11A7B /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D45C9AD2D2918A400136F98 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
@@ -65,6 +64,7 @@
 		6D9E65272D3B703F0097281E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6DA93E982D1C8B1E00D43977 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WisperService.swift; sourceTree = "<group>"; };
+		6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTranscriptionView.swift; sourceTree = "<group>"; };
 		6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		6DD4CF2B2D4E9230006E34B1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 				6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */,
 				6DBC1F292D333DC3006DA6A5 /* FirebaseAnalytics in Frameworks */,
 				6D9899BC2D3AD01F005F79FB /* GoogleSignInSwift in Frameworks */,
-				6D69AB202D49636D0031165B /* FirebaseFirestore in Frameworks */,
+				6D0D58352D59A13B00E98192 /* FirebaseFirestore in Frameworks */,
 				6DBC1F2B2D333DC3006DA6A5 /* FirebaseAuth in Frameworks */,
 				6DBC1F2F2D333DC3006DA6A5 /* FirebaseFirestoreSwift in Frameworks */,
 				6D9899BA2D3AD01F005F79FB /* GoogleSignIn in Frameworks */,
@@ -101,7 +101,7 @@
 			children = (
 				6D7E66292D0E604A00765A78 /* WhisperJournal10.1 */,
 				6DBC1F242D333AE9006DA6A5 /* Frameworks */,
-				6D27FC062D49CB0E00A11A7B /* WhisperJournal10.1.app */,
+				6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -219,10 +219,10 @@
 				6D9899B92D3AD01F005F79FB /* GoogleSignIn */,
 				6D9899BB2D3AD01F005F79FB /* GoogleSignInSwift */,
 				6D6C19B82D42C6CF009AC331 /* FirebaseStorage */,
-				6D69AB1F2D49636D0031165B /* FirebaseFirestore */,
+				6D0D58342D59A13B00E98192 /* FirebaseFirestore */,
 			);
 			productName = WhisperJournal10.1;
-			productReference = 6D27FC062D49CB0E00A11A7B /* WhisperJournal10.1.app */;
+			productReference = 6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -447,6 +447,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WhisperJournal10.1/Preview Content\"";
@@ -455,11 +456,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME)";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = WhisperJournal10.1;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = WhisperJournal10.1;
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -475,6 +475,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "SwiftUI.WhisperJournal10-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -486,6 +487,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WhisperJournal10.1/Preview Content\"";
@@ -494,11 +496,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME)";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = WhisperJournal10.1;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = WhisperJournal10.1;
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -514,6 +515,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "SwiftUI.WhisperJournal10-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -579,7 +581,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6D69AB1F2D49636D0031165B /* FirebaseFirestore */ = {
+		6D0D58342D59A13B00E98192 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6DBC1F272D333DC3006DA6A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
