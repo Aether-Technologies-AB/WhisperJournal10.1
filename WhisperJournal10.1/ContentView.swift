@@ -27,6 +27,7 @@ struct ContentView: View {
     }
     @State private var showImagePicker = false
     @State private var activePickerType: ImagePickerType = .photoLibrary
+    @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var showAlert = false
     @State private var showProfile = false
     @State private var isProfileMenuOpen = false
@@ -35,7 +36,7 @@ struct ContentView: View {
     let audioRecorder: AudioRecorder
     let engine: AudioEngine
     let mic: AudioEngine.InputNode
-
+    
     init() {
         // Inicializa audioRecorder
         audioRecorder = AudioRecorder()
@@ -46,15 +47,15 @@ struct ContentView: View {
     }
     
     // Resto del código permanece igual...
-
+    
     private func startAudioEngine() {
         audioEngineMicrophone.start()
     }
-
+    
     private func stopAudioEngine() {
         audioEngineMicrophone.stop()
     }
-
+    
     private func startRecording() {
         audioRecorder.setLanguageCode(selectedLanguage)
         audioRecorder.startRecording { transcription in
@@ -64,7 +65,7 @@ struct ContentView: View {
         isRecording = true
         audioEngineMicrophone.stop()
     }
-
+    
     private func stopRecording() {
         isRecording = false
         audioRecorder.stopRecording()
@@ -74,7 +75,7 @@ struct ContentView: View {
     private func checkCameraAvailability() -> Bool {
         return UIImagePickerController.isSourceTypeAvailable(.camera)
     }
-
+    
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -85,7 +86,7 @@ struct ContentView: View {
                         endPoint: .bottom
                     )
                     .edgesIgnoringSafeArea(.all)
-
+                    
                     VStack(spacing: 20) {
                         headerSection
                         
@@ -128,14 +129,14 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showImagePicker) {
                 ImagePickerView(selectedImage: $selectedImage,
-                              sourceType: activePickerType == .camera ? .camera : .photoLibrary)
+                                sourceType: activePickerType == .camera ? .camera : .photoLibrary)
             }
             .sheet(isPresented: $showProfile) {
                 ProfileView()
             }
         }
     }
-
+    
     // Sección de encabezado
     private var headerSection: some View {
         Text(NSLocalizedString("app_title", comment: "App title"))
@@ -148,7 +149,7 @@ struct ContentView: View {
                     .shadow(color: .gray.opacity(0.2), radius: 10, x: 0, y: 5)
             )
     }
-
+    
     // Ícono de usuario en la barra de navegación
     private var userIcon: some View {
         Group {
@@ -174,7 +175,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     // Menú lateral personalizado
     private func profileSideMenu(geometry: GeometryProxy) -> some View {
         HStack {
@@ -198,21 +199,22 @@ struct ContentView: View {
                 Divider()
                 
                 // Opciones del menú
-                menuOption(title: "Perfil", systemImage: "person") {
-                    print("Ir a Perfil")
-                    isProfileMenuOpen = false
-                }
-                
-                menuOption(title: "Planes", systemImage: "creditcard") {
-                    if let url = URL(string: "https://nestofmemories.com/pricing") {
-                        UIApplication.shared.open(url)
-                    }
-                    isProfileMenuOpen = false
-                }
-                menuOption(title: "Configuración", systemImage: "gear") {
-                    print("Abrir Configuración")
-                    isProfileMenuOpen = false
-                }
+                menuOption(title: NSLocalizedString("profile", comment: "Profile menu option"), systemImage: "person") {
+                                print("Ir a Perfil")
+                                isProfileMenuOpen = false
+                            }
+                            
+                            menuOption(title: NSLocalizedString("plans", comment: "Plans menu option"), systemImage: "creditcard") {
+                                if let url = URL(string: "https://nestofmemories.com/pricing") {
+                                    UIApplication.shared.open(url)
+                                }
+                                isProfileMenuOpen = false
+                            }
+                            
+                            menuOption(title: NSLocalizedString("settings", comment: "Settings menu option"), systemImage: "gear") {
+                                print("Abrir Configuración")
+                                isProfileMenuOpen = false
+                            }
                 
                 Spacer()
                 
@@ -232,7 +234,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.bottom)
         }
     }
-
+    
     // Vista de inicial de usuario
     private var userInitialCircle: some View {
         Group {
@@ -247,7 +249,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     // Función para crear opciones del menú
     private func menuOption(title: String, systemImage: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
@@ -259,7 +261,7 @@ struct ContentView: View {
             .padding(.horizontal)
         }
     }
-
+    
     // Contenido para usuario autenticado
     private var authenticatedContent: some View {
         VStack(spacing: 20) {
@@ -279,7 +281,7 @@ struct ContentView: View {
             logoutButton
         }
     }
-
+    
     // Selector de idioma
     private var languageSelector: some View {
         Menu {
@@ -296,7 +298,7 @@ struct ContentView: View {
             .cornerRadius(10)
         }
     }
-
+    
     // Sección de grabación
     private var recordingSection: some View {
         VStack {
@@ -306,7 +308,7 @@ struct ContentView: View {
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(12)
             }
-
+            
             Button(action: toggleRecording) {
                 recordingButtonContent
             }
@@ -314,36 +316,36 @@ struct ContentView: View {
             .frame(maxWidth: .infinity)
         }
     }
-
+    
     // Contenido del botón de grabación
-        private var recordingButtonContent: some View {
-            HStack {
-                Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                    .font(.title)
-                Text(isRecording ?
-                    NSLocalizedString("stop_button", comment: "Stop button") :
+    private var recordingButtonContent: some View {
+        HStack {
+            Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                .font(.title)
+            Text(isRecording ?
+                 NSLocalizedString("stop_button", comment: "Stop button") :
                     NSLocalizedString("record_button", comment: "Record button"))
-                    .font(.caption)
-            }
-            .padding()
-            .background(
-                LinearGradient(
-                    colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .foregroundColor(.white)
-            .cornerRadius(12)
-            .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
+            .font(.caption)
         }
-
+        .padding()
+        .background(
+            LinearGradient(
+                colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .foregroundColor(.white)
+        .cornerRadius(12)
+        .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
+    }
+    
     // Visualización de transcripción
     private var transcriptionDisplay: some View {
         VStack(alignment: .leading) {
             Text(NSLocalizedString("transcription_label", comment: "Transcription label"))
                 .font(.headline)
-
+            
             Text(recordedText)
                 .padding()
                 .background(Color.gray.opacity(0.1))
@@ -352,7 +354,7 @@ struct ContentView: View {
         }
         .padding()
     }
-
+    
     // Opciones de foto
     private var photoOptions: some View {
         VStack {
@@ -402,7 +404,7 @@ struct ContentView: View {
             .padding(.vertical, 10)
         }
     }
-
+    
     // Botones de acción
     private var actionButtons: some View {
         VStack(spacing: 15) {
@@ -422,7 +424,7 @@ struct ContentView: View {
                     .shadow(color: Color.orange.opacity(0.4), radius: 8, x: 0, y: 4)
                     .font(.caption)
             }
-
+            
             NavigationLink(destination: TranscriptionListView()) {
                 Text(NSLocalizedString("view_saved_transcriptions", comment: "View Saved Transcriptions button"))
                     .frame(maxWidth: .infinity)
@@ -441,7 +443,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     // Botón de logout
     private var logoutButton: some View {
         Button(action: logout) {
@@ -461,32 +463,32 @@ struct ContentView: View {
                 .font(.caption)
         }
     }
-
+    
     // Métodos de grabación y guardado
     private func toggleRecording() {
         isRecording ? stopRecording() : startRecording()
     }
-
-  /*  private func startRecording() {
-        audioRecorder.setLanguageCode(selectedLanguage)
-        audioRecorder.startRecording { transcription in
-            self.recordedText = transcription
-            self.transcriptionDate = Date()
-        }
-        isRecording = true
-        engine.stop()
-    }
-
-    private func stopRecording() {
-        isRecording = false
-        audioRecorder.stopRecording()
-        try? engine.start()
-    }
-*/
+    
+    /*  private func startRecording() {
+     audioRecorder.setLanguageCode(selectedLanguage)
+     audioRecorder.startRecording { transcription in
+     self.recordedText = transcription
+     self.transcriptionDate = Date()
+     }
+     isRecording = true
+     engine.stop()
+     }
+     
+     private func stopRecording() {
+     isRecording = false
+     audioRecorder.stopRecording()
+     try? engine.start()
+     }
+     */
     private func saveTranscription() {
         guard !recordedText.isEmpty,
               let username = Auth.auth().currentUser?.email else { return }
-
+        
         // Guardar imagen si existe
         var imageLocalPaths: [String] = []
         if let selectedImage = selectedImage {
@@ -494,7 +496,7 @@ struct ContentView: View {
                 imageLocalPaths.append(imagePath)
             }
         }
-
+        
         FirestoreService.shared.saveTranscription(
             username: username,
             text: recordedText,
@@ -510,29 +512,29 @@ struct ContentView: View {
             }
         }
     }
-
+    
     private func resetFields() {
         recordedText = ""
         tags = ""
         selectedImage = nil
     }
-
-  
-
+    
+    
+    
     private func logout() {
         WhisperJournal10_1App.logout()
         isAuthenticated = false
         isProfileMenuOpen = false
     }
-
-   /* private func startAudioEngine() {
-        try? engine.start()
-    }
-
-    private func stopAudioEngine() {
-        engine.stop()
-    }
-*/
+    
+    /* private func startAudioEngine() {
+     try? engine.start()
+     }
+     
+     private func stopAudioEngine() {
+     engine.stop()
+     }
+     */
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
         if sourceType == .camera {
             guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
@@ -545,62 +547,63 @@ struct ContentView: View {
         }
         showImagePicker = true
     }
-}
-
-// Estilos personalizados
-struct RecordingButtonStyle: ButtonStyle {
-    let isRecording: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                LinearGradient(
-                    colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal],
-                    startPoint: .leading,
-                    endPoint: .trailing
+    
+    // Estilos personalizados
+    struct RecordingButtonStyle: ButtonStyle {
+        let isRecording: Bool
+        
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(
+                    LinearGradient(
+                        colors: isRecording ? [Color.red, Color.pink] : [Color.green, Color.teal],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
                 )
-            )
-            .foregroundColor(.white)
-            .cornerRadius(12)
-            .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-    }
-}
-
-// Vista de visualización de audio
-struct AudioVisualizerView: View {
-    @State private var bars: [CGFloat] = Array(repeating: 20, count: 20)
-    
-    var body: some View {
-        GeometryReader { geometry in
-            HStack(spacing: 2) {
-                ForEach(0..<20, id: \.self) { index in
-                    Rectangle()
-                        .fill(Color.blue.opacity(0.5))
-                        .frame(width: 3, height: bars[index])
-                }
-            }
-        }
-        .onAppear {
-            startAnimation()
+                .foregroundColor(.white)
+                .cornerRadius(12)
+                .shadow(color: .purple.opacity(0.4), radius: 8, x: 0, y: 4)
+                .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
         }
     }
     
-    private func startAnimation() {
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
-            withAnimation(.easeInOut(duration: 0.5)) {
-                bars = bars.map { _ in
-                    CGFloat.random(in: 20...100)
+    // Vista de visualización de audio
+    struct AudioVisualizerView: View {
+        @State private var bars: [CGFloat] = Array(repeating: 20, count: 20)
+        
+        var body: some View {
+            GeometryReader { geometry in
+                HStack(spacing: 2) {
+                    ForEach(0..<20, id: \.self) { index in
+                        Rectangle()
+                            .fill(Color.blue.opacity(0.5))
+                            .frame(width: 3, height: bars[index])
+                    }
+                }
+            }
+            .onAppear {
+                startAnimation()
+            }
+        }
+        
+        private func startAnimation() {
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    bars = bars.map { _ in
+                        CGFloat.random(in: 20...100)
+                    }
                 }
             }
         }
     }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+    
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
     }
-}
+
+    }

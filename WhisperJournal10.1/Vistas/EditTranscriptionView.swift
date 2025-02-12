@@ -9,6 +9,7 @@ import UIKit
 import AVFoundation
 import Photos
 import FirebaseAuth
+import AVFoundation
 
 struct EditTranscriptionView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -228,37 +229,34 @@ struct EditTranscriptionView: View {
     }
     
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-        // Verificaciones de permisos y disponibilidad
-        guard sourceType == .camera else {
-            imagePickerSourceType = sourceType
-            showImagePicker = true
-            return
-        }
-        
-        // Verificación específica para cámara
-        AVCaptureDevice.requestAccess(for: .video) { granted in
-            DispatchQueue.main.async {
-                if granted && UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    // Configuración mínima para cámara
-                    imagePickerSourceType = .camera
-                    showImagePicker = true
-                } else {
-                    showAlert = true
-                }
+        if sourceType == .camera {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePickerSourceType = .camera
+            } else {
+                print("⚠️ Cámara no disponible. Abriendo la galería en su lugar.")
+                imagePickerSourceType = .photoLibrary
+                showAlert = true
             }
+        } else {
+            imagePickerSourceType = .photoLibrary
+        }
+        showImagePicker = true
+    }
+    
+    // Verificación específica para cámara
+    
+    
+    struct EditTranscriptionView_Previews: PreviewProvider {
+        static var previews: some View {
+            EditTranscriptionView(
+                transcription: Transcription(
+                    text: "Sample text",
+                    date: Date(),
+                    tags: "Sample tags"
+                ),
+                onSave: { _ in }
+            )
         }
     }
-}
 
-struct EditTranscriptionView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditTranscriptionView(
-            transcription: Transcription(
-                text: "Sample text",
-                date: Date(),
-                tags: "Sample tags"
-            ),
-            onSave: { _ in }
-        )
     }
-}
