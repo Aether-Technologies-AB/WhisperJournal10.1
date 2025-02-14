@@ -360,6 +360,7 @@ struct ContentView: View {
         VStack {
             HStack(spacing: 15) {
                 // Botón de Biblioteca de Fotos
+                // Botón de Biblioteca de Fotos
                 Button(action: {
                     openImagePicker(sourceType: .photoLibrary)
                 }) {
@@ -378,8 +379,9 @@ struct ContentView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
+                    .contentShape(Rectangle())  // Añadir esta línea
                 }
-                
+
                 // Botón de Cámara
                 Button(action: {
                     openImagePicker(sourceType: .camera)
@@ -399,6 +401,7 @@ struct ContentView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
+                    .contentShape(Rectangle())  // Añadir esta línea
                 }
             }
             .padding(.vertical, 10)
@@ -536,17 +539,40 @@ struct ContentView: View {
      }
      */
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-        if sourceType == .camera {
-            guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-                showAlert = true
-                return
+            // Forzar reinicio de estado
+            showImagePicker = false
+            
+            // Verificación detallada de la disponibilidad de la cámara
+            if sourceType == .camera {
+                let cameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
+                let rearCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(.rear)
+                let frontCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(.front)
+                
+                print("🔍 Estado de la cámara:")
+                print("Cámara disponible: \(cameraAvailable)")
+                print("Cámara trasera disponible: \(rearCameraAvailable)")
+                print("Cámara frontal disponible: \(frontCameraAvailable)")
+                print("Modelo de dispositivo: \(UIDevice.current.model)")
+                
+                if cameraAvailable && (rearCameraAvailable || frontCameraAvailable) {
+                    activePickerType = .camera
+                    imagePickerSourceType = .camera
+                } else {
+                    print("⚠️ Cámara no disponible. Abriendo la galería en su lugar.")
+                    activePickerType = .photoLibrary
+                    imagePickerSourceType = .photoLibrary
+                    showAlert = true
+                }
+            } else {
+                activePickerType = .photoLibrary
+                imagePickerSourceType = .photoLibrary
             }
-            activePickerType = .camera
-        } else {
-            activePickerType = .photoLibrary
+            
+            // Pequeño retraso para asegurar reinicio de estado
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.showImagePicker = true
+            }
         }
-        showImagePicker = true
-    }
     
     // Estilos personalizados
     struct RecordingButtonStyle: ButtonStyle {

@@ -14,10 +14,23 @@ import AVFoundation
 struct EditTranscriptionView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var transcription: Transcription
+    
+    // Estados para manejo de imagen
     @State private var selectedImages: [UIImage] = []
     @State private var showImagePicker = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var showAlert = false
+    
+    // Nuevo estado para rastrear la fuente de imagen
+    @State private var currentImageSource: ImageSource = .none
+    
+    // Enum para definir claramente el origen de la imagen
+    enum ImageSource {
+        case camera
+        case photoLibrary
+        case none
+    }
+    
     var onSave: (Transcription) -> Void
     
     var body: some View {
@@ -91,7 +104,7 @@ struct EditTranscriptionView: View {
                     HStack(spacing: 15) {
                         // Botón de Biblioteca de Fotos
                         Button(action: {
-                            openImagePicker(sourceType: .photoLibrary)
+                            openImagePicker(source: .photoLibrary)
                         }) {
                             VStack {
                                 Image(systemName: "photo.on.rectangle")
@@ -108,11 +121,12 @@ struct EditTranscriptionView: View {
                             .background(Color(.systemGray6))
                             .cornerRadius(10)
                             .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
+                            .contentShape(Rectangle())  // Área táctil exacta
                         }
                         
                         // Botón de Cámara
                         Button(action: {
-                            openImagePicker(sourceType: .camera)
+                            openImagePicker(source: .camera)
                         }) {
                             VStack {
                                 Image(systemName: "camera")
@@ -129,6 +143,7 @@ struct EditTranscriptionView: View {
                             .background(Color(.systemGray6))
                             .cornerRadius(10)
                             .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
+                            .contentShape(Rectangle())  // Área táctil exacta
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -160,14 +175,20 @@ struct EditTranscriptionView: View {
             }
         }
         .sheet(isPresented: $showImagePicker) {
-            ImagePickerView(selectedImage: Binding(
-                get: { selectedImages.first },
-                set: { newImage in
-                    if let newImage = newImage {
-                        selectedImages.append(newImage)
+            ImagePickerView(
+                selectedImage: Binding(
+                    get: { nil },
+                    set: { newImage in
+                        print("🖼️ Imagen recibida desde \(currentImageSource)")
+                        if let newImage = newImage {
+                            selectedImages = [newImage]
+                            // Resetear después de seleccionar
+                            currentImageSource = .none
+                        }
                     }
-                }
-            ), sourceType: imagePickerSourceType)
+                ),
+                sourceType: imagePickerSourceType
+            )
         }
     }
     
@@ -228,23 +249,36 @@ struct EditTranscriptionView: View {
         }
     }
     
-    private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-        if sourceType == .camera {
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                imagePickerSourceType = .camera
-            } else {
-                print("⚠️ Cámara no disponible. Abriendo la galería en su lugar.")
-                imagePickerSourceType = .photoLibrary
+    private func openImagePicker(source: ImageSource) {
+        // Resetear estados
+        selectedImages = []
+        showImagePicker = false
+        currentImageSource = source
+        
+        // Verificación de disponibilidad
+        switch source {
+        case .camera:
+            guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+                print("⚠️ Cámara no disponible")
                 showAlert = true
+                imagePickerSourceType = .photoLibrary
+                return
             }
-        } else {
+            imagePickerSourceType = .camera
+            
+        case .photoLibrary:
             imagePickerSourceType = .photoLibrary
+            
+        case .none:
+            return
         }
-        showImagePicker = true
+        
+        // Mostrar picker con un pequeño retraso
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            print("🔍 Abriendo picker: \(self.imagePickerSourceType)")
+            self.showImagePicker = true
+        }
     }
-    
-    // Verificación específica para cámara
-    
     
     struct EditTranscriptionView_Previews: PreviewProvider {
         static var previews: some View {
@@ -258,5 +292,4 @@ struct EditTranscriptionView: View {
             )
         }
     }
-
-    }
+}
