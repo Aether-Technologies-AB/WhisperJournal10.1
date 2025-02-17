@@ -539,40 +539,43 @@ struct ContentView: View {
      }
      */
     private func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-            // Forzar reinicio de estado
-            showImagePicker = false
-            
-            // Verificación detallada de la disponibilidad de la cámara
-            if sourceType == .camera {
-                let cameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
-                let rearCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(.rear)
-                let frontCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(.front)
-                
-                print("🔍 Estado de la cámara:")
-                print("Cámara disponible: \(cameraAvailable)")
-                print("Cámara trasera disponible: \(rearCameraAvailable)")
-                print("Cámara frontal disponible: \(frontCameraAvailable)")
-                print("Modelo de dispositivo: \(UIDevice.current.model)")
-                
-                if cameraAvailable && (rearCameraAvailable || frontCameraAvailable) {
-                    activePickerType = .camera
-                    imagePickerSourceType = .camera
-                } else {
-                    print("⚠️ Cámara no disponible. Abriendo la galería en su lugar.")
-                    activePickerType = .photoLibrary
-                    imagePickerSourceType = .photoLibrary
-                    showAlert = true
-                }
-            } else {
+        // Depuración detallada
+        print("🔍 Intentando abrir selector de imágenes")
+        print("Fuente seleccionada: \(sourceType)")
+        
+        // Verificaciones de disponibilidad
+        let cameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
+        let rearCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(.rear)
+        
+        print("Cámara disponible: \(cameraAvailable)")
+        print("Cámara trasera disponible: \(rearCameraAvailable)")
+        
+        // Reiniciar estado
+        showImagePicker = false
+        
+        // Configuración de fuente
+        if sourceType == .camera {
+            guard cameraAvailable && rearCameraAvailable else {
+                print("⚠️ Cámara no disponible, abriendo galería")
+                showAlert = true
                 activePickerType = .photoLibrary
                 imagePickerSourceType = .photoLibrary
+                return
             }
             
-            // Pequeño retraso para asegurar reinicio de estado
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.showImagePicker = true
-            }
+            activePickerType = .camera
+            imagePickerSourceType = .camera
+        } else {
+            activePickerType = .photoLibrary
+            imagePickerSourceType = .photoLibrary
         }
+        
+        // Abrir selector con un pequeño retraso
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            print("🖼️ Abriendo selector de imágenes")
+            self.showImagePicker = true
+        }
+    }
     
     // Estilos personalizados
     struct RecordingButtonStyle: ButtonStyle {

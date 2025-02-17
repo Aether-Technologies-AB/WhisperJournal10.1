@@ -250,35 +250,59 @@ struct EditTranscriptionView: View {
     }
     
     private func openImagePicker(source: ImageSource) {
-        // Resetear estados
-        selectedImages = []
+        // Reiniciar estado completamente
         showImagePicker = false
-        currentImageSource = source
+        showAlert = false
         
-        // Verificación de disponibilidad
+        // Depuración detallada
+        print("🔍 Fuente seleccionada: \(source)")
+        
+        // Verificaciones de disponibilidad
+        let cameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
+        let libraryAvailable = UIImagePickerController.isSourceTypeAvailable(.photoLibrary)
+        
+        print("🔍 Disponibilidad:")
+        print("Cámara disponible: \(cameraAvailable)")
+        print("Biblioteca disponible: \(libraryAvailable)")
+        
+        // Configuración precisa según la fuente
         switch source {
         case .camera:
-            guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-                print("⚠️ Cámara no disponible")
+            guard cameraAvailable else {
+                print("⚠️ Cámara NO disponible")
                 showAlert = true
-                imagePickerSourceType = .photoLibrary
                 return
             }
+            
+            // Configuración específica para cámara
+            currentImageSource = .camera
             imagePickerSourceType = .camera
             
         case .photoLibrary:
+            guard libraryAvailable else {
+                print("⚠️ Biblioteca NO disponible")
+                showAlert = true
+                return
+            }
+            
+            // Configuración específica para biblioteca
+            currentImageSource = .photoLibrary
             imagePickerSourceType = .photoLibrary
             
         case .none:
+            print("⚠️ Ninguna fuente seleccionada")
             return
         }
         
-        // Mostrar picker con un pequeño retraso
+        // Abrir selector con un pequeño retraso
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            print("🔍 Abriendo picker: \(self.imagePickerSourceType)")
+            print("🖼️ Abriendo EXACTAMENTE: \(self.imagePickerSourceType)")
             self.showImagePicker = true
         }
     }
+  
+        
+      
     
     struct EditTranscriptionView_Previews: PreviewProvider {
         static var previews: some View {

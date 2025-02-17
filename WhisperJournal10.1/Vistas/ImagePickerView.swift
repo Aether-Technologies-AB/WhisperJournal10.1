@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UIKit
-import AVFoundation
 
 struct ImagePickerView: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
@@ -17,11 +16,25 @@ struct ImagePickerView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
+        
+        // Configuraciones para evitar problemas de portrait
         picker.sourceType = sourceType
         picker.allowsEditing = false
+        picker.modalPresentationStyle = .fullScreen
+        
+        // Configuración específica para cámara
+        if sourceType == .camera {
+            picker.cameraCaptureMode = .photo
+            picker.cameraDevice = .rear
+            
+            // Intentar prevenir problemas de orientación
+            if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera) {
+                picker.mediaTypes = mediaTypes
+            }
+        }
+        
         return picker
     }
-
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
