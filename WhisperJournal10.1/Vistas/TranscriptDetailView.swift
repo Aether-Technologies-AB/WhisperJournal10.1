@@ -9,24 +9,37 @@ import Foundation
 import SwiftUI
 
 struct TranscriptDetailView: View {
-    let transcript: Transcript
-    
+    let transcription: Transcription // Asegúrate de que este tipo tenga el campo de imagen
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Transcription:")
                 .font(.title2)
-            Text(transcript.text ?? "No Text")
+            Text(transcription.text)
                 .padding()
             
             Text("Date:")
                 .font(.headline)
-            Text(transcript.date ?? Date(), style: .date)
+            Text(transcription.date, style: .date)
                 .foregroundColor(.gray)
             
             Text("Tags:")
                 .font(.headline)
-            Text(transcript.tags ?? "No Tags")
+            Text(transcription.tags)
                 .padding()
+            
+            // Mostrar la imagen asociada
+            if let imagePaths = transcription.imageLocalPaths, !imagePaths.isEmpty {
+                ForEach(imagePaths, id: \.self) { imagePath in
+                    if let image = PersistenceController.shared.loadImage(filename: imagePath) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 200) // Ajusta el tamaño según sea necesario
+                            .clipped()
+                    }
+                }
+            }
             
             Spacer()
         }

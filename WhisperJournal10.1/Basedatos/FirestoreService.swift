@@ -13,16 +13,85 @@ class FirestoreService {
     static let shared = FirestoreService()
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
-
+    
     private init() {}
-
+    
+    // Función para generar embeddings
+    func generateEmbedding(from text: String, completion: @escaping ([Float]?) -> Void) {
+        guard let url = URL(string: "https://api.openai.com/v1/embeddings") else {
+            completion(nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(Config.openAIAPIKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let parameters: [String: Any] = [
+            "input": text,
+            "model": "text-embedding-ada-002"
+        ]
+        
+        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching embedding: \(error)")
+                completion(nil)
+                return
+            }
+            
+            guard let data = data else {
+                completion(nil)
+                return
+            }
+            
+            do {
+                // Parsear la respuesta JSON
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let dataArray = json["data"] as? [[String: Any]],
+                   let embeddingArray = dataArray.first?["embedding"] as? [Float] {
+                    // Devolver el embedding como un array de flotantes
+                    completion(embeddingArray)
+                } else {
+                    completion(nil)
+                }
+            } catch {
+                print("Error parsing JSON: \(error)")
+                completion(nil)
+            }
+        }
+        
+        task.resume()
+    }
+    
+    // Método para buscar transcripciones usando embeddings
+    func searchTranscriptions(username: String, query: String, completion: @escaping ([Transcription]?, Error?) -> Void) {
+        generateEmbedding(from: query) { queryEmbedding in
+            self.db.collection("users").document(username).collection("transcriptions").getDocuments { snapshot, error in
+                if let error = error {
+                    completion(nil, error)
+                } else {
+                    let transcriptions = snapshot?.documents.compactMap { document -> Transcription? in
+                        let data = document.data()
+                        // Aquí deberías comparar el embedding de la consulta con los embeddings almacenados
+                        // Si hay coincidencia, devuelve la transcripción
+                        return try? document.data(as: Transcription.self)
+                    }
+                    completion(transcriptions, nil)
+                }
+            }
+        }
+    }
+    
     func saveUser(username: String, password: String, completion: @escaping (Error?) -> Void) {
         let user = ["username": username, "password": password]
         db.collection("users").document(username).setData(user) { error in
             completion(error)
         }
     }
-
+    
     func fetchUser(username: String, completion: @escaping (String?, Error?) -> Void) {
         db.collection("users").document(username).getDocument { document, error in
             if let document = document, document.exists {
@@ -34,39 +103,8 @@ class FirestoreService {
             }
         }
     }
-
-    // Método para subir imagen a Firebase Storage (comentado)
-    /*
-    func uploadImage(_ image: UIImage, completion: @escaping (String?) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
-            completion(nil)
-            return
-        }
-        
-        let imageName = UUID().uuidString
-        let imageRef = storage.reference().child("transcription_images/\(imageName).jpg")
-        
-        imageRef.putData(imageData, metadata: nil) { metadata, error in
-            if let error = error {
-                print("Error uploading image: \(error.localizedDescription)")
-                completion(nil)
-                return
-            }
-            
-            imageRef.downloadURL { url, error in
-                if let error = error {
-                    print("Error getting download URL: \(error.localizedDescription)")
-                    completion(nil)
-                    return
-                }
-                
-                completion(url?.absoluteString)
-            }
-        }
-    }
-    */
-
-    // Método actualizado para guardar transcripción con soporte para imagen local
+    
+    // Método para guardar transcripción con soporte para imagen local
     func saveTranscription(
         username: String,
         text: String,
@@ -75,20 +113,29 @@ class FirestoreService {
         imageLocalPaths: [String]? = nil,
         completion: @escaping (Error?) -> Void
     ) {
-        let transcription: [String: Any] = [
-            "text": text,
-            "date": date,
-            "tags": tags,
-            "imageLocalPaths": imageLocalPaths ?? [],
-            "imageURLs": [] as [String],
-            "audioURL": ""
-        ]
-        
-        db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription) { error in
-            completion(error)
+        generateEmbedding(from: text) { embedding in
+            guard let embedding = embedding else {
+                completion(NSError(domain: "EmbeddingError", code: 0, userInfo: nil))
+                return
+            }
+            
+            let transcription: [String: Any] = [
+                "text": text,
+                "date": date,
+                "tags": tags,
+                "imageLocalPaths": imageLocalPaths ?? [],
+                "imageURLs": [] as [String],
+                "audioURL": "",
+                "embedding": embedding // Agregar el embedding
+            ]
+            
+            self.db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription) { error in
+                completion(error)
+            }
         }
     }
-
+    
+    // Método para obtener transcripciones
     func fetchTranscriptions(username: String, completion: @escaping ([Transcription]?, Error?) -> Void) {
         db.collection("users").document(username).collection("transcriptions").getDocuments { snapshot, error in
             if let error = error {
@@ -101,7 +148,7 @@ class FirestoreService {
             }
         }
     }
-
+    
     // Método para actualizar una transcripción con soporte para imagen local
     func updateTranscription(
         username: String,

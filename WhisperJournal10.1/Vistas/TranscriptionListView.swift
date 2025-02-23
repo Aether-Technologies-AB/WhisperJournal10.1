@@ -12,7 +12,9 @@ struct TranscriptionListView: View {
     @State private var transcriptions: [Transcription] = []
     @State private var isLoading = true
     @State private var errorMessage: String?
-    
+    @State private var searchQuery: String = ""
+    @State private var searchResults: [Transcription] = []
+
     var body: some View {
         NavigationView {
             Group {
@@ -23,65 +25,89 @@ struct TranscriptionListView: View {
                         .foregroundColor(.red)
                         .padding()
                 } else {
-                    List {
-                        ForEach(transcriptions) { transcription in
-                            HStack {
-                                // Modificar visualización de miniaturas
-                                if let imagePaths = transcription.imageLocalPaths, !imagePaths.isEmpty {
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(imagePaths, id: \.self) { imagePath in
-                                                if let image = PersistenceController.shared.loadImage(filename: imagePath) {
-                                                    Image(uiImage: image)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 60, height: 60)
-                                                        .cornerRadius(10)
-                                                        .clipped()
+                    VStack {
+                        TextField("Buscar transcripciones...", text: $searchQuery)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                        
+                        Button(action: {
+                            performSearch(query: searchQuery)
+                        }) {
+                            Image(systemName: "magnifyingglass")
+                        }
+                        
+                        List {
+                            ForEach(searchResults.isEmpty ? transcriptions : searchResults) { transcription in
+                                HStack {
+                                    // Modificar visualización de miniaturas
+                                    if let imagePaths = transcription.imageLocalPaths, !imagePaths.isEmpty {
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            HStack {
+                                                ForEach(imagePaths, id: \.self) { imagePath in
+                                                    if let image = PersistenceController.shared.loadImage(filename: imagePath) {
+                                                        Image(uiImage: image)
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 60, height: 60)
+                                                            .cornerRadius(10)
+                                                            .clipped()
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
 
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text(transcription.text)
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                    Text(transcription.date, style: .date)
-                                        .font(.subheadline)
-                                        .foregroundColor(.gray)
-                                    if !transcription.tags.isEmpty {
-                                        Text("\(NSLocalizedString("tags_label", comment: "Tags label")): \(transcription.tags)")
-                                            .font(.caption)
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(transcription.text)
+                                            .font(.headline)
+                                            .lineLimit(2)
+                                        Text(transcription.date, style: .date)
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                        if !transcription.tags.isEmpty {
+                                            Text("\(NSLocalizedString("tags_label", comment: "Tags label")): \(transcription.tags)")
+                                                .font(.caption)
+                                                .foregroundColor(.blue)
+                                        }
+                                    }
+                                    Spacer()
+                                    Menu {
+                                        Button(NSLocalizedString("edit_button", comment: "Edit button")) {
+                                            presentEditView(for: transcription)
+                                        }
+                                        Button(NSLocalizedString("delete_button", comment: "Delete button"), role: .destructive) {
+                                            deleteTranscription(transcription)
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
                                             .foregroundColor(.blue)
                                     }
                                 }
-                                Spacer()
-                                Menu {
-                                    Button(NSLocalizedString("edit_button", comment: "Edit button")) {
-                                        presentEditView(for: transcription)
-                                    }
-                                    Button(NSLocalizedString("delete_button", comment: "Delete button"), role: .destructive) {
-                                        deleteTranscription(transcription)
-                                    }
-                                } label: {
-                                    Image(systemName: "ellipsis")
-                                        .foregroundColor(.blue)
-                                }
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(10)
+                                .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
                             }
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-                            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
                         }
+                        .navigationTitle(NSLocalizedString("saved_transcriptions_title", comment: "Saved Transcriptions title"))
+                        .navigationBarTitleDisplayMode(.inline)
                     }
-                    .navigationTitle(NSLocalizedString("saved_transcriptions_title", comment: "Saved Transcriptions title"))
-                    .navigationBarTitleDisplayMode(.inline) // Esto mantendrá el texto original pero lo centrará
                 }
             }
         }
         .onAppear(perform: loadTranscriptions)
+    }
+
+    private func performSearch(query: String) {
+        guard let username = Auth.auth().currentUser?.email else { return }
+        FirestoreService.shared.searchTranscriptions(username: username, query: query) { results, error in
+            if let error = error {
+                errorMessage = NSLocalizedString("error_loading_transcriptions", comment: "Error loading transcriptions") + ": \(error.localizedDescription)"
+            } else {
+                // Cambiar la asignación de resultados a una instancia de [Transcription]
+                searchResults = results ?? []
+            }
+        }
     }
 
     private func presentEditView(for transcription: Transcription) {
@@ -95,7 +121,7 @@ struct TranscriptionListView: View {
         // Método actualizado para iOS 15+
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootViewController = windowScene.windows.first?.rootViewController {
-            let hostingController = UIHostingController(rootView: editView)
+            let hostingController = UIHostingController(root: editView)
             rootViewController.present(
                 hostingController,
                 animated: true,
