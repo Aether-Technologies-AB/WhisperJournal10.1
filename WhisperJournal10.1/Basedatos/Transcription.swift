@@ -1,8 +1,12 @@
+
+
+
+
 import Foundation
 import FirebaseFirestoreSwift
 import UIKit
 
-struct Transcription: Codable, Identifiable, Hashable  {
+struct Transcription: Codable, Identifiable, Hashable {
     @DocumentID var id: String?
     var text: String
     var date: Date
@@ -10,9 +14,10 @@ struct Transcription: Codable, Identifiable, Hashable  {
     var audioURL: String?
     var imageURLs: [String]? // Cambiar a array
     var imageLocalPaths: [String]? // Cambiar a array
+    var embedding: [Float]? // Agregar campo para almacenar el embedding
 
     // Actualizar inicializador
-    init(id: String? = nil, text: String, date: Date, tags: String, audioURL: String? = nil, imageURLs: [String]? = nil, imageLocalPaths: [String]? = nil) {
+    init(id: String? = nil, text: String, date: Date, tags: String, audioURL: String? = nil, imageURLs: [String]? = nil, imageLocalPaths: [String]? = nil, embedding: [Float]? = nil) {
         self.id = id
         self.text = text
         self.date = date
@@ -20,6 +25,7 @@ struct Transcription: Codable, Identifiable, Hashable  {
         self.audioURL = audioURL
         self.imageURLs = imageURLs
         self.imageLocalPaths = imageLocalPaths
+        self.embedding = embedding // Inicializar el embedding
     }
     
     // Corregir método isValid()
@@ -29,3 +35,4 @@ struct Transcription: Codable, Identifiable, Hashable  {
                self.date <= Date()
     }
 }
+

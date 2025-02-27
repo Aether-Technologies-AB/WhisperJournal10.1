@@ -9,5 +9,5 @@
 import Foundation
 
 struct Config {
-    static let openAIAPIKey = "TU_API_KEY_AQUI" // Reemplaza con tu API Key real
+    static let openAIAPIKey = "" // Reemplaza con tu API Key real
 }
