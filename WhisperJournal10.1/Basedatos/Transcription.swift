@@ -1,7 +1,6 @@
 
 
 
-
 import Foundation
 import FirebaseFirestoreSwift
 import UIKit
@@ -35,4 +34,3 @@ struct Transcription: Codable, Identifiable, Hashable {
                self.date <= Date()
     }
 }
-

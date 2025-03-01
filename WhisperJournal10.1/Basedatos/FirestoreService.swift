@@ -3,11 +3,13 @@
 //  WhisperJournal10.1
 //
 //  Created by andree on 4/01/25.
-//
+
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 import UIKit
+import AlgoliaSearchClient
+import FirebaseAuth
 
 class FirestoreService {
     static let shared = FirestoreService()
@@ -35,38 +37,6 @@ class FirestoreService {
         }
     }
 
-    // Método para subir imagen a Firebase Storage (comentado)
-    /*
-    func uploadImage(_ image: UIImage, completion: @escaping (String?) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
-            completion(nil)
-            return
-        }
-        
-        let imageName = UUID().uuidString
-        let imageRef = storage.reference().child("transcription_images/\(imageName).jpg")
-        
-        imageRef.putData(imageData, metadata: nil) { metadata, error in
-            if let error = error {
-                print("Error uploading image: \(error.localizedDescription)")
-                completion(nil)
-                return
-            }
-            
-            imageRef.downloadURL { url, error in
-                if let error = error {
-                    print("Error getting download URL: \(error.localizedDescription)")
-                    completion(nil)
-                    return
-                }
-                
-                completion(url?.absoluteString)
-            }
-        }
-    }
-    */
-
-    // Método actualizado para guardar transcripción con soporte para imagen local
     func saveTranscription(
         username: String,
         text: String,
@@ -84,8 +54,25 @@ class FirestoreService {
             "audioURL": ""
         ]
         
-        db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription) { error in
-            completion(error)
+        // Cambiar el orden de declaración
+        let documentRef = db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription)
+        
+        documentRef.setData(transcription) { error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            // Indexar en Algolia después de guardar en Firestore
+            AlgoliaService.shared.indexTranscription(
+                id: documentRef.documentID,
+                text: text,
+                username: username,
+                date: date,
+                tags: tags
+            )
+            
+            completion(nil)
         }
     }
 
@@ -102,7 +89,6 @@ class FirestoreService {
         }
     }
 
-    // Método para actualizar una transcripción con soporte para imagen local
     func updateTranscription(
         username: String,
         transcriptionId: String,
@@ -124,10 +110,52 @@ class FirestoreService {
         }
     }
     
-    // Método para eliminar una transcripción
     func deleteTranscription(username: String, transcriptionId: String, completion: @escaping (Error?) -> Void) {
         db.collection("users").document(username).collection("transcriptions").document(transcriptionId).delete { error in
             completion(error)
         }
     }
-}
+
+    // Nuevo método para migración de Algolia
+    
+    
+    func migrateExistingTranscriptionsToAlgolia(completion: @escaping (Error?) -> Void) {
+        guard let username = Auth.auth().currentUser?.email else {
+            completion(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No authenticated user"]))
+            return
+        }
+        
+        fetchTranscriptions(username: username) { transcriptions, error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            guard let transcriptions = transcriptions else {
+                completion(nil)
+                return
+            }
+            
+            let group = DispatchGroup()
+            
+            transcriptions.forEach { transcription in
+                guard let id = transcription.id else { return }
+                
+                group.enter()
+                AlgoliaService.shared.indexTranscription(
+                    id: id,
+                    text: transcription.text,
+                    username: username,
+                    date: transcription.date,
+                    tags: transcription.tags
+                )
+                
+                group.leave()
+            }
+            
+            group.notify(queue: .main) {
+                completion(nil)  // Eliminamos migrationErrors ya que no los estamos usando
+            }
+        }
+    }
+    }

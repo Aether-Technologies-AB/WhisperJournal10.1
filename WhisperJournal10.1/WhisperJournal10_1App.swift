@@ -5,6 +5,7 @@
 //  Created by andree on 14/12/24.
 //
 import SwiftUI
+import Firebase  // Añadir esta importación
 import FirebaseCore
 import FirebaseAuth
 import UIKit
@@ -43,6 +44,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct WhisperJournal10_1App: App {
+    
     static func logout() {
         do {
             try Auth.auth().signOut()
@@ -61,22 +63,33 @@ struct WhisperJournal10_1App: App {
         if UserDefaults.standard.object(forKey: "isAuthenticated") == nil {
             UserDefaults.standard.set(false, forKey: "isAuthenticated")
         }
+        
+        // Migrar transcripciones si está autenticado, de forma asíncrona
+        if isAuthenticated {
+            DispatchQueue.main.async {
+                FirestoreService.shared.migrateExistingTranscriptionsToAlgolia { error in
+                    if let error = error {
+                        print("Error migrando transcripciones: \(error.localizedDescription)")
+                    } else {
+                        print("Transcripciones migradas exitosamente")
+                    }
+                }
+            }
+        }
     }
-    
+   
     var body: some Scene {
         WindowGroup {
             if isAuthenticated {
-                ContentView() // Vista de grabación de audio
+                ContentView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .onAppear {
-                        // Restaurar comportamiento predeterminado del Idle Timer
                         UIApplication.shared.isIdleTimerDisabled = false
                     }
             } else {
                 LoginView(isAuthenticated: $isAuthenticated)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .onAppear {
-                        // Restaurar comportamiento predeterminado del Idle Timer
                         UIApplication.shared.isIdleTimerDisabled = false
                     }
             }

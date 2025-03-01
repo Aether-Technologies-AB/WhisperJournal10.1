@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "algoliasearch-client-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algolia/algoliasearch-client-swift.git",
+      "state" : {
+        "revision" : "4322ab2dc8cdb7acb6d06a019fd56f84dc998f25",
+        "version" : "8.21.0"
+      }
+    },
+    {
       "identity" : "appauth-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/openid/AppAuth-iOS.git",

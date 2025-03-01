@@ -12,6 +12,7 @@ struct TranscriptionListView: View {
     @State private var transcriptions: [Transcription] = []
     @State private var isLoading = true
     @State private var errorMessage: String?
+    @State private var showSearchView = false  // Nuevo estado para la vista de búsqueda
     
     var body: some View {
         NavigationView {
@@ -77,8 +78,18 @@ struct TranscriptionListView: View {
                         }
                     }
                     .navigationTitle(NSLocalizedString("saved_transcriptions_title", comment: "Saved Transcriptions title"))
-                    .navigationBarTitleDisplayMode(.inline) // Esto mantendrá el texto original pero lo centrará
+                    .navigationBarTitleDisplayMode(.inline)
                 }
+            }
+            .navigationBarItems(trailing:
+                Button(action: {
+                    showSearchView = true
+                }) {
+                    Image(systemName: "magnifyingglass")
+                }
+            )
+            .sheet(isPresented: $showSearchView) {
+                TranscriptionSearchView()
             }
         }
         .onAppear(perform: loadTranscriptions)
