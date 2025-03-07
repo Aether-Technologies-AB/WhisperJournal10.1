@@ -16,16 +16,24 @@ struct TranscriptionSearchView: View {
     @State private var isSearching = false
     @State private var errorMessage: String? = nil
     
-    struct TranscriptionResult: Identifiable {
+    struct TranscriptionResult: Identifiable, Equatable {
         let id: String
         let text: String
         let date: Date
         let tags: String?
+        
+        // Método de comparación
+        static func == (lhs: TranscriptionResult, rhs: TranscriptionResult) -> Bool {
+            return lhs.id == rhs.id &&
+                   lhs.text == rhs.text &&
+                   lhs.date == rhs.date &&
+                   lhs.tags == rhs.tags
+        }
     }
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
                 SearchBar(text: $searchText, onSearchButtonClicked: performSearch)
                 
                 // Mostrar mensaje de error si existe
@@ -33,55 +41,58 @@ struct TranscriptionSearchView: View {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .padding()
+                        .transition(.move(edge: .top))
                 }
                 
-                if isSearching {
-                    ProgressView("Buscando...")
-                } else if searchResults.isEmpty && !searchText.isEmpty {
-                    Text("No se encontraron transcripciones")
-                        .foregroundColor(.gray)
-                } else {
-                    List(searchResults) { result in
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(result.text)
-                                .font(.body)
-                            
-                            HStack {
-                                Text(result.date, style: .date)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                
-                                Spacer()
-                                
-                                if let tags = result.tags, !tags.isEmpty {
-                                    Text(tags)
-                                        .font(.caption)
-                                        .foregroundColor(.white)
-                                        .padding(4)
-                                        .background(Color.blue)
-                                        .cornerRadius(8)
-                                }
-                            }
-                        }
-                        .padding(.vertical, 4)
-                    }
-                    .listStyle(PlainListStyle())
-                }
-                
-                Spacer()
+                // Vista de resultados separada
+                searchResultsView
             }
             .navigationTitle("Buscar Transcripciones")
-            .alert(isPresented: Binding<Bool>(
-                get: { errorMessage != nil },
-                set: { _ in errorMessage = nil }
-            )) {
-                Alert(
-                    title: Text("Error de Búsqueda"),
-                    message: Text(errorMessage ?? ""),
-                    dismissButton: .default(Text("Aceptar"))
-                )
+            .animation(.default, value: searchResults)
+            .animation(.default, value: isSearching)
+        }
+    }
+    
+    // Vista de resultados con manejo de estados
+    private var searchResultsView: some View {
+        Group {
+            if isSearching {
+                ProgressView("Buscando...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if !searchResults.isEmpty {
+                List(searchResults) { result in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(result.text)
+                            .font(.body)
+                        
+                        HStack {
+                            Text(result.date, style: .date)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            
+                            Spacer()
+                            
+                            if let tags = result.tags, !tags.isEmpty {
+                                Text(tags)
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                                    .padding(4)
+                                    .background(Color.blue)
+                                    .cornerRadius(8)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+                .listStyle(PlainListStyle())
+                .transition(.slide)
+            } else if !searchText.isEmpty {
+                Text("No se encontraron transcripciones")
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .animation(.default, value: searchResults)
     }
     
     private func performSearch() {
@@ -120,7 +131,6 @@ struct TranscriptionSearchView: View {
         
         ids.forEach { id in
             group.enter()
-            // Buscar en todas las colecciones de transcripciones
             db.collectionGroup("transcriptions")
                 .whereField("username", isEqualTo: currentUser)
                 .whereField(FieldPath.documentID(), isEqualTo: id)
