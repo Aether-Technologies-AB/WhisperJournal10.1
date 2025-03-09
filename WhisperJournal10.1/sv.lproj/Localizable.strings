@@ -85,3 +85,20 @@
 "profile_menu_settings" = "Inställningar";
 "profile_default_user" = "Användare";
 "profile_logout" = "Logga ut";
+
+"search_title" = "Sök";
+"search_placeholder" = "Sök transkriberingar...";
+"search_button" = "Sök";
+"reindex_button" = "Omindexera transkriberingar";
+"no_results" = "Inga transkriberingar hittades";
+"searching" = "Söker...";
+"reindexing" = "Omindexerar transkriberingar...";
+
+"detail_title" = "Detaljer";
+"detail_transcription_label" = "Transkribering";
+"detail_date_label" = "Datum";
+"detail_tags_label" = "Taggar";
+"detail_images_label" = "Bilder";
+"detail_loading_images" = "Laddar bilder...";
+"detail_loading_images_error" = "Det gick inte att ladda bilderna";
+"detail_image_count" = "%d bild(er)";

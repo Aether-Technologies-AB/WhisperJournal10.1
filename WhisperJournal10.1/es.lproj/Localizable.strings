@@ -88,3 +88,20 @@
 "profile_menu_settings" = "Configuración";
 "profile_default_user" = "Usuario";
 "profile_logout" = "Cerrar Sesión";
+
+"search_title" = "Buscar";
+"search_placeholder" = "Buscar transcripciones...";
+"search_button" = "Buscar";
+"reindex_button" = "Reindexar Transcripciones";
+"no_results" = "No se encontraron transcripciones";
+"searching" = "Buscando...";
+"reindexing" = "Reindexando transcripciones...";
+
+"detail_title" = "Detalles";
+"detail_transcription_label" = "Transcripción";
+"detail_date_label" = "Fecha";
+"detail_tags_label" = "Etiquetas";
+"detail_images_label" = "Imágenes";
+"detail_loading_images" = "Cargando imágenes...";
+"detail_loading_images_error" = "No se pudieron cargar las imágenes";
+"detail_image_count" = "%d imagen(es)";

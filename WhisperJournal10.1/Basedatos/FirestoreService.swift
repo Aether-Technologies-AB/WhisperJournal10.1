@@ -106,13 +106,35 @@ class FirestoreService {
         updateData["imageURLs"] = [] as [String]
         
         db.collection("users").document(username).collection("transcriptions").document(transcriptionId).updateData(updateData) { error in
-            completion(error)
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            // Actualizar en Algolia después de actualizar en Firestore
+            AlgoliaService.shared.indexTranscription(
+                id: transcriptionId,
+                text: text,
+                username: username,
+                date: Date(),
+                tags: tags
+            )
+            
+            completion(nil)
         }
     }
     
     func deleteTranscription(username: String, transcriptionId: String, completion: @escaping (Error?) -> Void) {
         db.collection("users").document(username).collection("transcriptions").document(transcriptionId).delete { error in
-            completion(error)
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            // Eliminar de Algolia después de eliminar de Firestore
+            AlgoliaService.shared.deleteTranscriptionFromIndex(id: transcriptionId) { error in
+                completion(error)
+            }
         }
     }
 

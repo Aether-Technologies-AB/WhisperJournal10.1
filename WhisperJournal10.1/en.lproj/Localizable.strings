@@ -90,3 +90,20 @@
 "profile_menu_settings" = "Settings";
 "profile_default_user" = "User";
 "profile_logout" = "Logout";
+
+"search_title" = "Search";
+"search_placeholder" = "Search transcriptions...";
+"search_button" = "Search";
+"reindex_button" = "Reindex Transcriptions";
+"no_results" = "No transcriptions found";
+"searching" = "Searching...";
+"reindexing" = "Reindexing transcriptions...";
+
+"detail_title" = "Details";
+"detail_transcription_label" = "Transcription";
+"detail_date_label" = "Date";
+"detail_tags_label" = "Tags";
+"detail_images_label" = "Images";
+"detail_loading_images" = "Loading images...";
+"detail_loading_images_error" = "Could not load images";
+"detail_image_count" = "%d image(s)";

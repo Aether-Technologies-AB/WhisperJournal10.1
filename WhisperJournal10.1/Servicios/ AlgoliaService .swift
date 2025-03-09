@@ -5,7 +5,6 @@
 //  Created by andree on 1/03/25.
 //
 
-
 import Foundation
 import AlgoliaSearchClient
 import FirebaseFirestore
@@ -13,13 +12,10 @@ import FirebaseAuth
 
 class AlgoliaService {
     static let shared = AlgoliaService()
+    private let index: Index
     
-    // Usar el índice para indexación
-    private let index: Index = AlgoliaConfig.indexingIndex
-    
-    // Struct Encodable para indexación
     struct TranscriptionRecord: Encodable {
-        let objectID: String
+        let objectID: ObjectID
         let text: String
         let username: String
         let date: TimeInterval
@@ -31,19 +27,33 @@ class AlgoliaService {
         }
     }
     
-    private init() {}
+    private init() {
+        let client = SearchClient(appID: AlgoliaConfig.appID, apiKey: AlgoliaConfig.apiKey)
+        self.index = client.index(withName: AlgoliaConfig.indexName)
+        
+        let settings = Settings()
+            .set(\.searchableAttributes, to: ["text", "tags"])
+            .set(\.attributesForFaceting, to: ["filterOnly(username)"])
+            .set(\.customRanking, to: [.desc("date")])
+        
+        index.setSettings(settings) { result in
+            switch result {
+            case .success:
+                print("✅ Configuración de Algolia actualizada")
+            case .failure(let error):
+                print("❌ Error configurando Algolia: \(error)")
+            }
+        }
+    }
 
-    func indexTranscription(
-        id: String,
-        text: String,
-        username: String,
-        date: Date,
-        tags: String? = nil
-    ) {
+    func indexTranscription(id: String, text: String, username: String, date: Date, tags: String? = nil) {
+        let objectID = ObjectID(rawValue: id)
+        print("📝 Indexando transcripción: \(id)")
+        
         let record = TranscriptionRecord(
-            objectID: id,
-            text: text.lowercased(),  // Convertir a minúsculas
-            username: username,
+            objectID: objectID,
+            text: text.lowercased(),
+            username: username.lowercased(),
             date: date.timeIntervalSince1970,
             tags: tags?.lowercased() ?? ""
         )
@@ -51,61 +61,56 @@ class AlgoliaService {
         index.saveObject(record) { result in
             switch result {
             case .success:
-                print("✅ Transcripción indexada en Algolia:")
-                print("ID: \(id)")
-                print("Texto: \(text)")
-                print("Usuario: \(username)")
+                print("✅ Transcripción indexada: \(id)")
             case .failure(let error):
-                print("❌ Error indexando en Algolia: \(error)")
+                print("❌ Error indexando: \(error)")
             }
         }
     }
     
-    func searchTranscriptions(
-        query: String,
-        completion: @escaping ([String]) -> Void
-    ) {
-        guard let username = Auth.auth().currentUser?.email else {
-            print("No user is authenticated.")
+    func deleteTranscriptionFromIndex(id: String, completion: @escaping (Error?) -> Void) {
+        let objectID = ObjectID(rawValue: id)
+        print("🗑 Eliminando transcripción: \(id)")
+        
+        index.deleteObject(withID: objectID) { result in
+            switch result {
+            case .success:
+                print("✅ Transcripción eliminada: \(id)")
+                completion(nil)
+            case .failure(let error):
+                print("❌ Error eliminando: \(error)")
+                completion(error)
+            }
+        }
+    }
+    
+    func searchTranscriptions(query: String, completion: @escaping ([String]) -> Void) {
+        guard let username = Auth.auth().currentUser?.email?.lowercased() else {
+            print("❌ No hay usuario autenticado")
             completion([])
             return
         }
         
-        let searchIndex = AlgoliaConfig.searchIndex
+        print("🔍 Buscando: '\(query)' para usuario: \(username)")
         
-        // Configuraciones de búsqueda
-        var searchQuery = Query(query.lowercased())
+        var searchQuery = Query(query)
+        searchQuery.filters = "username:\(username)"
+        searchQuery.attributesToRetrieve = ["objectID", "text", "tags"]
         searchQuery.typoTolerance = .min
         searchQuery.removeStopWords = true
-        searchQuery.attributesToRetrieve = ["objectID", "text"]
-        searchQuery.filters = "(username:'\(username)' OR username:\"\(username)\")"
+        searchQuery.queryLanguages = ["es"]
         
-        print("🔍 Realizando búsqueda en Algolia con los siguientes parámetros:")
-        print("App ID: \(AlgoliaConfig.appID.rawValue)")
-        print("Admin API Key: \(AlgoliaConfig.apiKey.rawValue)")
-        print("Query: \(searchQuery.query ?? "")")
-        print("Filters: \(searchQuery.filters ?? "")")
-        
-        searchIndex.search(query: searchQuery) { result in
+        index.search(query: searchQuery) { result in
             switch result {
             case .success(let response):
-                print("🔍 Búsqueda en Algolia:")
-                print("Total hits: \(response.nbHits)")
-                print("Parámetros: \(response.params)")
-                
-                let transcriptionIDs = response.hits.compactMap { hit -> String? in
-                    if let dict = hit.object as? [String: Any],
-                       let objectID = dict["objectID"] as? String {
-                        return objectID
-                    }
-                    return nil
+                print("✅ Encontrados: \(response.nbHits) resultados")
+                let transcriptionIDs = response.hits.compactMap { hit -> String in
+                    return hit.objectID.rawValue
                 }
-                
-                print("IDs encontrados: \(transcriptionIDs)")
+                print("📝 IDs: \(transcriptionIDs)")
                 completion(transcriptionIDs)
-                
             case .failure(let error):
-                print("❌ Error buscando en Algolia: \(error.localizedDescription)")
+                print("❌ Error en búsqueda: \(error)")
                 completion([])
             }
         }

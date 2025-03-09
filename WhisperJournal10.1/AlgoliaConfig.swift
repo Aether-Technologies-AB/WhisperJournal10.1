@@ -17,23 +17,5 @@ struct AlgoliaConfig {
     static let searchAPIKey = APIKey(rawValue: "")  // Cambia a tu Search API Key
     static let indexName = IndexName(rawValue: "Transcriptions")
     
-    // Cliente para indexación (con Admin API Key)
-    static var indexClient: SearchClient {
-        return SearchClient(appID: appID, apiKey: apiKey)
-    }
-    
-    // Cliente para búsquedas (con Search API Key)
-    static var searchClient: SearchClient {
-        return SearchClient(appID: appID, apiKey: searchAPIKey)
-    }
-    
-    // Índice para indexación
-    static var indexingIndex: Index {
-        return indexClient.index(withName: indexName)
-    }
-    
-    // Índice para búsquedas
-    static var searchIndex: Index {
-        return searchClient.index(withName: indexName)
-    }
+
 }
