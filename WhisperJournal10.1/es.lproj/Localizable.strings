@@ -88,6 +88,8 @@
 "profile_menu_settings" = "Configuración";
 "profile_default_user" = "Usuario";
 "profile_logout" = "Cerrar Sesión";
+"app_pro_title" = "WhisperJournal Pro";
+"default_user" = "Usuario";
 
 "search_title" = "Buscar";
 "search_placeholder" = "Buscar transcripciones...";

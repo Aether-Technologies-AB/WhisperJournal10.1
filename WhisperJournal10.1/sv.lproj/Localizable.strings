@@ -85,6 +85,8 @@
 "profile_menu_settings" = "Inställningar";
 "profile_default_user" = "Användare";
 "profile_logout" = "Logga ut";
+"app_pro_title" = "WhisperJournal Pro";
+"default_user" = "Användare";
 
 "search_title" = "Sök";
 "search_placeholder" = "Sök transkriberingar...";

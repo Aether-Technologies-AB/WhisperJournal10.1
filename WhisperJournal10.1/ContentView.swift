@@ -181,85 +181,171 @@ struct ContentView: View {
         HStack {
             Spacer()
             
-            VStack(alignment: .leading, spacing: 20) {
-                // Encabezado del usuario
-                HStack {
-                    userInitialCircle
-                    
-                    VStack(alignment: .leading) {
-                        Text(Auth.auth().currentUser?.email ?? "Usuario")
-                            .font(.headline)
-                        Text("WhisperJournal")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+            VStack(alignment: .leading, spacing: 0) {
+                // Encabezado del menú
+                VStack(spacing: 20) {
+                    // Imagen y datos del usuario
+                    VStack(spacing: 15) {
+                        userInitialCircle
+                        
+                        VStack(spacing: 5) {
+                            Text(Auth.auth().currentUser?.email ?? NSLocalizedString("default_user", comment: "Default user name"))
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                            
+                            Text(NSLocalizedString("app_pro_title", comment: "Pro version title"))
+                                .font(.subheadline)
+                                .foregroundColor(.blue)
+                        }
                     }
+                    .padding(.vertical, 30)
                 }
-                .padding()
+                .frame(maxWidth: .infinity)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
                 
-                Divider()
+                // Separador con degradado
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.blue.opacity(0.2), Color.purple.opacity(0.2)]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .frame(height: 1)
+                    .padding(.vertical, 10)
                 
                 // Opciones del menú
-                menuOption(title: NSLocalizedString("profile", comment: "Profile menu option"), systemImage: "person") {
-                                print("Ir a Perfil")
-                                isProfileMenuOpen = false
-                            }
-                            
-                            menuOption(title: NSLocalizedString("plans", comment: "Plans menu option"), systemImage: "creditcard") {
-                                if let url = URL(string: "https://nestofmemories.com/pricing") {
-                                    UIApplication.shared.open(url)
+                // Opciones del menú
+                                VStack(spacing: 5) {
+                                    Group {
+                                        menuOption(
+                                            title: NSLocalizedString("profile_menu_profile", comment: "Profile menu option"),
+                                            systemImage: "person.circle.fill",
+                                            color: .blue
+                                        ) {
+                                            print("Ir a Perfil")
+                                            isProfileMenuOpen = false
+                                        }
+                                        
+                                        menuOption(
+                                            title: NSLocalizedString("profile_menu_plans", comment: "Plans menu option"),
+                                            systemImage: "star.circle.fill",
+                                            color: .yellow
+                                        ) {
+                                            if let url = URL(string: "https://nestofmemories.com/pricing") {
+                                                UIApplication.shared.open(url)
+                                            }
+                                            isProfileMenuOpen = false
+                                        }
+                                        
+                                        menuOption(
+                                            title: NSLocalizedString("profile_menu_settings", comment: "Settings menu option"),
+                                            systemImage: "gearshape.fill",
+                                            color: .gray
+                                        ) {
+                                            print("Abrir Configuración")
+                                            isProfileMenuOpen = false
+                                        }
+                                    }
+                                    .padding(.horizontal)
                                 }
-                                isProfileMenuOpen = false
+                                .padding(.vertical, 20)
+                                
+                                Spacer()
+                                
+                                // Separador antes del botón de cerrar sesión
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.2))
+                                    .frame(height: 1)
+                                    .padding(.vertical, 10)
+                                
+                                // Botón de cerrar sesión mejorado
+                                Button(action: logout) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                                            .font(.system(size: 20))
+                                        Text(NSLocalizedString("profile_logout", comment: "Logout button"))
+                                            .font(.system(size: 16, weight: .medium))
+                                    }
+                                    .foregroundColor(.red)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.red.opacity(0.5), lineWidth: 1)
+                                    )
+                                }
+                                .padding(.horizontal)
+                                .padding(.bottom, 30)
                             }
-                            
-                            menuOption(title: NSLocalizedString("settings", comment: "Settings menu option"), systemImage: "gear") {
-                                print("Abrir Configuración")
-                                isProfileMenuOpen = false
-                            }
-                
-                Spacer()
-                
-                // Botón de cerrar sesión
-                Button(action: logout) {
-                    HStack {
-                        Image(systemName: "rectangle.portrait.and.arrow.right")
-                            .foregroundColor(.red)
-                        Text("Cerrar Sesión")
-                            .foregroundColor(.red)
+                            .frame(width: geometry.size.width * 0.75)
+                            .background(Color(UIColor.systemBackground))
+                            .shadow(radius: 10)
+                            .edgesIgnoringSafeArea(.vertical)
+                        }
                     }
-                    .padding()
-                }
-            }
-            .frame(width: geometry.size.width * 0.7)
-            .background(Color(UIColor.systemBackground))
-            .edgesIgnoringSafeArea(.bottom)
-        }
-    }
     
-    // Vista de inicial de usuario
+    // Vista de inicial de usuario actualizada
     private var userInitialCircle: some View {
         Group {
             if let user = Auth.auth().currentUser, let email = user.email {
                 let initial = String(email.first ?? "U").uppercased()
                 Text(initial)
-                    .font(.title2)
+                    .font(.system(size: 32, weight: .medium))
                     .foregroundColor(.white)
-                    .frame(width: 50, height: 50)
-                    .background(Color.blue)
+                    .frame(width: 80, height: 80)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.blue, Color.purple]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                     .clipShape(Circle())
+                    .shadow(color: Color.blue.opacity(0.3), radius: 10, x: 0, y: 5)
             }
         }
     }
     
-    // Función para crear opciones del menú
-    private func menuOption(title: String, systemImage: String, action: @escaping () -> Void) -> some View {
+    // Función actualizada para crear opciones del menú
+    private func menuOption(title: String, systemImage: String, color: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack {
+            HStack(spacing: 12) {
                 Image(systemName: systemImage)
-                    .foregroundColor(.blue)
+                    .font(.system(size: 20))
+                    .foregroundColor(color)
+                    .frame(width: 30)
+                
                 Text(title)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.gray)
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color(UIColor.secondarySystemBackground))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(color.opacity(0.2), lineWidth: 1)
+            )
         }
+        .buttonStyle(PlainButtonStyle())
+        .contentShape(Rectangle())
     }
     
     // Contenido para usuario autenticado
@@ -277,8 +363,6 @@ struct ContentView: View {
             actionButtons
             
             Spacer()
-            
-            logoutButton
         }
     }
     
@@ -444,26 +528,6 @@ struct ContentView: View {
                     .shadow(color: Color.purple.opacity(0.4), radius: 8, x: 0, y: 4)
                     .font(.caption)
             }
-        }
-    }
-    
-    // Botón de logout
-    private var logoutButton: some View {
-        Button(action: logout) {
-            Text(NSLocalizedString("logout_button", comment: "Logout button"))
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(
-                    LinearGradient(
-                        colors: [Color.red.opacity(0.7), Color.red],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .foregroundColor(.white)
-                .cornerRadius(12)
-                .shadow(color: Color.red.opacity(0.4), radius: 8, x: 0, y: 4)
-                .font(.caption)
         }
     }
     
@@ -635,4 +699,4 @@ struct ContentView: View {
         }
     }
 
-    }
+}

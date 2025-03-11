@@ -89,7 +89,9 @@
 "profile_menu_plans" = "Plans";
 "profile_menu_settings" = "Settings";
 "profile_default_user" = "User";
-"profile_logout" = "Logout";
+"profile_logout" = "Log Out";
+"app_pro_title" = "WhisperJournal Pro";
+"default_user" = "User";
 
 "search_title" = "Search";
 "search_placeholder" = "Search transcriptions...";
