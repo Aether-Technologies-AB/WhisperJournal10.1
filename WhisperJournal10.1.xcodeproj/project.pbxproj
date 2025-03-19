@@ -11,6 +11,7 @@
 		6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1806B42D29DC3500A7ADDB /* Transcription.swift */; };
 		6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D45C9AD2D2918A400136F98 /* FirestoreService.swift */; };
 		6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */; };
+		6D61FAAA2D89DE0600A9255C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D61FAA92D89DE0600A9255C /* SearchBar.swift */; };
 		6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6C19B82D42C6CF009AC331 /* FirebaseStorage */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
 		6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */; };
@@ -35,6 +36,9 @@
 		6DBC1F292D333DC3006DA6A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F282D333DC3006DA6A5 /* FirebaseAnalytics */; };
 		6DBC1F2B2D333DC3006DA6A5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F2A2D333DC3006DA6A5 /* FirebaseAuth */; };
 		6DBC1F2F2D333DC3006DA6A5 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6DBC1F2E2D333DC3006DA6A5 /* FirebaseFirestoreSwift */; };
+		6DBEF41D2D88D68900E49CE0 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBEF41C2D88D68900E49CE0 /* APIKeys.swift */; };
+		6DBEF41F2D88D6C400E49CE0 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBEF41E2D88D6C400E49CE0 /* OpenAIService.swift */; };
+		6DBEF4212D88D6F200E49CE0 /* ConversationalSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBEF4202D88D6F200E49CE0 /* ConversationalSearchService.swift */; };
 		6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */; };
 		6DD0C11B2D332D1E00488D97 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */; };
 		6DD25E232D739B4200A8FEEA /* AlgoliaConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD25E222D739B4200A8FEEA /* AlgoliaConfig.swift */; };
@@ -53,6 +57,7 @@
 		6D1806B42D29DC3500A7ADDB /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
 		6D45C9AD2D2918A400136F98 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		6D61FAA92D89DE0600A9255C /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
 		6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperJournal10_1App.swift; sourceTree = "<group>"; };
 		6D7E662C2D0E604A00765A78 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,6 +76,9 @@
 		6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WisperService.swift; sourceTree = "<group>"; };
 		6DB963062D737EE60008C978 /*  AlgoliaService .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " AlgoliaService .swift"; sourceTree = "<group>"; };
 		6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DBEF41C2D88D68900E49CE0 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
+		6DBEF41E2D88D6C400E49CE0 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		6DBEF4202D88D6F200E49CE0 /* ConversationalSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationalSearchService.swift; sourceTree = "<group>"; };
 		6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTranscriptionView.swift; sourceTree = "<group>"; };
 		6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		6DD25E222D739B4200A8FEEA /* AlgoliaConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoliaConfig.swift; sourceTree = "<group>"; };
@@ -119,6 +127,7 @@
 		6D7E66292D0E604A00765A78 /* WhisperJournal10.1 */ = {
 			isa = PBXGroup;
 			children = (
+				6DBEF41B2D88D66700E49CE0 /* ApiConfig */,
 				6DD5B9642D286AA300593725 /* Basedatos */,
 				6D7E66432D0E627600765A78 /* Utilidades */,
 				6D7E66422D0E626900765A78 /* Servicios */,
@@ -160,6 +169,7 @@
 				6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */,
 				6DD4CF2B2D4E9230006E34B1 /* ProfileView.swift */,
 				6DD25E242D739CA600A8FEEA /* TranscriptionSearchView.swift */,
+				6D61FAA92D89DE0600A9255C /* SearchBar.swift */,
 			);
 			path = Vistas;
 			sourceTree = "<group>";
@@ -177,6 +187,8 @@
 			children = (
 				6DB963062D737EE60008C978 /*  AlgoliaService .swift */,
 				6D7E66402D0E624900765A78 /* ViewModels */,
+				6DBEF41E2D88D6C400E49CE0 /* OpenAIService.swift */,
+				6DBEF4202D88D6F200E49CE0 /* ConversationalSearchService.swift */,
 			);
 			path = Servicios;
 			sourceTree = "<group>";
@@ -196,6 +208,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6DBEF41B2D88D66700E49CE0 /* ApiConfig */ = {
+			isa = PBXGroup;
+			children = (
+				6DBEF41C2D88D68900E49CE0 /* APIKeys.swift */,
+			);
+			path = ApiConfig;
 			sourceTree = "<group>";
 		};
 		6DD5B9642D286AA300593725 /* Basedatos */ = {
@@ -303,7 +323,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DEC4B312D0F68A90081C649 /* TranscriptionListView.swift in Sources */,
+				6DBEF4212D88D6F200E49CE0 /* ConversationalSearchService.swift in Sources */,
 				6D7E664D2D0E6B6900765A78 /* AudioRecorder.swift in Sources */,
+				6DBEF41D2D88D68900E49CE0 /* APIKeys.swift in Sources */,
 				6D7E66342D0E604D00765A78 /* Persistence.swift in Sources */,
 				6DB963072D737EE60008C978 /*  AlgoliaService .swift in Sources */,
 				6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */,
@@ -315,8 +337,10 @@
 				6D7E66452D0E628900765A78 /* AudioSessionManager.swift in Sources */,
 				6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */,
 				6D7E664B2D0E65CF00765A78 /* MainView.swif.swift in Sources */,
+				6DBEF41F2D88D6C400E49CE0 /* OpenAIService.swift in Sources */,
 				6DD5B5802D401D3B00AB89AA /* Color+Custom.swift in Sources */,
 				6DD0C11B2D332D1E00488D97 /* ForgotPasswordView.swift in Sources */,
+				6D61FAAA2D89DE0600A9255C /* SearchBar.swift in Sources */,
 				6DD25E252D739CA600A8FEEA /* TranscriptionSearchView.swift in Sources */,
 				6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */,
 				6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */,
