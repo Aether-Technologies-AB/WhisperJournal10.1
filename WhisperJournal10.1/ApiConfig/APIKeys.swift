@@ -9,5 +9,5 @@ import Foundation
 import Foundation
 
 enum APIKeys {
-    static let openAI = "api" // Agrega tu API key de OpenAI aquí
+    static let openAI = "" // Agrega tu API key de OpenAI aquí
 }

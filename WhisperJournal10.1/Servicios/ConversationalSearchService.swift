@@ -8,6 +8,11 @@
 import Foundation
 import FirebaseAuth
 
+struct SearchResponse {
+    let answer: String
+    let usedTranscriptions: [Transcription]
+}
+
 class ConversationalSearchService {
     static let shared = ConversationalSearchService()
     
@@ -41,8 +46,7 @@ class ConversationalSearchService {
         }
     }
     
-    func performConversationalSearch(query: String, completion: @escaping (String?, Error?) -> Void) {
-        // Primero extraemos las palabras clave de la pregunta
+    func performConversationalSearch(query: String, completion: @escaping (SearchResponse?, Error?) -> Void) {
         extractKeywords(from: query) { keywords, error in
             if let error = error {
                 completion(nil, error)
@@ -56,7 +60,6 @@ class ConversationalSearchService {
             
             print("🔑 Palabras clave extraídas: \(keywords)")
             
-            // Luego buscamos con las palabras clave
             AlgoliaService.shared.searchTranscriptions(query: keywords) { transcriptionIDs in
                 guard let username = Auth.auth().currentUser?.email else {
                     completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Usuario no autenticado"]))
@@ -80,11 +83,10 @@ class ConversationalSearchService {
                     }.sorted(by: { $0.date > $1.date })
                     
                     guard !relevantTranscriptions.isEmpty else {
-                        completion("No encontré esa información en las transcripciones", nil)
+                        completion(SearchResponse(answer: "No encontré esa información en las transcripciones", usedTranscriptions: []), nil)
                         return
                     }
                     
-                    // Preparar el contexto para GPT
                     var context = "INFORMACIÓN DEL DIARIO:\n\n"
                     
                     for transcription in relevantTranscriptions {
@@ -104,7 +106,11 @@ class ConversationalSearchService {
                         if let error = error {
                             completion(nil, error)
                         } else if let response = response {
-                            completion(response, nil)
+                            let searchResponse = SearchResponse(
+                                answer: response,
+                                usedTranscriptions: relevantTranscriptions
+                            )
+                            completion(searchResponse, nil)
                         }
                     }
                 }

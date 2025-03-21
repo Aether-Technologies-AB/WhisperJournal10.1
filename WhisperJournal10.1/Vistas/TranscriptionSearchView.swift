@@ -15,6 +15,7 @@ struct TranscriptionSearchView: View {
     @State private var errorMessage: String?
     @State private var selectedTranscription: Transcription?
     @State private var aiResponse: String?
+    @State private var usedTranscriptions: [Transcription] = []
     @State private var isLoading = false
     
     var body: some View {
@@ -38,6 +39,7 @@ struct TranscriptionSearchView: View {
                                 searchText = ""
                                 searchResults = []
                                 aiResponse = nil
+                                usedTranscriptions = []
                             }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
@@ -68,18 +70,33 @@ struct TranscriptionSearchView: View {
                                         .cornerRadius(10)
                                 }
                                 .padding(.horizontal)
+                                
+                                if !usedTranscriptions.isEmpty {
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text("Basado en estas entradas:")
+                                            .font(.headline)
+                                            .padding(.horizontal)
+                                        
+                                        ForEach(usedTranscriptions) { transcription in
+                                            TranscriptionResultRow(transcription: transcription)
+                                                .padding(.horizontal)
+                                        }
+                                    }
+                                }
                             }
                             
-                            // Mostrar resultados de búsqueda
+                            // Mostrar otros resultados de búsqueda
                             if !searchResults.isEmpty {
-                                Text("Resultados encontrados:")
+                                Text("Otros resultados relacionados:")
                                     .font(.headline)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding(.horizontal)
                                 
                                 ForEach(searchResults) { transcription in
-                                    TranscriptionResultRow(transcription: transcription)
-                                        .padding(.horizontal)
+                                    if !usedTranscriptions.contains(transcription) {
+                                        TranscriptionResultRow(transcription: transcription)
+                                            .padding(.horizontal)
+                                    }
                                 }
                             }
                             
@@ -106,6 +123,7 @@ struct TranscriptionSearchView: View {
         errorMessage = nil
         aiResponse = nil
         searchResults = []
+        usedTranscriptions = []
         
         // Primero intentamos la búsqueda conversacional
         ConversationalSearchService.shared.performConversationalSearch(query: searchText) { response, error in
@@ -114,7 +132,8 @@ struct TranscriptionSearchView: View {
                     print("Error en búsqueda conversacional: \(error)")
                     self.errorMessage = "Error en la búsqueda: \(error.localizedDescription)"
                 } else if let response = response {
-                    self.aiResponse = response
+                    self.aiResponse = response.answer
+                    self.usedTranscriptions = response.usedTranscriptions
                 }
                 self.isLoading = false
             }
