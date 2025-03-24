@@ -104,3 +104,34 @@
 "detail_loading_images" = "Laddar bilder...";
 "detail_loading_images_error" = "Det gick inte att ladda bilderna";
 "detail_image_count" = "%d bild(er)";
+
+// Semantisk sökning
+"semantic_search_error" = "Fel i semantisk sökning";
+"generating_embeddings" = "Genererar inbäddningar...";
+"embedding_generation_error" = "Fel vid generering av inbäddningar";
+"semantic_similarity_threshold" = "Likhetströskel";
+
+// OpenAI Integration
+"openai_api_error" = "Fel vid anslutning till OpenAI";
+"api_key_missing" = "OpenAI API-nyckel saknas";
+"embedding_processing" = "Bearbetar textinbäddningar";
+
+// Konversationssökning
+"ask_question" = "Ställ en fråga eller sök...";
+"processing_query" = "Bearbetar din förfrågan...";
+"no_relevant_entries" = "Inga relevanta poster hittades";
+"showing_related_entries" = "Visar relaterade poster";
+
+// Sökvyn
+"search_title" = "Sök";
+"close_button" = "Stäng";
+"searching" = "Söker...";
+"ai_response_title" = "Svar:";
+"based_on_entries" = "Baserat på dessa poster:";
+"other_related_results" = "Andra relaterade resultat:";
+"tags_label" = "Taggar: %@";
+
+// Kamera och Fotobibliotek
+"camera_not_available" = "Kameran är inte tillgänglig";
+"photo_library_not_available" = "Fotobiblioteket är inte tillgängligt";
+"ok_button" = "OK";

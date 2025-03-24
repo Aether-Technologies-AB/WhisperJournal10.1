@@ -80,7 +80,7 @@
 "delete_transcription_error" = "Error eliminando transcripción";
 "camera_unavailable_title" = "Cámara no disponible";
 "camera_unavailable_message" = "No se puede acceder a la cámara en este dispositivo o simulador";
-"ok_button" = "OK";
+"ok_button" = "Aceptar";
 "remove_image" = "Eliminar";
 "saved_transcriptions_title" = "Transcripciones Guardadas";
 "profile_menu_profile" = "Perfil";
@@ -107,3 +107,33 @@
 "detail_loading_images" = "Cargando imágenes...";
 "detail_loading_images_error" = "No se pudieron cargar las imágenes";
 "detail_image_count" = "%d imagen(es)";
+
+// Búsqueda Semántica
+"semantic_search_error" = "Error en la búsqueda semántica";
+"generating_embeddings" = "Generando embeddings...";
+"embedding_generation_error" = "Error al generar embeddings";
+"semantic_similarity_threshold" = "Umbral de similitud";
+
+// Integración OpenAI
+"openai_api_error" = "Error al conectar con OpenAI";
+"api_key_missing" = "Falta la clave API de OpenAI";
+"embedding_processing" = "Procesando embeddings de texto";
+
+// Búsqueda Conversacional
+"ask_question" = "Haz una pregunta o busca...";
+"processing_query" = "Procesando tu consulta...";
+"no_relevant_entries" = "No se encontraron entradas relevantes";
+"showing_related_entries" = "Mostrando entradas relacionadas";
+
+// Vista de Búsqueda
+"search_title" = "Búsqueda";
+"close_button" = "Cerrar";
+"searching" = "Buscando...";
+"ai_response_title" = "Respuesta:";
+"based_on_entries" = "Basado en estas entradas:";
+"other_related_results" = "Otros resultados relacionados:";
+"tags_label" = "Etiquetas: %@";
+
+// Cámara y Biblioteca de Fotos
+"camera_not_available" = "La cámara no está disponible";
+"photo_library_not_available" = "La biblioteca de fotos no está disponible";

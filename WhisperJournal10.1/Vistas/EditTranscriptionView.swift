@@ -20,6 +20,7 @@ struct EditTranscriptionView: View {
     @State private var showImagePicker = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var showAlert = false
+    @State private var alertMessage = ""
     
     // Nuevo estado para rastrear la fuente de imagen
     @State private var currentImageSource: ImageSource = .none
@@ -168,8 +169,8 @@ struct EditTranscriptionView: View {
             )
             .alert(isPresented: $showAlert) {
                 Alert(
-                    title: Text(NSLocalizedString("camera_unavailable_title", comment: "Camera unavailable title")),
-                    message: Text(NSLocalizedString("camera_unavailable_message", comment: "Camera unavailable message")),
+                    title: Text(alertMessage),
+                    message: nil,
                     dismissButton: .default(Text(NSLocalizedString("ok_button", comment: "OK button")))
                 )
             }
@@ -250,55 +251,36 @@ struct EditTranscriptionView: View {
     }
     
     private func openImagePicker(source: ImageSource) {
-        // Reiniciar estado completamente
         showImagePicker = false
         showAlert = false
         
-        // Depuración detallada
-        print("🔍 Fuente seleccionada: \(source)")
-        
-        // Verificaciones de disponibilidad
         let cameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
         let libraryAvailable = UIImagePickerController.isSourceTypeAvailable(.photoLibrary)
         
-        print("🔍 Disponibilidad:")
-        print("Cámara disponible: \(cameraAvailable)")
-        print("Biblioteca disponible: \(libraryAvailable)")
-        
-        // Configuración precisa según la fuente
         switch source {
         case .camera:
             guard cameraAvailable else {
-                print("⚠️ Cámara NO disponible")
                 showAlert = true
+                alertMessage = NSLocalizedString("camera_not_available", comment: "")
                 return
             }
-            
-            // Configuración específica para cámara
             currentImageSource = .camera
             imagePickerSourceType = .camera
             
         case .photoLibrary:
             guard libraryAvailable else {
-                print("⚠️ Biblioteca NO disponible")
                 showAlert = true
+                alertMessage = NSLocalizedString("photo_library_not_available", comment: "")
                 return
             }
-            
-            // Configuración específica para biblioteca
             currentImageSource = .photoLibrary
             imagePickerSourceType = .photoLibrary
             
         case .none:
-            print("⚠️ Ninguna fuente seleccionada")
             return
         }
         
-        // Abrir selector con un pequeño retraso
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            print("🖼️ Abriendo EXACTAMENTE: \(self.imagePickerSourceType)")
-            self.showImagePicker = true
-        }
+        showImagePicker = true
     }
   
         

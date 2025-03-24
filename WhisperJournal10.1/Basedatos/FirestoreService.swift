@@ -45,34 +45,41 @@ class FirestoreService {
         imageLocalPaths: [String]? = nil,
         completion: @escaping (Error?) -> Void
     ) {
-        let transcription: [String: Any] = [
-            "text": text,
-            "date": date,
-            "tags": tags,
-            "imageLocalPaths": imageLocalPaths ?? [],
-            "imageURLs": [] as [String],
-            "audioURL": ""
-        ]
-        
-        // Cambiar el orden de declaración
-        let documentRef = db.collection("users").document(username).collection("transcriptions").addDocument(data: transcription)
-        
-        documentRef.setData(transcription) { error in
-            if let error = error {
+        Task {
+            do {
+                // Generar embedding
+                let embedding = try await EmbeddingService.shared.generateEmbedding(for: text)
+                
+                let transcription: [String: Any] = [
+                    "text": text,
+                    "date": date,
+                    "tags": tags,
+                    "imageLocalPaths": imageLocalPaths ?? [],
+                    "imageURLs": [] as [String],
+                    "audioURL": "",
+                    "embedding": embedding
+                ]
+                
+                // Cambiar el orden de declaración
+                let documentRef = try await db.collection("users").document(username)
+                    .collection("transcriptions")
+                    .addDocument(data: transcription)
+                
+                try await documentRef.setData(transcription)
+                
+                // Indexar en Algolia después de guardar en Firestore
+                AlgoliaService.shared.indexTranscription(
+                    id: documentRef.documentID,
+                    text: text,
+                    username: username,
+                    date: date,
+                    tags: tags
+                )
+                
+                completion(nil)
+            } catch {
                 completion(error)
-                return
             }
-            
-            // Indexar en Algolia después de guardar en Firestore
-            AlgoliaService.shared.indexTranscription(
-                id: documentRef.documentID,
-                text: text,
-                username: username,
-                date: date,
-                tags: tags
-            )
-            
-            completion(nil)
         }
     }
 

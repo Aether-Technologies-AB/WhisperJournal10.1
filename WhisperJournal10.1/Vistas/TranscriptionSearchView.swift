@@ -27,7 +27,7 @@ struct TranscriptionSearchView: View {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
                         
-                        TextField("Haz una pregunta o busca palabras clave...", text: $searchText)
+                        TextField(NSLocalizedString("ask_question", comment: ""), text: $searchText)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .onSubmit {
@@ -54,7 +54,7 @@ struct TranscriptionSearchView: View {
                 
                 if isLoading {
                     Spacer()
-                    ProgressView("Buscando...")
+                    ProgressView(NSLocalizedString("searching", comment: ""))
                     Spacer()
                 } else {
                     ScrollView {
@@ -62,7 +62,7 @@ struct TranscriptionSearchView: View {
                             // Mostrar respuesta de IA si existe
                             if let response = aiResponse {
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text("Respuesta:")
+                                    Text(NSLocalizedString("ai_response_title", comment: ""))
                                         .font(.headline)
                                     Text(response)
                                         .padding()
@@ -73,7 +73,7 @@ struct TranscriptionSearchView: View {
                                 
                                 if !usedTranscriptions.isEmpty {
                                     VStack(alignment: .leading, spacing: 8) {
-                                        Text("Basado en estas entradas:")
+                                        Text(NSLocalizedString("based_on_entries", comment: ""))
                                             .font(.headline)
                                             .padding(.horizontal)
                                         
@@ -87,7 +87,7 @@ struct TranscriptionSearchView: View {
                             
                             // Mostrar otros resultados de búsqueda
                             if !searchResults.isEmpty {
-                                Text("Otros resultados relacionados:")
+                                Text(NSLocalizedString("other_related_results", comment: ""))
                                     .font(.headline)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding(.horizontal)
@@ -109,8 +109,8 @@ struct TranscriptionSearchView: View {
                     }
                 }
             }
-            .navigationBarTitle("Búsqueda", displayMode: .inline)
-            .navigationBarItems(trailing: Button("Cerrar") {
+            .navigationBarTitle(NSLocalizedString("search_title", comment: ""), displayMode: .inline)
+            .navigationBarItems(trailing: Button(NSLocalizedString("close_button", comment: "")) {
                 presentationMode.wrappedValue.dismiss()
             })
         }
@@ -183,7 +183,7 @@ struct TranscriptionResultRow: View {
                     .foregroundColor(.gray)
                 
                 if !transcription.tags.isEmpty {
-                    Text("Tags: \(transcription.tags)")
+                    Text(String(format: NSLocalizedString("tags_label", comment: ""), transcription.tags))
                         .font(.caption)
                         .foregroundColor(.blue)
                 }

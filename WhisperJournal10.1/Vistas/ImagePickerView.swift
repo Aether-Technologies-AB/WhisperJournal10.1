@@ -16,20 +16,17 @@ struct ImagePickerView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
-        
-        // Configuraciones para evitar problemas de portrait
         picker.sourceType = sourceType
         picker.allowsEditing = false
-        picker.modalPresentationStyle = .fullScreen
         
-        // Configuración específica para cámara
+        // Configuración básica para la cámara
         if sourceType == .camera {
             picker.cameraCaptureMode = .photo
             picker.cameraDevice = .rear
             
-            // Intentar prevenir problemas de orientación
+            // Solo usar los tipos de medios disponibles
             if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera) {
-                picker.mediaTypes = mediaTypes
+                picker.mediaTypes = mediaTypes.filter { $0 == "public.image" }
             }
         }
         

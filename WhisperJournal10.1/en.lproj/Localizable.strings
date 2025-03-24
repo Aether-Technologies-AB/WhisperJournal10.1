@@ -109,3 +109,33 @@
 "detail_loading_images" = "Loading images...";
 "detail_loading_images_error" = "Could not load images";
 "detail_image_count" = "%d image(s)";
+
+// Semantic Search
+"semantic_search_error" = "Error in semantic search";
+"generating_embeddings" = "Generating embeddings...";
+"embedding_generation_error" = "Error generating embeddings";
+"semantic_similarity_threshold" = "Similarity threshold";
+
+// OpenAI Integration
+"openai_api_error" = "Error connecting to OpenAI";
+"api_key_missing" = "OpenAI API key is missing";
+"embedding_processing" = "Processing text embeddings";
+
+// Conversational Search
+"ask_question" = "Ask a question or search...";
+"processing_query" = "Processing your query...";
+"no_relevant_entries" = "No relevant entries found";
+"showing_related_entries" = "Showing related entries";
+
+// Search View
+"search_title" = "Search";
+"close_button" = "Close";
+"searching" = "Searching...";
+"ai_response_title" = "Response:";
+"based_on_entries" = "Based on these entries:";
+"other_related_results" = "Other related results:";
+"tags_label" = "Tags: %@";
+// Camera and Photo Library
+"camera_not_available" = "Camera is not available";
+"photo_library_not_available" = "Photo library is not available";
+"ok_button" = "OK";
