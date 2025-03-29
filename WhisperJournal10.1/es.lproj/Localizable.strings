@@ -9,10 +9,10 @@
 "welcome_message" = "¡Bienvenido a nuestra aplicación!";
 
 "app_title" = "Diario Whisper";
-"select_language" = "Seleccionar Idioma";
-"spanish" = "Español";
-"english" = "Inglés";
-"swedish" = "Sueco";
+"select_language" = "Seleccionar idioma:";
+"language_spanish" = "Español";
+"language_english" = "Inglés";
+"language_swedish" = "Sueco";
 "record_button" = "Grabar";
 "stop_button" = "Detener";
 "transcription_label" = "Transcripción:";
@@ -137,3 +137,20 @@
 // Cámara y Biblioteca de Fotos
 "camera_not_available" = "La cámara no está disponible";
 "photo_library_not_available" = "La biblioteca de fotos no está disponible";
+
+// Vista de Login
+"google_signin_button" = "Iniciar sesión con Google";
+// Búsqueda por Voz
+"recording_error" = "No se pudo iniciar la grabación";
+"transcription_error" = "Error al transcribir el audio";
+"voice_search_button" = "Búsqueda por voz";
+
+// Vista de Grabación
+"record_new_transcription" = "Nueva Transcripción";
+"select_language" = "Seleccionar idioma";
+"stop_recording" = "Detener Grabación";
+"start_recording" = "Iniciar Grabación";
+"transcription_title" = "Transcripción:";
+"language_spanish" = "Español";
+"language_english" = "Inglés";
+"language_swedish" = "Sueco";

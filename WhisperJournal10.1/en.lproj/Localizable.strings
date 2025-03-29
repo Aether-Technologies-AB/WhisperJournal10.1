@@ -9,10 +9,10 @@
 "welcome_message" = "Welcome to our app!";
 
 "app_title" = "Whisper Journal";
-"select_language" = "Select Language";
-"spanish" = "Spanish";
-"english" = "English";
-"swedish" = "Swedish";
+"select_language" = "Select language:";
+"language_spanish" = "Spanish";
+"language_english" = "English";
+"language_swedish" = "Swedish";
 "record_button" = "Record";
 "stop_button" = "Stop";
 "transcription_label" = "Transcription:";
@@ -139,3 +139,20 @@
 "camera_not_available" = "Camera is not available";
 "photo_library_not_available" = "Photo library is not available";
 "ok_button" = "OK";
+
+// Login View
+"google_signin_button" = "Sign in with Google";
+// Voice Search
+"recording_error" = "Could not start recording";
+"transcription_error" = "Error transcribing audio";
+"voice_search_button" = "Voice search";
+
+// Recording View
+"record_new_transcription" = "Record New Transcription";
+"select_language" = "Select language";
+"stop_recording" = "Stop Recording";
+"start_recording" = "Start Recording";
+"transcription_title" = "Transcription:";
+"language_spanish" = "Spanish";
+"language_english" = "English";
+"language_swedish" = "Swedish";

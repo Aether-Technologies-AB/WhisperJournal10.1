@@ -30,14 +30,17 @@ struct RecordingView: View {
                     .padding()
 
                 Menu {
-                    Button("Español") { selectedLanguage = "es-ES" }
-                    Button("Inglés") { selectedLanguage = "en-US" }
-                    Button("Sueco") { selectedLanguage = "sv-SE" }
+                    Button(NSLocalizedString("language_spanish", comment: "")) { selectedLanguage = "es-ES" }
+                    Button(NSLocalizedString("language_english", comment: "")) { selectedLanguage = "en-US" }
+                    Button(NSLocalizedString("language_swedish", comment: "")) { selectedLanguage = "sv-SE" }
                     // Agrega más idiomas según sea necesario
                 } label: {
-                    Text("Selecciona el idioma: \(selectedLanguage)")
-                        .padding()
-                        .background(Color.gray.opacity(0.2))
+                    HStack {
+                        Text(NSLocalizedString("select_language", comment: ""))
+                        Text(getLanguageName(for: selectedLanguage))
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.2))
                 }
 
                 Button(isRecording ? "Detener Grabación" : "Iniciar Grabación") {
@@ -117,6 +120,19 @@ struct RecordingView: View {
             } else {
                 print("Error al obtener las transcripciones: \(error?.localizedDescription ?? "Desconocido")")
             }
+        }
+    }
+
+    private func getLanguageName(for code: String) -> String {
+        switch code {
+        case "es-ES":
+            return NSLocalizedString("spanish", comment: "")
+        case "en-US":
+            return NSLocalizedString("english", comment: "")
+        case "sv-SE":
+            return NSLocalizedString("swedish", comment: "")
+        default:
+            return code
         }
     }
 }

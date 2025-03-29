@@ -6,10 +6,10 @@
   
 */
 "app_title" = "Whisper Journal";
-"select_language" = "Välj språk";
-"spanish" = "Spanska";
-"english" = "Engelska";
-"swedish" = "Svenska";
+"select_language" = "Välj språk:";
+"language_spanish" = "Spanska";
+"language_english" = "Engelska";
+"language_swedish" = "Svenska";
 "record_button" = "Spela in";
 "stop_button" = "Sluta";
 "transcription_label" = "Transkription:";
@@ -135,3 +135,20 @@
 "camera_not_available" = "Kameran är inte tillgänglig";
 "photo_library_not_available" = "Fotobiblioteket är inte tillgängligt";
 "ok_button" = "OK";
+
+// Inloggningsvy
+"google_signin_button" = "Logga in med Google";
+// Röstsökning
+"recording_error" = "Kunde inte starta inspelningen";
+"transcription_error" = "Fel vid transkribering av ljud";
+"voice_search_button" = "Röstsökning";
+
+// Inspelningsvy
+"record_new_transcription" = "Ny Transkription";
+"select_language" = "Välj språk";
+"stop_recording" = "Stoppa Inspelning";
+"start_recording" = "Starta Inspelning";
+"transcription_title" = "Transkription:";
+"language_spanish" = "Spanska";
+"language_english" = "Engelska";
+"language_swedish" = "Svenska";
