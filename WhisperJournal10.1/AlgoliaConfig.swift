@@ -9,12 +9,9 @@
 import Foundation
 import AlgoliaSearchClient
 
-
 struct AlgoliaConfig {
-    static let appID = ApplicationID(rawValue: "")
-    static let apiKey = APIKey(rawValue: "")  // Cambia a tu Admin API Key
-    static let searchAPIKey = APIKey(rawValue: "")  // Cambia a tu Search API Key
+    static let appID = ApplicationID(rawValue: APIKeys.algoliaAppID)
+    static let apiKey = APIKey(rawValue: APIKeys.algoliaAPIKey)
+    static let searchAPIKey = APIKey(rawValue: APIKeys.algoliaSearchAPIKey)
     static let indexName = IndexName(rawValue: "Transcriptions")
-    
-    
 }

@@ -1,0 +1,38 @@
+
+# Xcode
+xcuserdata/
+
+# API Keys y Secrets
+Keys.plist
+ApiConfig/Keys.plist
+*/Keys.plist
+
+# Archivos generados
+build/
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# Empaquetado
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+
+# Archivos del sistema
+.DS_Store
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/*/.png
+fastlane/test_output

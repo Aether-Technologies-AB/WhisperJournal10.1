@@ -6,8 +6,47 @@
 //
 
 import Foundation
-import Foundation
 
 enum APIKeys {
-    static let openAI = "" // Agrega tu API key de OpenAI aquí
+    // OpenAI
+    static let openAI: String = {
+        guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+              let key = dict["OPENAI_API_KEY"] as? String
+        else {
+            fatalError("No se pudo cargar la API key de OpenAI")
+        }
+        return key
+    }()
+    
+    // Algolia
+    static let algoliaAppID: String = {
+        guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+              let id = dict["ALGOLIA_APP_ID"] as? String
+        else {
+            fatalError("No se pudo cargar Algolia App ID")
+        }
+        return id
+    }()
+    
+    static let algoliaAPIKey: String = {
+        guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+              let key = dict["ALGOLIA_API_KEY"] as? String
+        else {
+            fatalError("No se pudo cargar Algolia API Key")
+        }
+        return key
+    }()
+    
+    static let algoliaSearchAPIKey: String = {
+        guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path) as? [String: Any],
+              let key = dict["ALGOLIA_SEARCH_API_KEY"] as? String
+        else {
+            fatalError("No se pudo cargar Algolia Search API Key")
+        }
+        return key
+    }()
 }

@@ -26,23 +26,21 @@ struct TranscriptionListView: View {
                 } else {
                     List {
                         ForEach(transcriptions) { transcription in
-                            HStack {
-                                // Modificar visualización de miniaturas
+                            HStack(spacing: 12) {
+                                // Reemplazar ScrollView de imágenes con un simple ícono
                                 if let imagePaths = transcription.imageLocalPaths, !imagePaths.isEmpty {
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(imagePaths, id: \.self) { imagePath in
-                                                if let image = PersistenceController.shared.loadImage(filename: imagePath) {
-                                                    Image(uiImage: image)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 60, height: 60)
-                                                        .cornerRadius(10)
-                                                        .clipped()
-                                                }
-                                            }
-                                        }
-                                    }
+                                    Image(systemName: "photo.on.rectangle")
+                                        .foregroundColor(.blue)
+                                        .overlay(
+                                            Text("\(imagePaths.count)")
+                                                .font(.caption2)
+                                                .foregroundColor(.white)
+                                                .padding(3)
+                                                .background(Color.blue)
+                                                .clipShape(Circle())
+                                                .offset(x: 10, y: -10),
+                                            alignment: .topTrailing
+                                        )
                                 }
 
                                 VStack(alignment: .leading, spacing: 5) {

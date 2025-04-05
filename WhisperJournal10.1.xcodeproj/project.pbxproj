@@ -12,6 +12,7 @@
 		6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1806B42D29DC3500A7ADDB /* Transcription.swift */; };
 		6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D45C9AD2D2918A400136F98 /* FirestoreService.swift */; };
 		6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */; };
+		6D601BBC2D987F770046070B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D601BBB2D987F770046070B /* GoogleService-Info.plist */; };
 		6D61FAAA2D89DE0600A9255C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D61FAA92D89DE0600A9255C /* SearchBar.swift */; };
 		6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6C19B82D42C6CF009AC331 /* FirebaseStorage */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
@@ -30,7 +31,6 @@
 		6D95BE5C2D20D0CE00F51761 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6D95BE5B2D20D0CE00F51761 /* AudioKitUI */; };
 		6D9899BA2D3AD01F005F79FB /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 6D9899B92D3AD01F005F79FB /* GoogleSignIn */; };
 		6D9899BC2D3AD01F005F79FB /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6D9899BB2D3AD01F005F79FB /* GoogleSignInSwift */; };
-		6D9E65282D3B703F0097281E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D9E65272D3B703F0097281E /* GoogleService-Info.plist */; };
 		6DA93E992D1C8B1E00D43977 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA93E982D1C8B1E00D43977 /* RegisterView.swift */; };
 		6DB57C5B2D1DECD900E8A1AF /* WisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */; };
 		6DB963072D737EE60008C978 /*  AlgoliaService .swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB963062D737EE60008C978 /*  AlgoliaService .swift */; };
@@ -40,6 +40,8 @@
 		6DBEF41D2D88D68900E49CE0 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBEF41C2D88D68900E49CE0 /* APIKeys.swift */; };
 		6DBEF41F2D88D6C400E49CE0 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBEF41E2D88D6C400E49CE0 /* OpenAIService.swift */; };
 		6DBEF4212D88D6F200E49CE0 /* ConversationalSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBEF4202D88D6F200E49CE0 /* ConversationalSearchService.swift */; };
+		6DC5FD1B2D9784A2003F439B /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6DC5FD1A2D9784A1003F439B /* Keys.plist */; };
+		6DC5FD1D2D978E40003F439B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 6DC5FD1C2D978E40003F439B /* .gitignore */; };
 		6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */; };
 		6DD0C11B2D332D1E00488D97 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */; };
 		6DD25E232D739B4200A8FEEA /* AlgoliaConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD25E222D739B4200A8FEEA /* AlgoliaConfig.swift */; };
@@ -59,6 +61,7 @@
 		6D1806B42D29DC3500A7ADDB /* Transcription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcription.swift; sourceTree = "<group>"; };
 		6D45C9AD2D2918A400136F98 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		6D601BBB2D987F770046070B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6D61FAA92D89DE0600A9255C /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
 		6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperJournal10_1App.swift; sourceTree = "<group>"; };
@@ -73,7 +76,6 @@
 		6D7E664E2D0E705E00765A78 /* RecordingView.swif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingView.swif.swift; sourceTree = "<group>"; };
 		6D7E66502D0E708100765A78 /* RecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewModel.swift; sourceTree = "<group>"; };
 		6D84631F2D17505900B4F69E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		6D9E65272D3B703F0097281E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6DA93E982D1C8B1E00D43977 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WisperService.swift; sourceTree = "<group>"; };
 		6DB963062D737EE60008C978 /*  AlgoliaService .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " AlgoliaService .swift"; sourceTree = "<group>"; };
@@ -81,6 +83,8 @@
 		6DBEF41C2D88D68900E49CE0 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		6DBEF41E2D88D6C400E49CE0 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
 		6DBEF4202D88D6F200E49CE0 /* ConversationalSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationalSearchService.swift; sourceTree = "<group>"; };
+		6DC5FD1A2D9784A1003F439B /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
+		6DC5FD1C2D978E40003F439B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		6DD0C1182D33239A00488D97 /* EditTranscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTranscriptionView.swift; sourceTree = "<group>"; };
 		6DD0C11A2D332D1E00488D97 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		6DD25E222D739B4200A8FEEA /* AlgoliaConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoliaConfig.swift; sourceTree = "<group>"; };
@@ -141,10 +145,12 @@
 				6D7E66352D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld */,
 				6D7E66302D0E604D00765A78 /* Preview Content */,
 				6D7E664C2D0E6B6900765A78 /* AudioRecorder.swift */,
-				6D9E65272D3B703F0097281E /* GoogleService-Info.plist */,
+				6D601BBB2D987F770046070B /* GoogleService-Info.plist */,
 				6DDF85CE2D38BD8700A92E37 /* Localizable.strings */,
 				6DD5B57F2D401D3B00AB89AA /* Color+Custom.swift */,
 				6DD25E222D739B4200A8FEEA /* AlgoliaConfig.swift */,
+				6DC5FD1A2D9784A1003F439B /* Keys.plist */,
+				6DC5FD1C2D978E40003F439B /* .gitignore */,
 			);
 			path = WhisperJournal10.1;
 			sourceTree = "<group>";
@@ -312,9 +318,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D7E66322D0E604D00765A78 /* Preview Assets.xcassets in Resources */,
-				6D9E65282D3B703F0097281E /* GoogleService-Info.plist in Resources */,
 				6DDF85CC2D38BD8700A92E37 /* Localizable.strings in Resources */,
 				6D7E662F2D0E604D00765A78 /* Assets.xcassets in Resources */,
+				6DC5FD1D2D978E40003F439B /* .gitignore in Resources */,
+				6DC5FD1B2D9784A2003F439B /* Keys.plist in Resources */,
+				6D601BBC2D987F770046070B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,7 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -504,7 +512,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_CFBundleDisplayName = WhisperJournal;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
@@ -514,8 +522,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -536,7 +544,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -545,7 +553,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WhisperJournal10-1-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_CFBundleDisplayName = WhisperJournal;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
@@ -555,8 +563,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
