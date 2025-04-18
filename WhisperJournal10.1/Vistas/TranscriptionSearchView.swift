@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import Firebase
+import AVFoundation
 
 struct TranscriptionSearchView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -17,6 +18,8 @@ struct TranscriptionSearchView: View {
     @State private var aiResponse: String?
     @State private var usedTranscriptions: [Transcription] = []
     @State private var isLoading = false
+    @State private var isRecording = false
+    @State private var audioURL: URL?
     
     var body: some View {
         NavigationView {
@@ -44,6 +47,20 @@ struct TranscriptionSearchView: View {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
                             }
+                        }
+                        
+                        // Botón de micrófono
+                        Button(action: handleVoiceSearch) {
+                            Image(systemName: isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                                .foregroundColor(isRecording ? .red : .blue)
+                                .font(.system(size: 24))
+                        }
+                        .padding(.horizontal, 4)
+                        
+                        if isRecording {
+                            Image(systemName: "waveform")
+                                .foregroundColor(.blue)
+                                .font(.system(size: 20))
                         }
                     }
                     .padding(8)
@@ -113,6 +130,35 @@ struct TranscriptionSearchView: View {
             .navigationBarItems(trailing: Button(NSLocalizedString("close_button", comment: "")) {
                 presentationMode.wrappedValue.dismiss()
             })
+        }
+    }
+    
+    private func handleVoiceSearch() {
+        if isRecording {
+            // Detener grabación
+            AudioSessionManager.shared.stopRecording()
+            isRecording = false
+            
+            // Transcribir el audio con detección automática de idioma
+            if let url = audioURL {
+                isLoading = true
+                WhisperService.shared.transcribeAudio(at: url, language: "") { transcription in
+                    DispatchQueue.main.async {
+                        if let transcription = transcription {
+                            self.searchText = transcription
+                            self.performSearch()
+                        }
+                        self.isLoading = false
+                    }
+                }
+            }
+        } else {
+            // Iniciar grabación
+            audioURL = FileManager.default.temporaryDirectory.appendingPathComponent("search_audio.m4a")
+            if let url = audioURL {
+                AudioSessionManager.shared.startRecording(to: url)
+                isRecording = true
+            }
         }
     }
     

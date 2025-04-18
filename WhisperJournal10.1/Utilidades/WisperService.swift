@@ -14,6 +14,11 @@
 
 import Foundation
 
+// Estructura para manejar la respuesta de Whisper
+struct WhisperResponse: Codable {
+    let text: String
+}
+
 class WhisperService {
     static let shared = WhisperService()
     private init() {}
@@ -37,8 +42,8 @@ class WhisperService {
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        // Obtener la API key de las variables de entorno o configuración
-        let apiKey = ProcessInfo.processInfo.environment["OPENAI_API_KEY"] ?? ""
+        // Obtener la API key desde APIKeys
+        let apiKey = APIKeys.openAI
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         
         var body = Data()
@@ -83,15 +88,15 @@ class WhisperService {
             }
             
             do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let text = json["text"] as? String {
-                    completion(text)
-                } else {
-                    print("Error al parsear la respuesta")
-                    completion(nil)
-                }
+                let decoder = JSONDecoder()
+                let response = try decoder.decode(WhisperResponse.self, from: data)
+                completion(response.text)
             } catch {
                 print("Error al decodificar JSON: \(error)")
+                // Imprimir la respuesta para debug
+                if let responseStr = String(data: data, encoding: .utf8) {
+                    print("Respuesta recibida: \(responseStr)")
+                }
                 completion(nil)
             }
         }
