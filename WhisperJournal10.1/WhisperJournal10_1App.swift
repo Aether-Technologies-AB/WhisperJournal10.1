@@ -10,6 +10,7 @@ import FirebaseCore
 import FirebaseAuth
 import UIKit
 import GoogleSignIn
+import UserNotifications
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -62,6 +63,31 @@ struct WhisperJournal10_1App: App {
         // Asegúrate de que isAuthenticated esté configurado en false por defecto
         if UserDefaults.standard.object(forKey: "isAuthenticated") == nil {
             UserDefaults.standard.set(false, forKey: "isAuthenticated")
+        }
+        
+        // Asegurarnos de que Firebase esté configurado antes de usar Auth
+        // Firebase ya se configura en el AppDelegate, así que aquí solo verificamos
+        
+        // Solicitar permisos de notificaciones después de un breve retraso
+        // para asegurar que Firebase esté completamente inicializado
+        let isUserAuthenticated = isAuthenticated // Crear una copia local
+        
+        // Retrasar la solicitud de notificaciones para asegurar que Firebase esté listo
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                if success {
+                    print("Autorización para notificaciones concedida")
+                    // Programar notificaciones semanales si está autenticado
+                    if isUserAuthenticated {
+                        // Asegurarse de estar en el hilo principal
+                        DispatchQueue.main.async {
+                            NotificationService.shared.scheduleWeeklyMemories()
+                        }
+                    }
+                } else if let error = error {
+                    print("Error al solicitar autorización para notificaciones: \(error.localizedDescription)")
+                }
+            }
         }
         
         // Migrar transcripciones si está autenticado, de forma asíncrona

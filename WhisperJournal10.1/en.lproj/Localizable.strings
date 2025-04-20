@@ -156,3 +156,43 @@
 "language_spanish" = "Spanish";
 "language_english" = "English";
 "language_swedish" = "Swedish";
+
+// Notifications and Reminders
+"notifications_title" = "Reminder Settings";
+"notifications_description" = "Configure your reminders to relive important moments from your journal";
+"configure_notifications" = "Configure Reminders";
+"enable_weekly_notifications" = "Enable Weekly Reminders";
+"disable_notifications" = "Disable Reminders";
+"notifications_nav_title" = "Reminders";
+"reminders_section" = "Reminders";
+"enable_reminders" = "Enable reminders";
+"frequency_days" = "Frequency: %d days";
+"save_settings" = "Save Settings";
+"information_section" = "Information";
+"reminders_info" = "Reminders will show you important moments from your journal periodically.";
+"reminders_settings_title" = "Reminder Settings";
+"reminders_alert_title" = "Reminders";
+"memory_notification_title" = "Journal Memory";
+"notifications_auth_granted" = "Notification authorization granted";
+"notifications_auth_error" = "Error requesting notification authorization: %@";
+"user_not_authenticated" = "User not authenticated";
+"firebase_not_initialized" = "Firebase is not properly initialized";
+"fetch_transcriptions_error" = "Error fetching transcriptions: %@";
+"unknown_error" = "Unknown";
+"schedule_notification_error" = "Error scheduling notification: %@";
+"notification_scheduled_success" = "Notification scheduled successfully for %@";
+"custom_notification_error" = "Error scheduling custom notification: %@";
+
+"recordatorios_configurados" = "Reminders set every %d days";
+"recordatorios_desactivados" = "Reminders deactivated";
+
+"time_unit" = "Time unit";
+"minutes" = "Minutes";
+"hours" = "Hours";
+"days" = "Days";
+"frequency_minutes" = "Frequency: %d minutes";
+"frequency_hours" = "Frequency: %d hours";
+"frequency_days" = "Frequency: %d days";
+"recordatorios_configurados_minutes" = "Reminders set every %d minutes";
+"recordatorios_configurados_hours" = "Reminders set every %d hours";
+"recordatorios_configurados_days" = "Reminders set every %d days";

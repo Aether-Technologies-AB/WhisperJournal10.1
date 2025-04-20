@@ -15,6 +15,9 @@
 		6D601BBC2D987F770046070B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D601BBB2D987F770046070B /* GoogleService-Info.plist */; };
 		6D61FAAA2D89DE0600A9255C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D61FAA92D89DE0600A9255C /* SearchBar.swift */; };
 		6D6C19B92D42C6CF009AC331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6C19B82D42C6CF009AC331 /* FirebaseStorage */; };
+		6D7288692DB2B89B00065907 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7288682DB2B89B00065907 /* NotificationService.swift */; };
+		6D72886B2DB2B8F100065907 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D72886A2DB2B8F100065907 /* NotificationSettingsView.swift */; };
+		6D72886D2DB2BEDE00065907 /* NotificationsAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D72886C2DB2BEDE00065907 /* NotificationsAccessView.swift */; };
 		6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */; };
 		6D7E662B2D0E604A00765A78 /* WhisperJournal10_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */; };
 		6D7E662D2D0E604A00765A78 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7E662C2D0E604A00765A78 /* ContentView.swift */; };
@@ -63,6 +66,9 @@
 		6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		6D601BBB2D987F770046070B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6D61FAA92D89DE0600A9255C /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		6D7288682DB2B89B00065907 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		6D72886A2DB2B8F100065907 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		6D72886C2DB2BEDE00065907 /* NotificationsAccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsAccessView.swift; sourceTree = "<group>"; };
 		6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineMicrophone.swift; sourceTree = "<group>"; };
 		6D7E662A2D0E604A00765A78 /* WhisperJournal10_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperJournal10_1App.swift; sourceTree = "<group>"; };
 		6D7E662C2D0E604A00765A78 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -178,6 +184,8 @@
 				6DD4CF2B2D4E9230006E34B1 /* ProfileView.swift */,
 				6DD25E242D739CA600A8FEEA /* TranscriptionSearchView.swift */,
 				6D61FAA92D89DE0600A9255C /* SearchBar.swift */,
+				6D72886A2DB2B8F100065907 /* NotificationSettingsView.swift */,
+				6D72886C2DB2BEDE00065907 /* NotificationsAccessView.swift */,
 			);
 			path = Vistas;
 			sourceTree = "<group>";
@@ -208,6 +216,7 @@
 				6D7E66442D0E628900765A78 /* AudioSessionManager.swift */,
 				6D77A8272D0FD451009C47A9 /* AudioEngineMicrophone.swift */,
 				6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */,
+				6D7288682DB2B89B00065907 /* NotificationService.swift */,
 			);
 			path = Utilidades;
 			sourceTree = "<group>";
@@ -340,10 +349,12 @@
 				6D7E66342D0E604D00765A78 /* Persistence.swift in Sources */,
 				6D1013F82D8F90F000802B64 /* EmbeddingService.swift in Sources */,
 				6DB963072D737EE60008C978 /*  AlgoliaService .swift in Sources */,
+				6D7288692DB2B89B00065907 /* NotificationService.swift in Sources */,
 				6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */,
 				6DD25E232D739B4200A8FEEA /* AlgoliaConfig.swift in Sources */,
 				6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */,
 				6D8463202D17505900B4F69E /* LoginView.swift in Sources */,
+				6D72886B2DB2B8F100065907 /* NotificationSettingsView.swift in Sources */,
 				6D7E66372D0E604D00765A78 /* WhisperJournal10_1.xcdatamodeld in Sources */,
 				6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */,
 				6D7E66452D0E628900765A78 /* AudioSessionManager.swift in Sources */,
@@ -356,6 +367,7 @@
 				6DD25E252D739CA600A8FEEA /* TranscriptionSearchView.swift in Sources */,
 				6D7E664F2D0E705E00765A78 /* RecordingView.swif.swift in Sources */,
 				6DD0C1192D33239A00488D97 /* EditTranscriptionView.swift in Sources */,
+				6D72886D2DB2BEDE00065907 /* NotificationsAccessView.swift in Sources */,
 				6D77A8282D0FD451009C47A9 /* AudioEngineMicrophone.swift in Sources */,
 				6DEC4B332D0F6AD70081C649 /* TranscriptDetailView.swift in Sources */,
 				6DA93E992D1C8B1E00D43977 /* RegisterView.swift in Sources */,

@@ -31,6 +31,7 @@ struct ContentView: View {
     @State private var showAlert = false
     @State private var showProfile = false
     @State private var isProfileMenuOpen = false
+    @State private var showNotificationsAccess = false
     
     @StateObject private var audioEngineMicrophone = AudioEngineMicrophone()
     let audioRecorder: AudioRecorder
@@ -100,6 +101,9 @@ struct ContentView: View {
                     .animation(.easeInOut, value: isRecording)
                     .blur(radius: isProfileMenuOpen ? 5 : 0)
                     .disabled(isProfileMenuOpen)
+                    .sheet(isPresented: $showNotificationsAccess) {
+                        NotificationsAccessView()
+                    }
                     
                     // Menú lateral
                     if isProfileMenuOpen {
@@ -117,7 +121,16 @@ struct ContentView: View {
                 }
                 .navigationTitle(NSLocalizedString("home_title", comment: "Home title"))
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(trailing: userIcon)
+                .navigationBarItems(
+                    leading: Button(action: {
+                        showNotificationsAccess = true
+                    }) {
+                        Image(systemName: "bell.badge")
+                            .font(.system(size: 20))
+                            .foregroundColor(.orange)
+                    },
+                    trailing: userIcon
+                )
                 
                 .alert(isPresented: $showAlert) {
                     Alert(

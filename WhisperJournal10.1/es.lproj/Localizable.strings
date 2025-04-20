@@ -154,3 +154,43 @@
 "language_spanish" = "Español";
 "language_english" = "Inglés";
 "language_swedish" = "Sueco";
+
+// Notificaciones y Recordatorios
+"notifications_title" = "Configuración de Recordatorios";
+"notifications_description" = "Configura tus recordatorios para revivir momentos importantes de tu diario";
+"configure_notifications" = "Configurar Recordatorios";
+"enable_weekly_notifications" = "Activar Recordatorios Semanales";
+"disable_notifications" = "Desactivar Recordatorios";
+"notifications_nav_title" = "Recordatorios";
+"reminders_section" = "Recordatorios";
+"enable_reminders" = "Activar recordatorios";
+"frequency_days" = "Frecuencia: %d días";
+"save_settings" = "Guardar configuración";
+"information_section" = "Información";
+"reminders_info" = "Los recordatorios te mostrarán momentos importantes de tu diario cada cierto tiempo.";
+"reminders_settings_title" = "Configuración de recordatorios";
+"reminders_alert_title" = "Recordatorios";
+"memory_notification_title" = "Recuerdo de tu diario";
+"notifications_auth_granted" = "Autorización para notificaciones concedida";
+"notifications_auth_error" = "Error al solicitar autorización para notificaciones: %@";
+"user_not_authenticated" = "Usuario no autenticado";
+"firebase_not_initialized" = "Firebase no está inicializado correctamente";
+"fetch_transcriptions_error" = "Error al obtener transcripciones: %@";
+"unknown_error" = "Desconocido";
+"schedule_notification_error" = "Error al programar notificación: %@";
+"notification_scheduled_success" = "Notificación programada con éxito para %@";
+"custom_notification_error" = "Error al programar notificación personalizada: %@";
+
+"recordatorios_configurados" = "Recordatorios configurados cada %d días";
+"recordatorios_desactivados" = "Recordatorios desactivados";
+
+"time_unit" = "Unidad de tiempo";
+"minutes" = "Minutos";
+"hours" = "Horas";
+"days" = "Días";
+"frequency_minutes" = "Frecuencia: %d minutos";
+"frequency_hours" = "Frecuencia: %d horas";
+"frequency_days" = "Frecuencia: %d días";
+"recordatorios_configurados_minutes" = "Recordatorios configurados cada %d minutos";
+"recordatorios_configurados_hours" = "Recordatorios configurados cada %d horas";
+"recordatorios_configurados_days" = "Recordatorios configurados cada %d días";

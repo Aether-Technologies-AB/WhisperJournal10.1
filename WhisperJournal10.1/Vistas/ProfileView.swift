@@ -7,6 +7,8 @@
 
 
 import SwiftUI
+import Firebase
+import UserNotifications
 import FirebaseAuth
 import UIKit
 
@@ -14,6 +16,13 @@ struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var showingPlans = false
     @State private var showingSettings = false
+    @State private var showingLogoutAlert = false
+    @State private var showingDeleteAccountAlert = false
+    @State private var showingDeleteConfirmationAlert = false
+    @State private var showingErrorAlert = false
+    @State private var errorMessage = ""
+    @State private var isLoading = false
+    @State private var showingNotificationSettings = false
     
     var body: some View {
         NavigationView {
@@ -48,6 +57,9 @@ struct ProfileView: View {
             .navigationBarTitle(NSLocalizedString("profile_title", comment: "Profile view title"), displayMode: .large)
             .navigationBarItems(trailing: closeButton)
             .background(Color(UIColor.systemGroupedBackground))
+            .sheet(isPresented: $showingNotificationSettings) {
+                NotificationSettingsView()
+            }
         }
     }
     
@@ -157,6 +169,14 @@ struct ProfileView: View {
                 color: .green
             ) {
                 // Acción para ayuda
+            }
+            
+            menuOption(
+                title: "Configuración de recordatorios",
+                systemImage: "bell.circle.fill",
+                color: .orange
+            ) {
+                showingNotificationSettings = true
             }
             
             Divider()

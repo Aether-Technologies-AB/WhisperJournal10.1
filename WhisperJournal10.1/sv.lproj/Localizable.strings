@@ -152,3 +152,43 @@
 "language_spanish" = "Spanska";
 "language_english" = "Engelska";
 "language_swedish" = "Svenska";
+
+// Notifikationer och Påminnelser
+"notifications_title" = "Påminnelseinställningar";
+"notifications_description" = "Konfigurera dina påminnelser för att återuppleva viktiga ögonblick från din journal";
+"configure_notifications" = "Konfigurera Påminnelser";
+"enable_weekly_notifications" = "Aktivera Veckovisa Påminnelser";
+"disable_notifications" = "Inaktivera Påminnelser";
+"notifications_nav_title" = "Påminnelser";
+"reminders_section" = "Påminnelser";
+"enable_reminders" = "Aktivera påminnelser";
+"frequency_days" = "Frekvens: %d dagar";
+"save_settings" = "Spara Inställningar";
+"information_section" = "Information";
+"reminders_info" = "Påminnelser visar dig viktiga ögonblick från din journal periodiskt.";
+"reminders_settings_title" = "Påminnelseinställningar";
+"reminders_alert_title" = "Påminnelser";
+"memory_notification_title" = "Journalminne";
+"notifications_auth_granted" = "Notifikationsauktorisering beviljad";
+"notifications_auth_error" = "Fel vid begäran om notifikationsauktorisering: %@";
+"user_not_authenticated" = "Användaren är inte autentiserad";
+"firebase_not_initialized" = "Firebase är inte korrekt initialiserad";
+"fetch_transcriptions_error" = "Fel vid hämtning av transkriberingar: %@";
+"unknown_error" = "Okänd";
+"schedule_notification_error" = "Fel vid schemaläggning av notifikation: %@";
+"notification_scheduled_success" = "Notifikation schemalagd framgångsrikt för %@";
+"custom_notification_error" = "Fel vid schemaläggning av anpassad notifikation: %@";
+
+"recordatorios_configurados" = "Påminnelser inställda var %d dag(ar)";
+"recordatorios_desactivados" = "Påminnelser avaktiverade";
+
+"time_unit" = "Tidsenhet";
+"minutes" = "Minuter";
+"hours" = "Timmar";
+"days" = "Dagar";
+"frequency_minutes" = "Frekvens: %d minuter";
+"frequency_hours" = "Frekvens: %d timmar";
+"frequency_days" = "Frekvens: %d dagar";
+"recordatorios_configurados_minutes" = "Påminnelser inställda var %d minut(er)";
+"recordatorios_configurados_hours" = "Påminnelser inställda var %d timme(ar)";
+"recordatorios_configurados_days" = "Påminnelser inställda var %d dag(ar)";
