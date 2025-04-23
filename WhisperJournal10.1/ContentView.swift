@@ -438,19 +438,33 @@ struct ContentView: View {
     }
     
     // Visualización de transcripción
-    private var transcriptionDisplay: some View {
-        VStack(alignment: .leading) {
-            Text(NSLocalizedString("transcription_label", comment: "Transcription label"))
-                .font(.headline)
-            
-            Text(recordedText)
-                .padding()
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(10)
-                .transition(.slide)
+    // Visualización de transcripción
+        private var transcriptionDisplay: some View {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(NSLocalizedString("transcription_label", comment: "Transcription label"))
+                        .font(.headline)
+                    
+                    Spacer()
+                    
+                    // Botón X para limpiar la transcripción
+                    Button(action: {
+                        clearTranscription()
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 20))
+                    }
+                }
+                
+                Text(recordedText)
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                    .transition(.slide)
+            }
+            .padding()
         }
-        .padding()
-    }
     
     // Opciones de foto
     private var photoOptions: some View {
@@ -599,6 +613,11 @@ struct ContentView: View {
         selectedImage = nil
     }
     
+    // Función para limpiar solo la transcripción sin guardar
+        private func clearTranscription() {
+            recordedText = ""
+            // Mantiene otros campos como tags y selectedImage intactos
+        }
     
     
     private func logout() {

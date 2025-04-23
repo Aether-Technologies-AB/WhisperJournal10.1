@@ -12,14 +12,40 @@ import UIKit
 import GoogleSignIn
 import UserNotifications
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+// Clase para gestionar la navegación desde notificaciones
+class NotificationManager {
+    static let shared = NotificationManager()
+    
+    // ID de la transcripción seleccionada desde una notificación
+    var selectedTranscriptionId: String? = nil
+    
+    private init() {}
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
         
         // Configuración predeterminada del Idle Timer
         UIApplication.shared.isIdleTimerDisabled = false
         
+        // Establecer el delegado para manejar notificaciones
+        UNUserNotificationCenter.current().delegate = self
+        
         return true
+    }
+    
+    // Método para manejar cuando se toca una notificación
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // Obtener el ID de la transcripción desde userInfo
+        let userInfo = response.notification.request.content.userInfo
+        if let transcriptionId = userInfo["transcriptionId"] as? String {
+            // Guardar el ID para usarlo cuando la app esté lista
+            NotificationManager.shared.selectedTranscriptionId = transcriptionId
+            print("Notificación tocada para transcripción ID: \(transcriptionId)")
+        }
+        
+        completionHandler()
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -58,6 +84,10 @@ struct WhisperJournal10_1App: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     let persistenceController = PersistenceController.shared
     @AppStorage("isAuthenticated") private var isAuthenticated = false
+    
+    // Estado para controlar si se debe mostrar la vista de detalle de transcripción
+    @State private var showTranscriptionDetail = false
+    @State private var selectedTranscriptionId: String? = nil
     
     init() {
         // Asegúrate de que isAuthenticated esté configurado en false por defecto
@@ -104,6 +134,42 @@ struct WhisperJournal10_1App: App {
         }
     }
    
+    // Método para abrir la transcripción desde una notificación
+    func openTranscriptionDetail(transcriptionId: String) {
+        guard let username = Auth.auth().currentUser?.email else { return }
+        
+        // Buscar la transcripción por ID
+        FirestoreService.shared.fetchTranscriptionById(username: username, transcriptionId: transcriptionId) { transcription, error in
+            if let error = error {
+                print("Error al cargar la transcripción: \(error.localizedDescription)")
+                return
+            }
+            
+            if let transcription = transcription {
+                // Presentar la vista de edición (que muestra los detalles)
+                DispatchQueue.main.async {
+                    let editView = EditTranscriptionView(
+                        transcription: transcription,
+                        onSave: { _ in
+                            // No necesitamos hacer nada especial al guardar
+                        }
+                    )
+                    
+                    // Presentar la vista
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let rootViewController = windowScene.windows.first?.rootViewController {
+                        let hostingController = UIHostingController(rootView: editView)
+                        rootViewController.present(
+                            hostingController,
+                            animated: true,
+                            completion: nil
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             if isAuthenticated {
@@ -111,6 +177,19 @@ struct WhisperJournal10_1App: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .onAppear {
                         UIApplication.shared.isIdleTimerDisabled = false
+                        
+                        // Verificar si hay una transcripción seleccionada desde una notificación
+                        if let transcriptionId = NotificationManager.shared.selectedTranscriptionId {
+                            // Guardar el ID y limpiar el manager
+                            self.selectedTranscriptionId = transcriptionId
+                            NotificationManager.shared.selectedTranscriptionId = nil
+                            self.showTranscriptionDetail = true
+                            
+                            // Mostrar la transcripción seleccionada
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                openTranscriptionDetail(transcriptionId: transcriptionId)
+                            }
+                        }
                     }
             } else {
                 LoginView(isAuthenticated: $isAuthenticated)

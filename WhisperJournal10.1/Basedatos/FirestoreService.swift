@@ -145,6 +145,51 @@ class FirestoreService {
         }
     }
 
+    // Método para obtener una transcripción específica por ID
+    func fetchTranscriptionById(username: String, transcriptionId: String, completion: @escaping (Transcription?, Error?) -> Void) {
+        db.collection("users").document(username).collection("transcriptions").document(transcriptionId).getDocument { document, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            guard let document = document, document.exists else {
+                completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Transcripción no encontrada"]))
+                return
+            }
+            
+            do {
+                // Usar el método correcto para deserializar
+                if let data = document.data() {
+                    // Convertir manualmente los datos a una Transcription
+                    let id = document.documentID
+                    let text = data["text"] as? String ?? ""
+                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
+                    let tags = data["tags"] as? String ?? ""
+                    let audioURL = data["audioURL"] as? String
+                    let imageURLs = data["imageURLs"] as? [String]
+                    let imageLocalPaths = data["imageLocalPaths"] as? [String]
+                    
+                    let transcription = Transcription(
+                        id: id,
+                        text: text,
+                        date: date,
+                        tags: tags,
+                        audioURL: audioURL,
+                        imageURLs: imageURLs,
+                        imageLocalPaths: imageLocalPaths
+                    )
+                    
+                    completion(transcription, nil)
+                } else {
+                    completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error al convertir datos"]))
+                }
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
+    
     // Nuevo método para migración de Algolia
     
     
@@ -187,4 +232,4 @@ class FirestoreService {
             }
         }
     }
-    }
+}
