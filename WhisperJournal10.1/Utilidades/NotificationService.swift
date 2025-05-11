@@ -5,6 +5,7 @@
 //  Created by andree on 18/04/25.
 //
 
+
 import Foundation
 import UserNotifications
 import Firebase
@@ -18,12 +19,27 @@ class NotificationService {
     }
     
     // Solicitar permiso para enviar notificaciones
-    func requestAuthorization() {
+    func requestAuthorization(completion: ((Bool) -> Void)? = nil) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
                 print(NSLocalizedString("notifications_auth_granted", comment: "Notifications authorization granted"))
+                // Verificar el estado actual de autorización
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    let isAuthorized = settings.authorizationStatus == .authorized
+                    print("Estado de autorización de notificaciones: \(isAuthorized ? "Autorizado" : "No autorizado")")
+                    DispatchQueue.main.async {
+                        completion?(isAuthorized)
+                    }
+                }
             } else if let error = error {
                 print(String(format: NSLocalizedString("notifications_auth_error", comment: "Error requesting notification authorization"), error.localizedDescription))
+                DispatchQueue.main.async {
+                    completion?(false)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion?(false)
+                }
             }
         }
     }
@@ -100,15 +116,20 @@ class NotificationService {
         
         content.sound = UNNotificationSound.default
         
-        // Crear un trigger para la fecha deseada (próximo domingo + offset)
-        var dateComponents = Calendar.current.dateComponents([.weekday], from: Date())
-        let currentWeekday = dateComponents.weekday ?? 1
-        let daysUntilSunday = (8 - currentWeekday) % 7 // Días hasta el próximo domingo
+        // Asegurarse de que el ID se añade correctamente al userInfo
+        if let transcriptionId = transcription.id {
+            content.userInfo = ["transcriptionId": transcriptionId]
+            print("Programando notificación para transcripción: \(transcriptionId)")
+        } else {
+            print("Advertencia: Transcripción sin ID válido")
+            content.userInfo = ["transcriptionId": UUID().uuidString]
+        }
         
-        let triggerDate = Calendar.current.date(byAdding: .day, value: daysUntilSunday + dayOffset, to: Date())!
-        dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: triggerDate)
-        dateComponents.hour = 10 // Notificar a las 10 AM
+        // Calcular la fecha de la notificación (ahora + offset en días)
+        let date = Calendar.current.date(byAdding: .day, value: dayOffset, to: Date()) ?? Date()
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         
+        // Crear un trigger basado en la fecha calculada
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         
         // Crear la solicitud de notificación
@@ -130,8 +151,17 @@ class NotificationService {
     }
     
     // Cancelar todas las notificaciones programadas
-    func cancelAllNotifications() {
+    func cancelAllNotifications(completion: (() -> Void)? = nil) {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        print("Todas las notificaciones programadas han sido canceladas")
+        
+        // Verificar que se hayan cancelado correctamente
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                print("Notificaciones pendientes después de cancelar: \(requests.count)")
+                completion?()
+            }
+        }
     }
     
     // Programar notificaciones con frecuencia personalizada (en días o segundos)
@@ -192,9 +222,16 @@ class NotificationService {
         
         content.sound = UNNotificationSound.default
         
-        // Crear un trigger basado en el intervalo de tiempo en segundos
-        // Añadir datos para poder abrir la transcripción al tocar la notificación
-        content.userInfo = ["transcriptionId": transcription.id ?? ""]
+        // Asegurarse de que el ID se añade correctamente al userInfo
+        if let transcriptionId = transcription.id {
+            content.userInfo = ["transcriptionId": transcriptionId]
+            print("Programando notificación con intervalo para transcripción: \(transcriptionId)")
+        } else {
+            print("Advertencia: Transcripción sin ID válido")
+            let generatedId = UUID().uuidString
+            content.userInfo = ["transcriptionId": generatedId]
+            print("Usando ID generado: \(generatedId)")
+        }
         
         // Crear un trigger con el intervalo especificado
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: secondsOffset > 0 ? secondsOffset : 60, repeats: false)

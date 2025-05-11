@@ -13,11 +13,17 @@ import GoogleSignIn
 import UserNotifications
 
 // Clase para gestionar la navegación desde notificaciones
-class NotificationManager {
+class NotificationManager: ObservableObject {
     static let shared = NotificationManager()
     
     // ID de la transcripción seleccionada desde una notificación
-    var selectedTranscriptionId: String? = nil
+    @Published var selectedTranscriptionId: String? = nil
+    var retryCount = 0
+    var maxRetries = 5
+    
+    func resetRetryCount() {
+        retryCount = 0
+    }
     
     private init() {}
 }
@@ -39,10 +45,15 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // Obtener el ID de la transcripción desde userInfo
         let userInfo = response.notification.request.content.userInfo
+        print("Notificación recibida con userInfo: \(userInfo)")
+        
         if let transcriptionId = userInfo["transcriptionId"] as? String {
             // Guardar el ID para usarlo cuando la app esté lista
+            print("ID de transcripción extraído: \(transcriptionId)")
             NotificationManager.shared.selectedTranscriptionId = transcriptionId
-            print("Notificación tocada para transcripción ID: \(transcriptionId)")
+            NotificationManager.shared.resetRetryCount()
+        } else {
+            print("Error: No se pudo extraer el ID de transcripción")
         }
         
         completionHandler()
@@ -136,36 +147,66 @@ struct WhisperJournal10_1App: App {
    
     // Método para abrir la transcripción desde una notificación
     func openTranscriptionDetail(transcriptionId: String) {
-        guard let username = Auth.auth().currentUser?.email else { return }
+        print("Intentando abrir transcripción con ID: \(transcriptionId)")
         
-        // Buscar la transcripción por ID
+        // Verificar autenticación primero
+        guard let username = Auth.auth().currentUser?.email else {
+            print("Error: Usuario no autenticado")
+            // Guardar el ID para intentarlo más tarde cuando el usuario esté autenticado
+            NotificationManager.shared.selectedTranscriptionId = transcriptionId
+            return
+        }
+        
+        // Agregar logs para depuración
+        print("Buscando transcripción para usuario: \(username)")
+        
         FirestoreService.shared.fetchTranscriptionById(username: username, transcriptionId: transcriptionId) { transcription, error in
+            
             if let error = error {
-                print("Error al cargar la transcripción: \(error.localizedDescription)")
+                print("Error al buscar transcripción: \(error.localizedDescription)")
+                
+                // Sistema de reintentos
+                if NotificationManager.shared.retryCount < NotificationManager.shared.maxRetries {
+                    NotificationManager.shared.retryCount += 1
+                    print("Reintentando (\(NotificationManager.shared.retryCount)/\(NotificationManager.shared.maxRetries))...")
+                    
+                    // Aumentar el retraso con cada reintento
+                    let delay = Double(NotificationManager.shared.retryCount) * 1.5
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                        self.openTranscriptionDetail(transcriptionId: transcriptionId)
+                    }
+                } else {
+                    print("Número máximo de reintentos alcanzado")
+                    NotificationManager.shared.resetRetryCount()
+                }
                 return
             }
             
             if let transcription = transcription {
-                // Presentar la vista de edición (que muestra los detalles)
+                print("Transcripción encontrada, mostrando detalles")
+                
+                // Presentar la vista de detalles en lugar de la vista de edición
                 DispatchQueue.main.async {
-                    let editView = EditTranscriptionView(
-                        transcription: transcription,
-                        onSave: { _ in
-                            // No necesitamos hacer nada especial al guardar
-                        }
-                    )
+                    let detailView = TranscriptDetailView(transcription: transcription)
+                    let hostingController = UIHostingController(rootView: detailView)
                     
-                    // Presentar la vista
+                    // Presentar con animación
                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                        let rootViewController = windowScene.windows.first?.rootViewController {
-                        let hostingController = UIHostingController(rootView: editView)
                         rootViewController.present(
                             hostingController,
                             animated: true,
-                            completion: nil
+                            completion: {
+                                print("Vista de detalles presentada correctamente")
+                                NotificationManager.shared.resetRetryCount()
+                            }
                         )
+                    } else {
+                        print("Error: No se pudo obtener el controlador raíz")
                     }
                 }
+            } else {
+                print("No se encontró la transcripción con ID: \(transcriptionId)")
             }
         }
     }
@@ -180,14 +221,26 @@ struct WhisperJournal10_1App: App {
                         
                         // Verificar si hay una transcripción seleccionada desde una notificación
                         if let transcriptionId = NotificationManager.shared.selectedTranscriptionId {
+                            print("Notificación detectada para transcripción: \(transcriptionId)")
                             // Guardar el ID y limpiar el manager
                             self.selectedTranscriptionId = transcriptionId
                             NotificationManager.shared.selectedTranscriptionId = nil
                             self.showTranscriptionDetail = true
                             
-                            // Mostrar la transcripción seleccionada
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            // Mostrar la transcripción seleccionada con un retraso mayor
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                                 openTranscriptionDetail(transcriptionId: transcriptionId)
+                            }
+                        }
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                        if let transcriptionId = NotificationManager.shared.selectedTranscriptionId {
+                            print("Aplicación activada con transcripción pendiente: \(transcriptionId)")
+                            NotificationManager.shared.selectedTranscriptionId = nil
+                            
+                            // Aumentar el retraso para asegurar que la app esté completamente cargada
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                                self.openTranscriptionDetail(transcriptionId: transcriptionId)
                             }
                         }
                     }

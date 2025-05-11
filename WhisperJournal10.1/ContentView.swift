@@ -8,7 +8,6 @@ import AVFoundation
 import AudioKit
 import AudioKitUI
 import FirebaseAuth
-import Speech
 import UIKit
 
 struct ContentView: View {
@@ -17,10 +16,12 @@ struct ContentView: View {
     @State private var recordedText = ""
     @State private var transcriptionDate = Date()
     @State private var tags = ""
-    @State private var selectedLanguage: String = "es-ES"
+    @State private var selectedLanguage: String = ""
     @State private var showTranscriptionOptions = false
     @State private var audioVisualizer: AudioVisualizerView?
     @State private var selectedImage: UIImage?
+    @State private var isTranscribing = false
+    @State private var audioURL: URL?
     enum ImagePickerType {
         case photoLibrary
         case camera
@@ -34,14 +35,10 @@ struct ContentView: View {
     @State private var showNotificationsAccess = false
     
     @StateObject private var audioEngineMicrophone = AudioEngineMicrophone()
-    let audioRecorder: AudioRecorder
     let engine: AudioEngine
     let mic: AudioEngine.InputNode
     
     init() {
-        // Inicializa audioRecorder
-        audioRecorder = AudioRecorder()
-        
         // Usa el motor de audio de AudioEngineMicrophone
         engine = AudioEngineMicrophone().audioEngine
         mic = engine.input ?? AudioEngine().input!
@@ -58,18 +55,36 @@ struct ContentView: View {
     }
     
     private func startRecording() {
-        audioRecorder.setLanguageCode(selectedLanguage)
-        audioRecorder.startRecording { transcription in
-            self.recordedText = transcription
-            self.transcriptionDate = Date()
+        // Crear un archivo temporal para la grabación
+        audioURL = FileManager.default.temporaryDirectory.appendingPathComponent("recording_\(UUID().uuidString).m4a")
+        
+        if let url = audioURL {
+            AudioSessionManager.shared.startRecording(to: url)
+            isRecording = true
+            audioEngineMicrophone.stop()
         }
-        isRecording = true
-        audioEngineMicrophone.stop()
     }
     
     private func stopRecording() {
         isRecording = false
-        audioRecorder.stopRecording()
+        AudioSessionManager.shared.stopRecording()
+        
+        if let url = audioURL {
+            isTranscribing = true
+            
+            // Usar WhisperService para transcribir el audio
+            WhisperService.shared.transcribeAudio(at: url, language: selectedLanguage) { transcription in
+                DispatchQueue.main.async {
+                    if let transcription = transcription {
+                        self.recordedText = transcription
+                        self.transcriptionDate = Date()
+                    } else {
+                        print("Error: No se pudo transcribir el audio")
+                    }
+                    self.isTranscribing = false
+                }
+            }
+        }
     }
     
     // Método para verificar la disponibilidad de la cámara
