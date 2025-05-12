@@ -104,9 +104,18 @@ struct MemoryView: View {
                             // Abrir en vista de detalle normal
                             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                                let rootViewController = windowScene.windows.first?.rootViewController {
-                                let detailView = TranscriptDetailView(transcription: transcription)
-                                let hostingController = UIHostingController(rootView: detailView)
-                                rootViewController.present(hostingController, animated: true)
+                                // Primero cerrar la vista actual
+                                presentationMode.wrappedValue.dismiss()
+                                
+                                // Esperar a que se cierre la vista actual antes de abrir la nueva
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    let detailView = TranscriptDetailView(transcription: transcription)
+                                    let hostingController = UIHostingController(rootView: detailView)
+                                    hostingController.modalPresentationStyle = .fullScreen
+                                    rootViewController.present(hostingController, animated: true) {
+                                        print("Vista de detalle presentada correctamente")
+                                    }
+                                }
                             }
                         }) {
                             Text(NSLocalizedString("view_details", comment: ""))
