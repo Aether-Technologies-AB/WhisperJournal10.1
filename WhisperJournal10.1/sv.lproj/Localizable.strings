@@ -189,6 +189,21 @@
 "frequency_minutes" = "Frekvens: %d minuter";
 "frequency_hours" = "Frekvens: %d timmar";
 "frequency_days" = "Frekvens: %d dagar";
-"recordatorios_configurados_minutes" = "Påminnelser inställda var %d minut(er)";
-"recordatorios_configurados_hours" = "Påminnelser inställda var %d timme(ar)";
-"recordatorios_configurados_days" = "Påminnelser inställda var %d dag(ar)";
+"recordatorios_configurados_minutes" = "Påminnelser inställda var %d minut";
+"recordatorios_configurados_hours" = "Påminnelser inställda var %d timme";
+"recordatorios_configurados_days" = "Påminnelser inställda var %d dag";
+
+// Förbättrade aviseringar (Apple Photos-stil)
+"memory_from_years_ago" = "För %d år sedan";
+"memory_from_months_ago" = "För %d månader sedan";
+"recent_memory" = "Nytt minne";
+"years_ago_title" = "För %d år sedan skrev du...";
+"months_ago_title" = "För %d månader sedan skrev du...";
+"recent_memory_title" = "Ett nytt minne";
+
+// Minnesvy
+"view_details" = "Visa detaljer";
+"share_memory" = "Dela";
+"see_more_memories" = "Se fler minnen";
+"memory_date_format" = "d MMMM yyyy";
+"on_this_day" = "På den här dagen";

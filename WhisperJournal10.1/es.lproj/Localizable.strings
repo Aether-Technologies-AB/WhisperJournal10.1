@@ -194,3 +194,18 @@
 "recordatorios_configurados_minutes" = "Recordatorios configurados cada %d minutos";
 "recordatorios_configurados_hours" = "Recordatorios configurados cada %d horas";
 "recordatorios_configurados_days" = "Recordatorios configurados cada %d días";
+
+// Notificaciones mejoradas (estilo Apple Fotos)
+"memory_from_years_ago" = "Hace %d años";
+"memory_from_months_ago" = "Hace %d meses";
+"recent_memory" = "Recuerdo reciente";
+"years_ago_title" = "Hace %d años escribiste...";
+"months_ago_title" = "Hace %d meses escribiste...";
+"recent_memory_title" = "Un recuerdo reciente";
+
+// Vista de recuerdos
+"view_details" = "Ver detalles";
+"share_memory" = "Compartir";
+"see_more_memories" = "Ver más recuerdos";
+"memory_date_format" = "d 'de' MMMM 'de' yyyy";
+"on_this_day" = "En este día";

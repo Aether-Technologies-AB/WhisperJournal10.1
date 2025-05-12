@@ -5,13 +5,31 @@
 //  Created by andree on 18/04/25.
 //
 
-
+import UIKit
 import Foundation
 import UserNotifications
 import Firebase
 
 class NotificationService {
     static let shared = NotificationService()
+    
+    // Función para crear adjuntos de notificación (imágenes)
+    private func createNotificationAttachment(from image: UIImage, identifier: String) -> UNNotificationAttachment? {
+        let fileManager = FileManager.default
+        let tempDirectory = fileManager.temporaryDirectory
+        let fileURL = tempDirectory.appendingPathComponent("\(identifier).jpg")
+        
+        if let imageData = image.jpegData(compressionQuality: 0.7) {
+            do {
+                try imageData.write(to: fileURL)
+                return try UNNotificationAttachment(identifier: identifier, url: fileURL, options: nil)
+            } catch {
+                print("Error creando adjunto de notificación: \(error)")
+                return nil
+            }
+        }
+        return nil
+    }
     
     private init() {
         // No solicitar autorización automáticamente en init
@@ -83,16 +101,38 @@ class NotificationService {
     
     // Filtrar transcripciones importantes
     private func filterImportantTranscriptions(_ transcriptions: [Transcription]) -> [Transcription] {
-        // Priorizar transcripciones con etiquetas importantes
-        let importantTags = ["importante", "memorable", "especial", "cumpleaños", "aniversario", "logro"]
+        var result: [Transcription] = []
         
-        let taggedTranscriptions = transcriptions.filter { transcription in
-            return !Set(transcription.tags.map { $0.lowercased() }).isDisjoint(with: Set(importantTags))
+        // 1. Prioridad máxima: Aniversarios exactos (mismo día y mes, diferente año)
+        let anniversaries = findAnniversaryTranscriptions(transcriptions)
+        result.append(contentsOf: anniversaries)
+        print("Transcripciones de aniversario encontradas: \(anniversaries.count)")
+        
+        // 2. Segunda prioridad: Transcripciones con contenido emocionalmente significativo
+        if result.count < 5 {
+            let emotional = findEmotionallySignificantTranscriptions(transcriptions)
+                .filter { !result.contains($0) }
+                .prefix(5 - result.count)
+            result.append(contentsOf: emotional)
+            print("Transcripciones emocionalmente significativas añadidas: \(emotional.count)")
         }
         
-        // Si no hay suficientes con etiquetas, agregar algunas basadas en la fecha (más antiguas)
-        var result = Array(taggedTranscriptions)
+        // 3. Tercera prioridad: Transcripciones con etiquetas importantes
+        if result.count < 5 {
+            let importantTags = ["importante", "memorable", "especial", "cumpleaños", "aniversario", "logro"]
+            
+            let taggedTranscriptions = transcriptions
+                .filter { transcription in
+                    !Set(transcription.tags.map { $0.lowercased() }).isDisjoint(with: Set(importantTags)) &&
+                    !result.contains(transcription)
+                }
+                .prefix(5 - result.count)
+            
+            result.append(contentsOf: taggedTranscriptions)
+            print("Transcripciones con etiquetas importantes añadidas: \(taggedTranscriptions.count)")
+        }
         
+        // 4. Última opción: Transcripciones antiguas para nostalgia
         if result.count < 5 {
             let oldTranscriptions = transcriptions
                 .filter { !result.contains($0) }
@@ -100,9 +140,73 @@ class NotificationService {
                 .prefix(5 - result.count)
             
             result.append(contentsOf: oldTranscriptions)
+            print("Transcripciones antiguas añadidas: \(oldTranscriptions.count)")
         }
         
-        return result.shuffled().prefix(5).sorted { $0.date > $1.date }
+        // Mezclar y ordenar los resultados finales
+        let finalResults = result.shuffled().prefix(5).sorted { $0.date > $1.date }
+        print("Total de transcripciones importantes seleccionadas: \(finalResults.count)")
+        return finalResults
+    }
+    
+    // Encuentra transcripciones que sean aniversarios exactos (mismo día y mes de años anteriores)
+    private func findAnniversaryTranscriptions(_ transcriptions: [Transcription]) -> [Transcription] {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        return transcriptions.filter { transcription in
+            let componentsFromDate = calendar.dateComponents([.month, .day], from: transcription.date)
+            let componentsToday = calendar.dateComponents([.month, .day], from: today)
+            let yearDiff = calendar.dateComponents([.year], from: transcription.date, to: today).year ?? 0
+            
+            // Mismo mes y día (aniversario exacto) y al menos 1 año de diferencia
+            return componentsFromDate.month == componentsToday.month &&
+                   componentsFromDate.day == componentsToday.day &&
+                   yearDiff > 0 && yearDiff <= 5  // Aniversarios de 1-5 años
+        }
+    }
+    
+    // Analiza el texto para encontrar contenido emocionalmente significativo
+    private func findEmotionallySignificantTranscriptions(_ transcriptions: [Transcription]) -> [Transcription] {
+        // Palabras clave que indican contenido emocionalmente significativo
+        let emotionalKeywords = [
+            // Emociones positivas
+            "feliz", "alegr", "emocionad", "content", "genial", "increíble", "maravillos", "espectacular",
+            "mejor", "fantástic", "perfect", "extraordinari", "inolvidable", "asombroso", "impresionante",
+            
+            // Emociones negativas (también importantes)
+            "triste", "dolor", "difícil", "sufr", "pérdida", "llor", "extrañ", "miedo", "preocup",
+            
+            // Eventos significativos
+            "boda", "graduaci", "nacimiento", "cumpleaños", "aniversario", "fiesta", "ceremonia",
+            "viaje", "vacaciones", "primera vez", "última vez", "cambio", "decisión", "nuevo",
+            
+            // Expresiones de importancia
+            "importante", "significativ", "memorable", "especial", "nunca olvidar", "recordar siempre",
+            "valioso", "aprecio", "agradec", "amo", "quiero", "adoro"
+        ]
+        
+        return transcriptions.filter { transcription in
+            let text = transcription.text.lowercased()
+            
+            // Buscar palabras clave en el texto
+            let containsEmotionalKeywords = emotionalKeywords.contains { keyword in
+                text.contains(keyword)
+            }
+            
+            // Detectar oraciones largas o detalladas (indicio de contenido importante)
+            let sentences = text.components(separatedBy: ".").filter { !$0.isEmpty }
+            let hasLongSentences = sentences.contains { sentence in
+                sentence.count > 100 // Oraciones largas suelen tener más detalles y ser más importantes
+            }
+            
+            // Detectar repeticiones (indicio de énfasis)
+            let words = text.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
+            let wordCounts = Dictionary(grouping: words, by: { $0 }).mapValues { $0.count }
+            let hasRepeatedWords = wordCounts.values.contains { $0 > 3 && $0 < 10 } // Repetición natural, no spam
+            
+            return containsEmotionalKeywords || hasLongSentences || hasRepeatedWords
+        }
     }
     
     // Programar una notificación para una transcripción específica con offset en días
@@ -116,14 +220,16 @@ class NotificationService {
         
         content.sound = UNNotificationSound.default
         
-        // Asegurarse de que el ID se añade correctamente al userInfo
-        if let transcriptionId = transcription.id {
-            content.userInfo = ["transcriptionId": transcriptionId]
-            print("Programando notificación para transcripción: \(transcriptionId)")
-        } else {
-            print("Advertencia: Transcripción sin ID válido")
-            content.userInfo = ["transcriptionId": UUID().uuidString]
+        // Añadir imagen si está disponible
+        if let imagePath = transcription.imageLocalPaths?.first,
+           let image = PersistenceController.shared.loadImage(filename: imagePath) {
+            if let attachment = createNotificationAttachment(from: image, identifier: identifier) {
+                content.attachments = [attachment]
+            }
         }
+        
+        // Datos para abrir la transcripción específica
+        content.userInfo = ["transcriptionId": transcription.id ?? ""]
         
         // Calcular la fecha de la notificación (ahora + offset en días)
         let date = Calendar.current.date(byAdding: .day, value: dayOffset, to: Date()) ?? Date()
@@ -215,12 +321,31 @@ class NotificationService {
     // Programar notificación con intervalo en segundos
     private func scheduleNotificationWithInterval(for transcription: Transcription, secondsOffset: TimeInterval, identifier: String) {
         let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString("memory_notification_title", comment: "Memory notification title")
+        
+        // Título personalizado basado en la antigüedad
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month], from: transcription.date, to: Date())
+        
+        if let years = components.year, years > 0 {
+            content.title = String(format: NSLocalizedString("memory_from_years_ago", comment: "Memory from years ago"), years)
+        } else if let months = components.month, months > 0 {
+            content.title = String(format: NSLocalizedString("memory_from_months_ago", comment: "Memory from months ago"), months)
+        } else {
+            content.title = NSLocalizedString("recent_memory", comment: "Recent memory")
+        }
         
         let textPreview = String(transcription.text.prefix(100))
         content.body = "\(textPreview)..."
         
         content.sound = UNNotificationSound.default
+        
+        // Añadir imagen si está disponible
+        if let imagePath = transcription.imageLocalPaths?.first,
+           let image = PersistenceController.shared.loadImage(filename: imagePath) {
+            if let attachment = createNotificationAttachment(from: image, identifier: identifier) {
+                content.attachments = [attachment]
+            }
+        }
         
         // Asegurarse de que el ID se añade correctamente al userInfo
         if let transcriptionId = transcription.id {

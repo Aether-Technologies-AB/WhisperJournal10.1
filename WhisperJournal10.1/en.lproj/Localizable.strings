@@ -196,3 +196,18 @@
 "recordatorios_configurados_minutes" = "Reminders set every %d minutes";
 "recordatorios_configurados_hours" = "Reminders set every %d hours";
 "recordatorios_configurados_days" = "Reminders set every %d days";
+
+// Enhanced notifications (Apple Photos style)
+"memory_from_years_ago" = "%d years ago";
+"memory_from_months_ago" = "%d months ago";
+"recent_memory" = "Recent memory";
+"years_ago_title" = "%d years ago you wrote...";
+"months_ago_title" = "%d months ago you wrote...";
+"recent_memory_title" = "A recent memory";
+
+// Memory view
+"view_details" = "View details";
+"share_memory" = "Share";
+"see_more_memories" = "See more memories";
+"memory_date_format" = "MMMM d, yyyy";
+"on_this_day" = "On this day";

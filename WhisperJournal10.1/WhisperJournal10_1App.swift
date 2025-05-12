@@ -183,12 +183,17 @@ struct WhisperJournal10_1App: App {
             }
             
             if let transcription = transcription {
-                print("Transcripción encontrada, mostrando detalles")
+                print("Transcripción encontrada, mostrando vista de recuerdo")
                 
-                // Presentar la vista de detalles en lugar de la vista de edición
+                // Presentar la nueva vista de recuerdo (similar a Apple Fotos)
                 DispatchQueue.main.async {
-                    let detailView = TranscriptDetailView(transcription: transcription)
-                    let hostingController = UIHostingController(rootView: detailView)
+                    // Usar la nueva MemoryView en lugar de TranscriptDetailView
+                    let memoryView = MemoryView(transcription: transcription)
+                    let hostingController = UIHostingController(rootView: memoryView)
+                    
+                    // Configurar presentación a pantalla completa con animación
+                    hostingController.modalPresentationStyle = .fullScreen
+                    hostingController.modalTransitionStyle = .crossDissolve
                     
                     // Presentar con animación
                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -197,7 +202,7 @@ struct WhisperJournal10_1App: App {
                             hostingController,
                             animated: true,
                             completion: {
-                                print("Vista de detalles presentada correctamente")
+                                print("Vista de recuerdo presentada correctamente")
                                 NotificationManager.shared.resetRetryCount()
                             }
                         )
@@ -253,4 +258,4 @@ struct WhisperJournal10_1App: App {
             }
         }
     }
-}
+    }
