@@ -453,7 +453,6 @@ struct ContentView: View {
     }
     
     // Visualización de transcripción
-    // Visualización de transcripción
         private var transcriptionDisplay: some View {
             VStack(alignment: .leading) {
                 HStack {
@@ -472,11 +471,21 @@ struct ContentView: View {
                     }
                 }
                 
-                Text(recordedText)
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
-                    .transition(.slide)
+                // Contenedor con scroll para la transcripción
+                ScrollView {
+                    Text(recordedText)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(height: 150) // Altura fija más pequeña
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+                .transition(.slide)
             }
             .padding()
         }
@@ -712,26 +721,29 @@ struct ContentView: View {
     
     // Vista de visualización de audio
     struct AudioVisualizerView: View {
-        @State private var bars: [CGFloat] = Array(repeating: 20, count: 20)
+        @State private var bars: [CGFloat] = Array(repeating: 20, count: 30)
         
         var body: some View {
             GeometryReader { geometry in
-                HStack(spacing: 2) {
-                    ForEach(0..<20, id: \.self) { index in
+                HStack(spacing: 4) {
+                    ForEach(0..<30, id: \.self) { index in
                         Rectangle()
-                            .fill(Color.blue.opacity(0.5))
-                            .frame(width: 3, height: bars[index])
+                            .fill(Color.blue.opacity(0.7))
+                            .frame(width: (geometry.size.width / 34), height: bars[index])
                     }
                 }
+                .frame(width: geometry.size.width, height: 100)
+                .padding(.horizontal)
             }
+            .frame(height: 100)
             .onAppear {
                 startAnimation()
             }
         }
         
         private func startAnimation() {
-            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
-                withAnimation(.easeInOut(duration: 0.5)) {
+            Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+                withAnimation(.easeInOut(duration: 0.3)) {
                     bars = bars.map { _ in
                         CGFloat.random(in: 20...100)
                     }

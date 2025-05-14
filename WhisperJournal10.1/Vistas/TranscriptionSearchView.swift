@@ -25,17 +25,23 @@ struct TranscriptionSearchView: View {
         NavigationView {
             VStack {
                 // Barra de búsqueda
-                HStack {
+                VStack(spacing: 10) {
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
                         
-                        TextField(NSLocalizedString("ask_question", comment: ""), text: $searchText)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                            .onSubmit {
-                                performSearch()
-                            }
+                        // Campo de texto para búsqueda con scroll y tamaño fijo
+                        ScrollView {
+                            TextField(NSLocalizedString("ask_question", comment: ""), text: $searchText, axis: .vertical)
+                                .autocapitalization(.none)
+                                .disableAutocorrection(true)
+                                .lineLimit(nil) // Sin límite de líneas
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .onSubmit {
+                                    performSearch()
+                                }
+                        }
+                        .frame(height: 60) // Altura fija para el cuadro de búsqueda
                         
                         if !searchText.isEmpty {
                             Button(action: {
@@ -63,9 +69,14 @@ struct TranscriptionSearchView: View {
                                 .font(.system(size: 20))
                         }
                     }
-                    .padding(8)
-                    .background(Color(.systemGray6))
+                    .padding(10)
+                    .background(Color.gray.opacity(0.1))
                     .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    )
+                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
                 }
                 .padding()
                 

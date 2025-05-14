@@ -57,22 +57,32 @@ struct TranscriptionListView: View {
                                     }
                                 }
                                 Spacer()
-                                Menu {
-                                    Button(NSLocalizedString("edit_button", comment: "Edit button")) {
-                                        presentEditView(for: transcription)
-                                    }
-                                    Button(NSLocalizedString("delete_button", comment: "Delete button"), role: .destructive) {
-                                        deleteTranscription(transcription)
-                                    }
-                                } label: {
-                                    Image(systemName: "ellipsis")
-                                        .foregroundColor(.blue)
-                                }
                             }
                             .padding()
                             .background(Color(.systemGray6))
                             .cornerRadius(10)
                             .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 5)
+                            // Tocar para editar
+                            .onTapGesture {
+                                presentEditView(for: transcription)
+                            }
+                            // Deslizar para eliminar con estilo personalizado
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button {
+                                    presentEditView(for: transcription)
+                                } label: {
+                                    Label(NSLocalizedString("edit_button", comment: "Edit button"), systemImage: "pencil")
+                                }
+                                .tint(.blue)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    deleteTranscription(transcription)
+                                } label: {
+                                    Label(NSLocalizedString("delete_button", comment: "Delete button"), systemImage: "trash")
+                                }
+                                .tint(Color.purple.opacity(0.8)) // Color personalizado para eliminar
+                            }
                         }
                     }
                     .navigationTitle(NSLocalizedString("saved_transcriptions_title", comment: "Saved Transcriptions title"))

@@ -24,6 +24,8 @@ class WhisperService {
     private init() {}
     
     func transcribeAudio(at url: URL, language: String, completion: @escaping (String?) -> Void) {
+        // Convertir el código de idioma al formato ISO-639-1 requerido por la API
+        let isoLanguage = convertToISO639_1(language)
         // La API de OpenAI espera el archivo de audio, no una URL
         guard let audioData = try? Data(contentsOf: url) else {
             print("Error al leer el archivo de audio")
@@ -65,7 +67,7 @@ class WhisperService {
         if !language.isEmpty {
             body.append("--\(boundary)\r\n".data(using: .utf8)!)
             body.append("Content-Disposition: form-data; name=\"language\"\r\n\r\n".data(using: .utf8)!)
-            body.append(language.data(using: .utf8)!)
+            body.append(isoLanguage.data(using: .utf8)!)
             body.append("\r\n".data(using: .utf8)!)
         }
         
@@ -102,5 +104,46 @@ class WhisperService {
         }
         
         task.resume()
+    }
+    
+    // Convierte códigos de idioma al formato ISO-639-1 requerido por la API de Whisper
+    private func convertToISO639_1(_ language: String) -> String {
+        // Si está vacío, devolvemos vacío para que la API detecte automáticamente
+        if language.isEmpty {
+            return ""
+        }
+        
+        // Convertir a minúsculas y obtener solo la primera parte (antes del guión si existe)
+        let lowercased = language.lowercased()
+        let primaryCode = lowercased.split(separator: "-").first ?? ""
+        
+        // Mapeo de códigos de idioma a ISO-639-1
+        let languageMap: [String: String] = [
+            "español": "es",
+            "spanish": "es",
+            "inglés": "en",
+            "english": "en",
+            "sueco": "sv",
+            "swedish": "sv",
+            "es": "es",
+            "en": "en",
+            "sv": "sv"
+        ]
+        
+        // Buscar en el mapa o usar la primera parte del código
+        if let mappedCode = languageMap[String(primaryCode)] {
+            return mappedCode
+        } else if let mappedCode = languageMap[lowercased] {
+            return mappedCode
+        }
+        
+        // Si no hay coincidencia en el mapa, devolvemos los primeros dos caracteres
+        // o vacío si es demasiado corto
+        if primaryCode.count >= 2 {
+            return String(primaryCode.prefix(2))
+        }
+        
+        // Si todo falla, devolvemos vacío para detección automática
+        return ""
     }
 }
