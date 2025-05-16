@@ -66,22 +66,24 @@ struct TranscriptionListView: View {
                             .onTapGesture {
                                 presentEditView(for: transcription)
                             }
-                            // Deslizar para eliminar con estilo personalizado
+                            // Deslizar con estilo personalizado sin colores de fondo
                             .swipeActions(edge: .leading, allowsFullSwipe: true) {
                                 Button {
                                     presentEditView(for: transcription)
                                 } label: {
-                                    Label(NSLocalizedString("edit_button", comment: "Edit button"), systemImage: "pencil")
+                                    Image(systemName: "pencil")
+                                        .foregroundColor(.white)
                                 }
-                                .tint(.blue)
+                                .tint(.clear) // Sin color de fondo
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button(role: .destructive) {
+                                Button {
                                     deleteTranscription(transcription)
                                 } label: {
-                                    Label(NSLocalizedString("delete_button", comment: "Delete button"), systemImage: "trash")
+                                    Image(systemName: "trash")
+                                        .foregroundColor(.white)
                                 }
-                                .tint(Color.purple.opacity(0.8)) // Color personalizado para eliminar
+                                .tint(.clear) // Sin color de fondo
                             }
                         }
                     }

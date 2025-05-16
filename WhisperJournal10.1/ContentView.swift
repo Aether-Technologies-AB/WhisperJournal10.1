@@ -471,13 +471,14 @@ struct ContentView: View {
                     }
                 }
                 
-                // Contenedor con scroll para la transcripción
+                // Contenedor con scroll para la transcripción mostrando exactamente 4 líneas
                 ScrollView {
                     Text(recordedText)
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(height: 150) // Altura fija más pequeña
+                // Altura fija para mostrar exactamente 4 líneas de texto
+                .frame(height: 120) // Altura fija para mostrar 4 líneas
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .overlay(
@@ -643,6 +644,24 @@ struct ContentView: View {
             // Mantiene otros campos como tags y selectedImage intactos
         }
     
+    // Función para calcular la altura aproximada del texto
+    private func calculateTextHeight(text: String) -> CGFloat {
+        let lineHeight: CGFloat = 20 // Altura aproximada de una línea de texto
+        let maxWidth: CGFloat = UIScreen.main.bounds.width - 60 // Ancho disponible con padding
+        let font = UIFont.systemFont(ofSize: 16) // Tamaño de fuente aproximado
+        
+        // Calcular número aproximado de líneas
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+        let textSize = (text as NSString).boundingRect(
+            with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: attributes,
+            context: nil
+        )
+        
+        // Calcular altura basada en el número de líneas (añadir padding)
+        return textSize.height + 40 // Añadir padding vertical
+    }
     
     private func logout() {
         WhisperJournal10_1App.logout()

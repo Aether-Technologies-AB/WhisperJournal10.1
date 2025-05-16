@@ -7,12 +7,15 @@
 
 import SwiftUI
 import FirebaseFirestore
+import UIKit
 
 struct TranscriptDetailView: View {
     let transcription: Transcription
     @State private var loadedImages: [UIImage] = []
     @State private var isLoadingImages = false
     @State private var errorMessage: String? = nil
+    @Environment(\.presentationMode) var presentationMode
+    @State private var dragOffset = CGSize.zero
     
     var body: some View {
         ScrollView {
@@ -87,6 +90,28 @@ struct TranscriptDetailView: View {
         }
         .navigationTitle(NSLocalizedString("detail_title", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
+        // Gesto de deslizamiento hacia abajo para cerrar la vista
+        .gesture(
+            DragGesture()
+                .onChanged { gesture in
+                    // Solo permitir deslizamiento hacia abajo
+                    if gesture.translation.height > 0 {
+                        self.dragOffset = gesture.translation
+                    }
+                }
+                .onEnded { gesture in
+                    // Si el deslizamiento es suficientemente largo hacia abajo, cerrar la vista
+                    if gesture.translation.height > 100 {
+                        self.presentationMode.wrappedValue.dismiss()
+                    } else {
+                        // Si no es suficiente, volver a la posición original
+                        self.dragOffset = .zero
+                    }
+                }
+        )
+        // Aplicar el efecto de deslizamiento a la vista
+        .offset(y: dragOffset.height * 0.3) // Factor de amortiguación para que el movimiento sea suave
+        .animation(.interactiveSpring(), value: dragOffset)
         .onAppear {
             loadImages()
         }
