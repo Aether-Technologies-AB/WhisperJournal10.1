@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6D0D58352D59A13B00E98192 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6D0D58342D59A13B00E98192 /* FirebaseFirestore */; };
 		6D1013F82D8F90F000802B64 /* EmbeddingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1013F72D8F90F000802B64 /* EmbeddingService.swift */; };
 		6D1806B52D29DC3500A7ADDB /* Transcription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1806B42D29DC3500A7ADDB /* Transcription.swift */; };
+		6D32E9A02DDCE0A5002766F8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6D32E99F2DDCE0A5002766F8 /* FirebaseFirestore */; };
 		6D45C9AE2D2918A400136F98 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D45C9AD2D2918A400136F98 /* FirestoreService.swift */; };
 		6D4B28DE2D43F89F00DC9AEA /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4B28DD2D43F89F00DC9AEA /* ImagePickerView.swift */; };
 		6D58A50A2DD138C50069A0B0 /* MemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D58A5092DD138C50069A0B0 /* MemoryView.swift */; };
@@ -87,7 +87,7 @@
 		6DA93E982D1C8B1E00D43977 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		6DB57C5A2D1DECD900E8A1AF /* WisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WisperService.swift; sourceTree = "<group>"; };
 		6DB963062D737EE60008C978 /*  AlgoliaService .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " AlgoliaService .swift"; sourceTree = "<group>"; };
-		6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperJournal10.1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WhisperJournal10.1.app; path = "/Users/andree/Desktop/WhisperJournal10.1/build/Debug-iphoneos/WhisperJournal10.1.app"; sourceTree = "<absolute>"; };
 		6DBEF41C2D88D68900E49CE0 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		6DBEF41E2D88D6C400E49CE0 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
 		6DBEF4202D88D6F200E49CE0 /* ConversationalSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationalSearchService.swift; sourceTree = "<group>"; };
@@ -118,9 +118,9 @@
 				6DBC1F292D333DC3006DA6A5 /* FirebaseAnalytics in Frameworks */,
 				6D9899BC2D3AD01F005F79FB /* GoogleSignInSwift in Frameworks */,
 				6DF48B792D724071005F1C5E /* AlgoliaSearchClient in Frameworks */,
-				6D0D58352D59A13B00E98192 /* FirebaseFirestore in Frameworks */,
 				6DBC1F2B2D333DC3006DA6A5 /* FirebaseAuth in Frameworks */,
 				6DBC1F2F2D333DC3006DA6A5 /* FirebaseFirestoreSwift in Frameworks */,
+				6D32E9A02DDCE0A5002766F8 /* FirebaseFirestore in Frameworks */,
 				6D9899BA2D3AD01F005F79FB /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,7 +133,6 @@
 			children = (
 				6D7E66292D0E604A00765A78 /* WhisperJournal10.1 */,
 				6DBC1F242D333AE9006DA6A5 /* Frameworks */,
-				6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -273,9 +272,9 @@
 				6D9899B92D3AD01F005F79FB /* GoogleSignIn */,
 				6D9899BB2D3AD01F005F79FB /* GoogleSignInSwift */,
 				6D6C19B82D42C6CF009AC331 /* FirebaseStorage */,
-				6D0D58342D59A13B00E98192 /* FirebaseFirestore */,
 				6DF48B782D724071005F1C5E /* AlgoliaSearchClient */,
 				6DF5DC312D80BBA600B23D6F /* OpenAI */,
+				6D32E99F2DDCE0A5002766F8 /* FirebaseFirestore */,
 			);
 			productName = WhisperJournal10.1;
 			productReference = 6DBCF6B52D59966D0020F4F0 /* WhisperJournal10.1.app */;
@@ -669,7 +668,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6D0D58342D59A13B00E98192 /* FirebaseFirestore */ = {
+		6D32E99F2DDCE0A5002766F8 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6DBC1F272D333DC3006DA6A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
